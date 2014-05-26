@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="/VFIFE_SCHEMA/VFIFE_SCHEMA.jar"/>
+	<classpathentry kind="lib" path="/demo1-ExpressCompile/demo1-ExpressCompile.jar"/>
+	<classpathentry kind="lib" path="F:/Eclipse_Kepler/plugins/net.jsdai.runtime_4.1.505.v201112201320/jsdai_runtime.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

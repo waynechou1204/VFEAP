@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><ex:iso_10303_28 version="2.0" xmlns:ex="urn:iso10303-28:ex" xmlns:xsi="http://www.w3.org/2001/XMLSchema">
+  <ex:iso_10303_28_header>
+    <ex:document_name>Example program to generate a file to demo 5-1</ex:document_name>
+    <ex:time_stamp>2014-05-26T00:04:20</ex:time_stamp>
+    <ex:author>Wayne Chou</ex:author>
+    <ex:originating_organization>TJ University</ex:originating_organization>
+    <ex:authorization>Xiaowei authorize</ex:authorization>
+    <ex:originating_system>JSDAI MULTIPLE Version 4.0.0 (Build 270, 2011-12-15T17:42:49)</ex:originating_system>
+    <ex:preprocessor_version> </ex:preprocessor_version>
+  </ex:iso_10303_28_header>
+  <ex:express id="schema1" schema_name="VFIFE_SCHEMA" schemaLocation="URI:www.lksoft.com/Schema/VFIFE_SCHEMA.xml" xsi:nil="true"/>
+  <ex:uos id="m0" express="schema1">
+    <Applied_load_static_force id="e19">
+      <Applied_moment_mz>0.0</Applied_moment_mz>
+      <Applied_moment_my>0.0</Applied_moment_my>
+      <Applied_moment_mx>0.0</Applied_moment_mx>
+      <Applied_force_fz>-40.0</Applied_force_fz>
+      <Applied_force_fy>0.0</Applied_force_fy>
+      <Applied_force_fx>0.0</Applied_force_fx>
+      <Applied_load_name>1</Applied_load_name>
+    </Applied_load_static_force>
+    <Applied_load_static_force id="e23">
+      <Applied_moment_mz>0.0</Applied_moment_mz>
+      <Applied_moment_my>0.0</Applied_moment_my>
+      <Applied_moment_mx>0.0</Applied_moment_mx>
+      <Applied_force_fz>0.0</Applied_force_fz>
+      <Applied_force_fy>0.0</Applied_force_fy>
+      <Applied_force_fx>40.0</Applied_force_fx>
+      <Applied_load_name>2</Applied_load_name>
+    </Applied_load_static_force>
+    <Bar id="e1">
+      <Section_area>0.01824146924750992</Section_area>
+      <Bar_node>
+        <Node ref="e2" xsi:nil="true"/>
+        <Node ref="e5" xsi:nil="true"/>
+      </Bar_node>
+      <Bar_id>1</Bar_id>
+    </Bar>
+    <Bar id="e7">
+      <Section_area>0.01824146924750992</Section_area>
+      <Bar_node>
+        <Node ref="e8" xsi:nil="true"/>
+        <Node ref="e10" xsi:nil="true"/>
+      </Bar_node>
+      <Bar_id>2</Bar_id>
+    </Bar>
+    <Boundary_condition_logical id="e4">
+      <Bc_z_rotation_free>true</Bc_z_rotation_free>
+      <Bc_y_rotation_free>true</Bc_y_rotation_free>
+      <Bc_x_rotation_free>true</Bc_x_rotation_free>
+      <Bc_z_displacement_free>false</Bc_z_displacement_free>
+      <Bc_y_displacement_free>false</Bc_y_displacement_free>
+      <Bc_x_displacement_free>false</Bc_x_displacement_free>
+      <Boundary_condition_name>ball joint</Boundary_condition_name>
+    </Boundary_condition_logical>
+    <Boundary_condition_logical id="e12">
+      <Bc_z_rotation_free>true</Bc_z_rotation_free>
+      <Bc_y_rotation_free>true</Bc_y_rotation_free>
+      <Bc_x_rotation_free>true</Bc_x_rotation_free>
+      <Bc_z_displacement_free>false</Bc_z_displacement_free>
+      <Bc_y_displacement_free>false</Bc_y_displacement_free>
+      <Bc_x_displacement_free>false</Bc_x_displacement_free>
+      <Boundary_condition_name>ball joint</Boundary_condition_name>
+    </Boundary_condition_logical>
+    <Cartesian_point id="e3">
+      <Coordinates>
+        <ex:double-wrapper>0.0</ex:double-wrapper>
+        <ex:double-wrapper>0.0</ex:double-wrapper>
+        <ex:double-wrapper>0.0</ex:double-wrapper>
+      </Coordinates>
+    </Cartesian_point>
+    <Cartesian_point id="e6">
+      <Coordinates>
+        <ex:double-wrapper>10.0</ex:double-wrapper>
+        <ex:double-wrapper>0.0</ex:double-wrapper>
+        <ex:double-wrapper>0.0</ex:double-wrapper>
+      </Coordinates>
+    </Cartesian_point>
+    <Cartesian_point id="e9">
+      <Coordinates>
+        <ex:double-wrapper>10.0</ex:double-wrapper>
+        <ex:double-wrapper>0.0</ex:double-wrapper>
+        <ex:double-wrapper>0.0</ex:double-wrapper>
+      </Coordinates>
+    </Cartesian_point>
+    <Cartesian_point id="e11">
+      <Coordinates>
+        <ex:double-wrapper>10.0</ex:double-wrapper>
+        <ex:double-wrapper>0.0</ex:double-wrapper>
+        <ex:double-wrapper>5.0</ex:double-wrapper>
+      </Coordinates>
+    </Cartesian_point>
+    <Cartesian_point id="e18">
+      <Coordinates>
+        <ex:double-wrapper>5.0</ex:double-wrapper>
+        <ex:double-wrapper>0.0</ex:double-wrapper>
+        <ex:double-wrapper>0.0</ex:double-wrapper>
+      </Coordinates>
+    </Cartesian_point>
+    <Cartesian_point id="e22">
+      <Coordinates>
+        <ex:double-wrapper>2.5</ex:double-wrapper>
+        <ex:double-wrapper>0.0</ex:double-wrapper>
+        <ex:double-wrapper>0.0</ex:double-wrapper>
+      </Coordinates>
+    </Cartesian_point>
+    <Force id="e16">
+      <Parent_load_case ref="e17" xsi:nil="true"/>
+      <Duration_time>0.0</Duration_time>
+      <Load_value ref="e19" xsi:nil="true"/>
+      <Load_position ref="e18" xsi:nil="true"/>
+      <Force_id>1</Force_id>
+    </Force>
+    <Force id="e20">
+      <Parent_load_case ref="e21" xsi:nil="true"/>
+      <Duration_time>0.0</Duration_time>
+      <Load_value ref="e23" xsi:nil="true"/>
+      <Load_position ref="e22" xsi:nil="true"/>
+      <Force_id>2</Force_id>
+    </Force>
+    <Load_case id="e17">
+      <Time_variation>physical_action_permanent</Time_variation>
+      <Load_case_factor>0.0</Load_case_factor>
+      <Load_case_name>DEAD</Load_case_name>
+    </Load_case>
+    <Load_case id="e21">
+      <Time_variation>physical_action_permanent</Time_variation>
+      <Load_case_factor>0.0</Load_case_factor>
+      <Load_case_name>DEAD</Load_case_name>
+    </Load_case>
+    <Material id="e13">
+      <Density>0.0</Density>
+      <Young_modulus>1.999479787959576E11</Young_modulus>
+      <Name>A992Fy50</Name>
+    </Material>
+    <Material id="e14">
+      <Density>0.0</Density>
+      <Young_modulus>2.4855578284765396E10</Young_modulus>
+      <Name>4000Psi</Name>
+    </Material>
+    <Material id="e15">
+      <Density>0.0</Density>
+      <Young_modulus>1.999E11</Young_modulus>
+      <Name>5-1</Name>
+    </Material>
+    <Node id="e2">
+      <Restraints ref="e4" xsi:nil="true"/>
+      <Node_coords ref="e3" xsi:nil="true"/>
+      <Node_name>1</Node_name>
+      <Node_id>1</Node_id>
+    </Node>
+    <Node id="e5">
+      <Node_coords ref="e6" xsi:nil="true"/>
+      <Node_name>2</Node_name>
+      <Node_id>2</Node_id>
+    </Node>
+    <Node id="e8">
+      <Node_coords ref="e9" xsi:nil="true"/>
+      <Node_name>2</Node_name>
+      <Node_id>2</Node_id>
+    </Node>
+    <Node id="e10">
+      <Restraints ref="e12" xsi:nil="true"/>
+      <Node_coords ref="e11" xsi:nil="true"/>
+      <Node_name>3</Node_name>
+      <Node_id>3</Node_id>
+    </Node>
+  </ex:uos>
+</ex:iso_10303_28>
