@@ -9,6 +9,7 @@ public class VFIFE_BoundaryCondition {
 	private Boolean bc_x_rotation_free;
 	private Boolean bc_y_rotation_free;
 	private Boolean bc_z_rotation_free;
+	
 	public String getBoundary_condition_name() {
 		return boundary_condition_name;
 	}

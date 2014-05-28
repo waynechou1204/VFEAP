@@ -75,7 +75,7 @@
         <Association destinationClassName="model.VFIFE_LoadCase"
             endpointName="parent_load_case" kind="Simple"/>
     </Class>
-    <Class name="model.VFIFE_AppliedLoadStaticForce" x="15" y="525">
+    <Class name="model.VFIFE_AppliedLoadStaticForce" x="22" y="552">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -101,15 +101,6 @@
             endpointName="forces" kind="Simple"/>
         <Communication destinationClassName="model.VFIFE_Bar"/>
     </Class>
-    <Class name="model.VFIFE_AppliedLoad" x="31" y="262">
-        <AttributesDisplayFilter public-accepted="true"
-            private-accepted="true" protected-accepted="true"
-            default-accepted="true" static-accepted="false"/>
-        <MethodDisplayFilter public-accepted="true"
-            private-accepted="false" protected-accepted="false"
-            default-accepted="false" static-accepted="false"
-            accessors-accepted="false" constructors-accepted="false"/>
-    </Class>
     <Class name="model.VFIFE_Bar" x="465" y="205">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
@@ -122,5 +113,14 @@
             endpointName="nodes" kind="Simple"/>
         <Association destinationClassName="model.VFIFE_Material"
             endpointName="material" kind="Simple"/>
+    </Class>
+    <Class name="model.VFIFE_AppliedLoad" x="31" y="262">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
     </Class>
 </ClassDiagram>

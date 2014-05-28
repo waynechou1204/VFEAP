@@ -4,21 +4,15 @@ import java.util.ArrayList;
 
 public class VFIFE_Model {
 	private ArrayList<VFIFE_Bar> bars;
-	private ArrayList<VFIFE_Force> forces;
+	private ArrayList<VFIFE_Load> forces;
 	private ArrayList<VFIFE_Material> materiaux;
+	private ArrayList<VFIFE_Node> nodes;
 	
 	public VFIFE_Model() {
 		this.bars = new ArrayList<VFIFE_Bar>();
-		this.forces = new ArrayList<VFIFE_Force>();
+		this.forces = new ArrayList<VFIFE_Load>();
 		this.materiaux = new ArrayList<VFIFE_Material>();
-	}
-	
-	public ArrayList<VFIFE_Material> getMateriaux() {
-		return materiaux;
-	}
-
-	public void setMateriaux(ArrayList<VFIFE_Material> materiaux) {
-		this.materiaux = materiaux;
+		this.nodes = new ArrayList<VFIFE_Node>();
 	}
 	
 	public VFIFE_Bar getBar(int barid){
@@ -35,19 +29,40 @@ public class VFIFE_Model {
 			bars.add(barin);
 		}
 	}
+	public VFIFE_Node getNode(int nodeid){
+		for(VFIFE_Node nodetemp : nodes){
+			if(nodetemp.getNode_id()==nodeid){
+				return nodetemp;
+			}
+		}
+		return null;
+	}
 	
-	
+	public ArrayList<VFIFE_Material> getMateriaux() {
+		return materiaux;
+	}
+	public void setMateriaux(ArrayList<VFIFE_Material> materiaux) {
+		this.materiaux = materiaux;
+	}
 	public ArrayList<VFIFE_Bar> getBars() {
 		return bars;
 	}
 	public void setBars(ArrayList<VFIFE_Bar> bars) {
 		this.bars = bars;
 	}
-	public ArrayList<VFIFE_Force> getForces() {
+	public ArrayList<VFIFE_Load> getForces() {
 		return forces;
 	}
-	public void setForces(ArrayList<VFIFE_Force> forces) {
+	public void setForces(ArrayList<VFIFE_Load> forces) {
 		this.forces = forces;
+	}
+
+	public ArrayList<VFIFE_Node> getNodes() {
+		return nodes;
+	}
+
+	public void setNodes(ArrayList<VFIFE_Node> nodes) {
+		this.nodes = nodes;
 	}
 	
 	

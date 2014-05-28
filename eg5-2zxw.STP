@@ -1,0 +1,233 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION(/* description */ ('{cimsteel logical product model version (6) object (1) structural-frame-schema (1)}',
+'CC504'),/* implementation_level */ '2;1');
+FILE_NAME('eg5-2zxw', /* name */
+'27-2014-5T22:53:16+8:00', /* time_stamp */
+(''), /* author */
+(''), /* organization */
+'14.0.0', /* preprocessor_version */
+'SAP2000', /* originating_system */
+'' /* authorisation */);
+FILE_SCHEMA (('STRUCTURAL_FRAME_SCHEMA'));
+ENDSEC;
+DATA;
+#1=REPRESENTATION('REPRESENTATION FOR ALL GEOMETRY',(#2,#3,#4,#5,#6,#7,
+#8,#9,#10,#11,#12,#13,#14,#15,#16,
+#17,#18,#19,#20,#21,#22,#23,#24,#25,
+#26,#27,#28,#29,#30,#31,#32,#33,#34,
+#35,#36,#37,#38,#39,#40,#41,#42,#43,
+#44,#45,#46,#47,#48,#49,#50,#51,#52,
+#53,#54,#55,#56,#57,#58,#59,#60,#61,
+#62,#63,#64,#65),#66);
+#2=CARTESIAN_POINT('ORIGIN',(0.0000000000000,0.0000000000000,0.0000000000000));
+#3=DIRECTION('X_AXIS',(1.0000000,0.0000000,0.0000000));
+#4=DIRECTION('Z_AXIS',(0.0000000,0.0000000,1.0000000));
+#5=AXIS2_PLACEMENT_3D('IDENTITY',#2,#4,#3);
+#6=CARTESIAN_POINT('GRID__PLANE_ORIGIN',(0.0000000000000,0.0000000000000,0.0000000000000));
+#7=DIRECTION('GRID__PLANE_REF_DIR',(0.0000000,0.0000000,-1.0000000));
+#8=DIRECTION('GRID__PLANE_NORMAL',(-1.0000000,0.0000000,0.0000000));
+#9=GRIDLINE('',#10,#67,$);
+#10=AXIS2_PLACEMENT_3D('POSITION_OF_',#6,#8,#7);
+#11=CARTESIAN_POINT('GRID__PLANE_ORIGIN',(157.4803149606299,0.0000000000000,0.0000000000000));
+#12=DIRECTION('GRID__PLANE_REF_DIR',(0.0000000,0.0000000,-1.0000000));
+#13=DIRECTION('GRID__PLANE_NORMAL',(-1.0000000,0.0000000,0.0000000));
+#14=GRIDLINE('',#15,#67,#9);
+#15=AXIS2_PLACEMENT_3D('POSITION_OF_',#11,#13,#12);
+#16=CARTESIAN_POINT('GRID__PLANE_ORIGIN',(0.0000000000000,0.0000000000000,0.0000000000000));
+#17=DIRECTION('GRID__PLANE_REF_DIR',(0.0000000,0.0000000,-1.0000000));
+#18=DIRECTION('GRID__PLANE_NORMAL',(-0.0000000,1.0000000,0.0000000));
+#19=GRIDLINE('',#20,#67,$);
+#20=AXIS2_PLACEMENT_3D('POSITION_OF_',#16,#18,#17);
+#21=CARTESIAN_POINT('LEVEL_S-1_PLANE_ORIGIN',(0.0000000000000,0.0000000000000,0.0000000000000));
+#22=GRID_LEVEL('S-1',#23,#67);
+#23=AXIS2_PLACEMENT_3D('POSITION_OF_S-1',#21,#4,#3);
+#24=CARTESIAN_POINT('LEVEL_S-2_PLANE_ORIGIN',(0.0000000000000,0.0000000000000,78.7401574803150));
+#25=GRID_LEVEL('S-2',#26,#67);
+#26=AXIS2_PLACEMENT_3D('POSITION_OF_S-2',#24,#4,#3);
+#27=CARTESIAN_POINT('1',(0.0000000000000,0.0000000000000,0.0000000000000));
+#28=CARTESIAN_POINT('2',(78.7401574803150,0.0000000000000,0.0000000000000));
+#29=CARTESIAN_POINT('3',(78.7401574803150,0.0000000000000,78.7401574803150));
+#30=CARTESIAN_POINT('4',(157.4803149606299,0.0000000000000,0.0000000000000));
+#31=DIRECTION('1                                                                                                                                                                                                                                                              _LINE_DIRECTION',(1.0000000,0.0000000,0.0000000));
+#32=VECTOR('1                                                                                                                                                                                                                                                              _LINE_VECTOR',#31,1.0000000);
+#33=LINE('1                                                                                                                                                                                                                                                              _LINE',#27,#32);
+#34=POINT_ON_CURVE('1',#33,PARAMETER_VALUE(0.0000000));
+#35=POINT_ON_CURVE('1',#33,PARAMETER_VALUE(78.7401575));
+#36=DIRECTION('1                                                                                                                                                                                                                                                              _Z_AXIS_I',(0.0000000,0.0000000,1.0000000));
+#37=DIRECTION('1                                                                                                                                                                                                                                                              _Z_AXIS_J',(0.0000000,0.0000000,0.0000000));
+#38=DIRECTION('2                                                                                                                                                                                                                                                              _LINE_DIRECTION',(0.0000000,0.0000000,1.0000000));
+#39=VECTOR('2                                                                                                                                                                                                                                                              _LINE_VECTOR',#38,1.0000000);
+#40=LINE('2                                                                                                                                                                                                                                                              _LINE',#28,#39);
+#41=POINT_ON_CURVE('2',#40,PARAMETER_VALUE(0.0000000));
+#42=POINT_ON_CURVE('2',#40,PARAMETER_VALUE(78.7401575));
+#43=DIRECTION('2                                                                                                                                                                                                                                                              _Z_AXIS_I',(1.0000000,-0.0000000,0.0000000));
+#44=DIRECTION('2                                                                                                                                                                                                                                                              _Z_AXIS_J',(0.0000000,0.0000000,0.0000000));
+#45=DIRECTION('3                                                                                                                                                                                                                                                              _LINE_DIRECTION',(1.0000000,0.0000000,0.0000000));
+#46=VECTOR('3                                                                                                                                                                                                                                                              _LINE_VECTOR',#45,1.0000000);
+#47=LINE('3                                                                                                                                                                                                                                                              _LINE',#28,#46);
+#48=POINT_ON_CURVE('2',#47,PARAMETER_VALUE(0.0000000));
+#49=POINT_ON_CURVE('2',#47,PARAMETER_VALUE(78.7401575));
+#50=DIRECTION('3                                                                                                                                                                                                                                                              _Z_AXIS_I',(0.0000000,0.0000000,1.0000000));
+#51=DIRECTION('3                                                                                                                                                                                                                                                              _Z_AXIS_J',(0.0000000,0.0000000,0.0000000));
+#52=DIRECTION('4                                                                                                                                                                                                                                                              _LINE_DIRECTION',(0.7071068,0.0000000,0.7071068));
+#53=VECTOR('4                                                                                                                                                                                                                                                              _LINE_VECTOR',#52,1.0000000);
+#54=LINE('4                                                                                                                                                                                                                                                              _LINE',#27,#53);
+#55=POINT_ON_CURVE('1',#54,PARAMETER_VALUE(0.0000000));
+#56=POINT_ON_CURVE('1',#54,PARAMETER_VALUE(111.3553986));
+#57=DIRECTION('4                                                                                                                                                                                                                                                              _Z_AXIS_I',(0.0000000,0.0000000,1.0000000));
+#58=DIRECTION('4                                                                                                                                                                                                                                                              _Z_AXIS_J',(0.0000000,0.0000000,0.0000000));
+#59=DIRECTION('5                                                                                                                                                                                                                                                              _LINE_DIRECTION',(0.7071068,0.0000000,-0.7071068));
+#60=VECTOR('5                                                                                                                                                                                                                                                              _LINE_VECTOR',#59,1.0000000);
+#61=LINE('5                                                                                                                                                                                                                                                              _LINE',#29,#60);
+#62=POINT_ON_CURVE('3',#61,PARAMETER_VALUE(0.0000000));
+#63=POINT_ON_CURVE('3',#61,PARAMETER_VALUE(111.3553986));
+#64=DIRECTION('5                                                                                                                                                                                                                                                              _Z_AXIS_I',(0.0000000,0.0000000,1.0000000));
+#65=DIRECTION('5                                                                                                                                                                                                                                                              _Z_AXIS_J',(0.0000000,0.0000000,0.0000000));
+#66=(GEOMETRIC_REPRESENTATION_CONTEXT(3)
+GLOBAL_UNIT_ASSIGNED_CONTEXT((#68))
+REPRESENTATION_CONTEXT('Geometric_representation_context','')
+);
+#67=GRID_ORTHOGONAL('GLOBAL','','',(#69),());
+#68=(CONVERSION_BASED_UNIT('INCH',#70)
+LENGTH_UNIT()
+NAMED_UNIT(#71)
+);
+#69=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(157.4803150),#68);
+#70=MEASURE_WITH_UNIT(NUMERIC_MEASURE(0.0254000),#72);
+#71=DIMENSIONAL_EXPONENTS(1.0000000,0.0000000,0.0000000,0.0000000,0.0000000,0.0000000,0.0000000);
+#72=(LENGTH_UNIT()
+NAMED_UNIT(*)
+SI_UNIT($,.METRE.)
+);
+#73=NODE('1',#27,#77,#78);
+#74=NODE('2',#28,$,#78);
+#75=NODE('3',#29,$,#78);
+#76=NODE('4',#30,#79,#78);
+#77=BOUNDARY_CONDITION_LOGICAL('ball joint',$,.F.,.F.,.F.,.T.,.T.,
+.T.);
+#78=ANALYSIS_MODEL_3D('','',.SPACE_FRAME.,$,3);
+#79=BOUNDARY_CONDITION_LOGICAL('fixed_z',$,.T.,.T.,.F.,.T.,.T.,
+.T.);
+#80=MATERIAL_ISOTROPIC(1,'A992Fy50',$,#84);
+#81=MATERIAL_ISOTROPIC(2,'4000Psi',$,#85);
+#82=MATERIAL_ISOTROPIC(3,'5-2',$,#86);
+#83=MATERIAL_ISOTROPIC(4,'5-2B',$,#87);
+#84=MATERIAL_REPRESENTATION('A992Fy50',(#88,#89,#90,#91),#92);
+#85=MATERIAL_REPRESENTATION('4000Psi',(#93,#94,#95,#96),#92);
+#86=MATERIAL_REPRESENTATION('5-2',(#97,#98,#99,#100),#92);
+#87=MATERIAL_REPRESENTATION('5-2B',(#101,#102,#103,#104),#92);
+#88=MATERIAL_ELASTICITY('A992Fy50',0.3000000,29000.0000000,$,$);
+#89=MATERIAL_STRENGTH('yield strength',50.0000000);
+#90=MATERIAL_STRENGTH('ultimate strength',65.0000000);
+#91=MATERIAL_THERMAL_EXPANSION('thermal expansion',0.0000065);
+#92=(GLOBAL_UNIT_ASSIGNED_CONTEXT((#105))
+MATERIAL_PROPERTY_CONTEXT()
+MATERIAL_PROPERTY_CONTEXT_DIMENSIONAL(0.,9999999.)
+REPRESENTATION_CONTEXT('material property context','')
+);
+#93=MATERIAL_ELASTICITY('4000Psi',0.2000000,3604.9965326,$,$);
+#94=MATERIAL_STRENGTH('yield strength',0.0000000);
+#95=MATERIAL_STRENGTH('ultimate strength',0.0000000);
+#96=MATERIAL_THERMAL_EXPANSION('thermal expansion',0.0000055);
+#97=MATERIAL_ELASTICITY('5-2',0.3000000,29000.0000000,$,$);
+#98=MATERIAL_STRENGTH('yield strength',36.0000000);
+#99=MATERIAL_STRENGTH('ultimate strength',58.0000000);
+#100=MATERIAL_THERMAL_EXPANSION('thermal expansion',0.0000065);
+#101=MATERIAL_ELASTICITY('5-2B',0.3000000,58015.0900742,$,$);
+#102=MATERIAL_STRENGTH('yield strength',36.0000000);
+#103=MATERIAL_STRENGTH('ultimate strength',58.0000000);
+#104=MATERIAL_THERMAL_EXPANSION('thermal expansion',0.0000065);
+#105=(CONVERSION_BASED_UNIT('KSI',#106)
+NAMED_UNIT(#107)
+PRESSURE_UNIT()
+);
+#106=MEASURE_WITH_UNIT(NUMERIC_MEASURE(6894757.0000000),#108);
+#107=DIMENSIONAL_EXPONENTS(-1.0000000,1.0000000,-2.0000000,0.0000000,0.0000000,0.0000000,0.0000000);
+#108=(NAMED_UNIT(*)
+PRESSURE_UNIT()
+SI_UNIT($,.PASCAL.)
+);
+#109=SECTION_PROFILE_CIRCLE_HOLLOW(5,'HSS3X.125',$,$,10,.F.,#111,
+#112);
+#110=SECTION_PROFILE_CIRCLE_HOLLOW(6,'HSS3X.125-A',$,$,10,.F.,#113,
+#114);
+#111=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(1.5000000),#68);
+#112=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(0.1250000),#68);
+#113=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(1.5000000),#68);
+#114=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(0.1250000),#68);
+#115=(ELEMENT('1                                                                                                                                                                                                                                                              ','',#78,1)
+ELEMENT_CURVE($)
+ELEMENT_CURVE_COMPLEX((#109,#120),(#34,#35),(#36,#37))
+ELEMENT_WITH_MATERIAL(#82)
+);
+#116=(ELEMENT('2                                                                                                                                                                                                                                                              ','',#78,1)
+ELEMENT_CURVE($)
+ELEMENT_CURVE_COMPLEX((#109,#120),(#41,#42),(#43,#44))
+ELEMENT_WITH_MATERIAL(#82)
+);
+#117=(ELEMENT('3                                                                                                                                                                                                                                                              ','',#78,1)
+ELEMENT_CURVE($)
+ELEMENT_CURVE_COMPLEX((#109,#120),(#48,#49),(#50,#51))
+ELEMENT_WITH_MATERIAL(#82)
+);
+#118=(ELEMENT('4                                                                                                                                                                                                                                                              ','',#78,1)
+ELEMENT_CURVE($)
+ELEMENT_CURVE_COMPLEX((#110,#121),(#55,#56),(#57,#58))
+ELEMENT_WITH_MATERIAL(#83)
+);
+#119=(ELEMENT('5                                                                                                                                                                                                                                                              ','',#78,1)
+ELEMENT_CURVE($)
+ELEMENT_CURVE_COMPLEX((#110,#121),(#62,#63),(#64,#65))
+ELEMENT_WITH_MATERIAL(#83)
+);
+#120=SECTION_PROFILE_CIRCLE_HOLLOW(7,'HSS3X.125',$,$,10,.F.,#122,
+#123);
+#121=SECTION_PROFILE_CIRCLE_HOLLOW(8,'HSS3X.125-A',$,$,10,.F.,#124,
+#125);
+#122=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(1.5000000),#68);
+#123=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(0.1250000),#68);
+#124=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(1.5000000),#68);
+#125=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(0.1250000),#68);
+#126=ELEMENT_NODE_CONNECTIVITY(1,'Start Node',#73,#115,$,$);
+#127=ELEMENT_NODE_CONNECTIVITY(1,'Start Node',#74,#116,$,$);
+#128=ELEMENT_NODE_CONNECTIVITY(1,'Start Node',#74,#117,$,$);
+#129=ELEMENT_NODE_CONNECTIVITY(1,'Start Node',#73,#118,$,$);
+#130=ELEMENT_NODE_CONNECTIVITY(1,'Start Node',#75,#119,$,$);
+#131=ELEMENT_NODE_CONNECTIVITY(2,'End Node',#74,#115,$,$);
+#132=ELEMENT_NODE_CONNECTIVITY(2,'End Node',#75,#116,$,$);
+#133=ELEMENT_NODE_CONNECTIVITY(2,'End Node',#76,#117,$,$);
+#134=ELEMENT_NODE_CONNECTIVITY(2,'End Node',#75,#118,$,$);
+#135=ELEMENT_NODE_CONNECTIVITY(2,'End Node',#76,#119,$,$);
+#136=ASSEMBLY_DESIGN_STRUCTURAL_MEMBER_LINEAR(9,'1',$,'',$,$,.F.,
+.F.,(),(),$,.BENDING_MEMBER.,.PRIMARY_MEMBER.,.BEAM.);
+#137=ASSEMBLY_DESIGN_STRUCTURAL_MEMBER_LINEAR(10,'2',$,'',$,$,.F.,
+.F.,(),(),$,.COMBINED_MEMBER.,.PRIMARY_MEMBER.,.COLUMN.);
+#138=ASSEMBLY_DESIGN_STRUCTURAL_MEMBER_LINEAR(11,'3',$,'',$,$,.F.,
+.F.,(),(),$,.BENDING_MEMBER.,.PRIMARY_MEMBER.,.BEAM.);
+#139=ASSEMBLY_DESIGN_STRUCTURAL_MEMBER_LINEAR(12,'4',$,'',$,$,.F.,
+.F.,(),(),$,.COMBINED_MEMBER.,.PRIMARY_MEMBER.,.BRACE.);
+#140=ASSEMBLY_DESIGN_STRUCTURAL_MEMBER_LINEAR(13,'5',$,'',$,$,.F.,
+.F.,(),(),$,.COMBINED_MEMBER.,.PRIMARY_MEMBER.,.BRACE.);
+#141=ASSEMBLY_MAP(#136,(#115));
+#142=ASSEMBLY_MAP(#137,(#116));
+#143=ASSEMBLY_MAP(#138,(#117));
+#144=ASSEMBLY_MAP(#139,(#118));
+#145=ASSEMBLY_MAP(#140,(#119));
+#146=LOAD_NODE(#147,'3','MODAL',#75,#148);
+#147=LOAD_CASE('MODAL',$,(),#149);
+#148=APPLIED_LOAD_STATIC_FORCE('3',$,$,#150,$,$,$);
+#149=PHYSICAL_ACTION(.STATIC.,.FREE_ACTION.,.DIRECT_ACTION.,$,$,(),());
+#150=FORCE_MEASURE_WITH_UNIT(FORCE_MEASURE(-0.0044962),#151);
+#151=(CONVERSION_BASED_UNIT('KIP',#152)
+FORCE_UNIT()
+NAMED_UNIT(#153)
+);
+#152=MEASURE_WITH_UNIT(NUMERIC_MEASURE(4448.2220000),#154);
+#153=DIMENSIONAL_EXPONENTS(1.0000000,1.0000000,-2.0000000,0.0000000,0.0000000,0.0000000,0.0000000);
+#154=(FORCE_UNIT()
+NAMED_UNIT(*)
+SI_UNIT($,.NEWTON.)
+);
+ENDSEC;
+END-ISO-10303-21;
