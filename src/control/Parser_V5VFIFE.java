@@ -8,13 +8,13 @@ import jsdai.SVfife_schema.CBar;
 import jsdai.SVfife_schema.CBoundary_condition_logical;
 import jsdai.SVfife_schema.CCartesian_point;
 import jsdai.SVfife_schema.CLoad_case;
-import jsdai.SVfife_schema.CLoad_element_concentrated;
+import jsdai.SVfife_schema.CLoad_member_concentrated;
 import jsdai.SVfife_schema.CLoad_node;
 import jsdai.SVfife_schema.CMaterial;
 import jsdai.SVfife_schema.CNode;
 import jsdai.SVfife_schema.EBar;
 import jsdai.SVfife_schema.ECartesian_point;
-import jsdai.SVfife_schema.ELoad_element_concentrated;
+import jsdai.SVfife_schema.ELoad_member_concentrated;
 import jsdai.SVfife_schema.ELoad_node;
 import jsdai.SVfife_schema.EMaterial;
 import jsdai.SVfife_schema.ENode;
@@ -179,7 +179,8 @@ public class Parser_V5VFIFE {
 				eloadnode.setLoad_name(null, force.getForce_name());
 				
 				// set load duration
-				eloadnode.setDuration_time(null, force.getDuration_time());
+				eloadnode.setStart_time(null, force.getStart_time());
+				eloadnode.setEnd_time(null, force.getEnd_time());
 				
 				// load case of force
 				jsdai.SVfife_schema.ELoad_case eloadcase = (jsdai.SVfife_schema.ELoad_case) model.createEntityInstance(CLoad_case.class);
@@ -216,13 +217,14 @@ public class Parser_V5VFIFE {
 				
 				VFIFE_LoadMemberConcentrated v5memforce = (VFIFE_LoadMemberConcentrated) force;
 				
-				jsdai.SVfife_schema.ELoad_element_concentrated eload = (ELoad_element_concentrated) model.createEntityInstance(CLoad_element_concentrated.class);
+				jsdai.SVfife_schema.ELoad_member_concentrated eload = (ELoad_member_concentrated) model.createEntityInstance(CLoad_member_concentrated.class);
 				
 				// set load name
 				eload.setLoad_name(null, force.getForce_name());
 				
 				// set load duration
-				eload.setDuration_time(null, force.getDuration_time());
+				eload.setStart_time(null, force.getStart_time());
+				eload.setEnd_time(null, force.getEnd_time());
 				
 				// load case of force
 				jsdai.SVfife_schema.ELoad_case eloadcase = (jsdai.SVfife_schema.ELoad_case) model.createEntityInstance(CLoad_case.class);
@@ -236,7 +238,7 @@ public class Parser_V5VFIFE {
 				// specific to loadNode
 					//supporting bar
 				EBar ebar = getEBar(v5memforce.getSupporting_member().getBar_id());
-				eload.setSupporting_element(null, ebar);
+				eload.setSupporting_member(null, ebar);
 					// applied load force with value and type
 				jsdai.SVfife_schema.EApplied_load_static_force eloadvalue = (jsdai.SVfife_schema.EApplied_load_static_force) model
 						.createEntityInstance(CApplied_load_static_force.class);

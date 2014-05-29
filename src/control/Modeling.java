@@ -158,8 +158,9 @@ public class Modeling {
 		// deal with force of model
 		for (VFIFE_Load force : v5model.getForces()) {
 			System.out.println("\n\nforce id: " + force.getForce_name());
-			System.out.println("force duree: " + force.getDuration_time());
-
+			System.out.println("force start time: " + force.getStart_time());
+			System.out.println("force end time: " + force.getEnd_time());
+			
 			// load case of force
 			System.out.println("force load case name: " + force.getParent_load_case().getLoad_case_name());
 			System.out.println("force load case factor: " + force.getParent_load_case().getLoad_case_factor());

@@ -4,10 +4,12 @@ package model;
 public class VFIFE_Load {
 	private String force_name;						// express load name
 	private VFIFE_LoadCase parent_load_case;	// force type
-	private double duration_time;				// duration of the force
+	private double start_time;				// start time of the force
+	private double end_time;				// end time of the force
 	
 	public VFIFE_Load(){
-		this.duration_time = 0;
+		this.start_time = 0;
+		this.end_time = 0;
 	}
 	
 	public String getForce_name() {
@@ -16,12 +18,23 @@ public class VFIFE_Load {
 	public void setForce_name(String force_name) {
 		this.force_name = force_name;
 	}
-	public double getDuration_time() {
-		return duration_time;
+	
+	public double getStart_time() {
+		return start_time;
 	}
-	public void setDuration_time(double duration_time) {
-		this.duration_time = duration_time;
+
+	public void setStart_time(double start_time) {
+		this.start_time = start_time;
 	}
+
+	public double getEnd_time() {
+		return end_time;
+	}
+
+	public void setEnd_time(double end_time) {
+		this.end_time = end_time;
+	}
+
 	public VFIFE_LoadCase getParent_load_case() {
 		return parent_load_case;
 	}
