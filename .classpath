@@ -5,5 +5,10 @@
 	<classpathentry kind="lib" path="/VFIFE_SCHEMA/VFIFE_SCHEMA.jar"/>
 	<classpathentry kind="lib" path="/demo1-ExpressCompile/demo1-ExpressCompile.jar"/>
 	<classpathentry kind="lib" path="F:/Eclipse_Kepler/plugins/net.jsdai.runtime_4.1.505.v201112201320/jsdai_runtime.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Java3DLib">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Program Files/Java/Java3D/1.5.1/bin"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

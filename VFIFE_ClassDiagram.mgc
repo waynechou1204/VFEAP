@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ClassDiagram>
-    <Class name="model.VFIFE_CartesianPoint" x="250" y="464">
+    <Class name="model.VFIFE_LoadNode" x="1097" y="297">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Extension destinationClassName="model.VFIFE_Load"/>
+        <Association destinationClassName="model.VFIFE_AppliedLoad"
+            endpointName="load_values" kind="Simple"/>
+        <Association destinationClassName="model.VFIFE_Node"
+            endpointName="supporting_node" kind="Simple"/>
+    </Class>
+    <Class name="model.VFIFE_BoundaryCondition" x="200" y="454">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -9,7 +23,48 @@
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
     </Class>
-    <Class name="model.VFIFE_Node" x="465" y="342">
+    <Class name="model.VFIFE_Model" x="480" y="31">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="model.VFIFE_Material"
+            endpointName="materiaux" kind="Simple"/>
+        <Association destinationClassName="model.VFIFE_Node"
+            endpointName="nodes" kind="Simple"/>
+        <Association destinationClassName="model.VFIFE_Bar"
+            endpointName="bars" kind="Simple"/>
+        <Association destinationClassName="model.VFIFE_Load"
+            endpointName="forces" kind="Simple"/>
+        <Communication destinationClassName="model.VFIFE_Node"/>
+        <Communication destinationClassName="model.VFIFE_Bar"/>
+    </Class>
+    <Class name="model.VFIFE_Bar" x="326" y="176">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="model.VFIFE_Node"
+            endpointName="nodes" kind="Simple"/>
+        <Association destinationClassName="model.VFIFE_Material"
+            endpointName="material" kind="Simple"/>
+    </Class>
+    <Class name="model.VFIFE_CartesianPoint" x="660" y="470">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="model.VFIFE_Node" x="487" y="376">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -23,7 +78,21 @@
             destinationClassName="model.VFIFE_BoundaryCondition"
             endpointName="restraint" kind="Simple"/>
     </Class>
-    <Class name="model.VFIFE_LoadCase" x="33" y="36">
+    <Class name="model.VFIFE_LoadMemberConcentrated" x="759" y="288">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Extension destinationClassName="model.VFIFE_LoadMember"/>
+        <Association destinationClassName="model.VFIFE_CartesianPoint"
+            endpointName="load_position" kind="Simple"/>
+        <Association destinationClassName="model.VFIFE_AppliedLoad"
+            endpointName="load_value" kind="Simple"/>
+    </Class>
+    <Class name="model.VFIFE_LoadCase" x="1080" y="29">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -32,7 +101,7 @@
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
     </Class>
-    <Class name="model.VFIFE_BoundaryCondition" x="669" y="455">
+    <Class name="model.VFIFE_Material" x="97" y="84">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -41,16 +110,7 @@
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
     </Class>
-    <Class name="model.VFIFE_Material" x="770" y="192">
-        <AttributesDisplayFilter public-accepted="true"
-            private-accepted="true" protected-accepted="true"
-            default-accepted="true" static-accepted="false"/>
-        <MethodDisplayFilter public-accepted="true"
-            private-accepted="false" protected-accepted="false"
-            default-accepted="false" static-accepted="false"
-            accessors-accepted="false" constructors-accepted="false"/>
-    </Class>
-    <Class name="model.VFIFE_AppliedLoadStatic" x="29" y="410">
+    <Class name="model.VFIFE_AppliedLoadStatic" x="954" y="476">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -60,7 +120,7 @@
             accessors-accepted="false" constructors-accepted="false"/>
         <Extension destinationClassName="model.VFIFE_AppliedLoad"/>
     </Class>
-    <Class name="model.VFIFE_Force" x="247" y="178">
+    <Class name="model.VFIFE_Load" x="909" y="110">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -68,14 +128,10 @@
             private-accepted="false" protected-accepted="false"
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
-        <Association destinationClassName="model.VFIFE_CartesianPoint"
-            endpointName="load_position" kind="Simple"/>
-        <Association destinationClassName="model.VFIFE_AppliedLoad"
-            endpointName="load_value" kind="Simple"/>
         <Association destinationClassName="model.VFIFE_LoadCase"
             endpointName="parent_load_case" kind="Simple"/>
     </Class>
-    <Class name="model.VFIFE_AppliedLoadStaticForce" x="22" y="552">
+    <Class name="model.VFIFE_AppliedLoadStaticForce" x="954" y="556">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -85,7 +141,7 @@
             accessors-accepted="false" constructors-accepted="false"/>
         <Extension destinationClassName="model.VFIFE_AppliedLoadStatic"/>
     </Class>
-    <Class name="model.VFIFE_Model" x="480" y="31">
+    <Class name="model.VFIFE_LoadMember" x="801" y="226">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>
@@ -93,28 +149,11 @@
             private-accepted="false" protected-accepted="false"
             default-accepted="false" static-accepted="false"
             accessors-accepted="false" constructors-accepted="false"/>
-        <Association destinationClassName="model.VFIFE_Material"
-            endpointName="materiaux" kind="Simple"/>
+        <Extension destinationClassName="model.VFIFE_Load"/>
         <Association destinationClassName="model.VFIFE_Bar"
-            endpointName="bars" kind="Simple"/>
-        <Association destinationClassName="model.VFIFE_Force"
-            endpointName="forces" kind="Simple"/>
-        <Communication destinationClassName="model.VFIFE_Bar"/>
+            endpointName="supporting_member" kind="Simple"/>
     </Class>
-    <Class name="model.VFIFE_Bar" x="465" y="205">
-        <AttributesDisplayFilter public-accepted="true"
-            private-accepted="true" protected-accepted="true"
-            default-accepted="true" static-accepted="false"/>
-        <MethodDisplayFilter public-accepted="true"
-            private-accepted="false" protected-accepted="false"
-            default-accepted="false" static-accepted="false"
-            accessors-accepted="false" constructors-accepted="false"/>
-        <Association destinationClassName="model.VFIFE_Node"
-            endpointName="nodes" kind="Simple"/>
-        <Association destinationClassName="model.VFIFE_Material"
-            endpointName="material" kind="Simple"/>
-    </Class>
-    <Class name="model.VFIFE_AppliedLoad" x="31" y="262">
+    <Class name="model.VFIFE_AppliedLoad" x="939" y="384">
         <AttributesDisplayFilter public-accepted="true"
             private-accepted="true" protected-accepted="true"
             default-accepted="true" static-accepted="false"/>

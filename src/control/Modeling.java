@@ -1,7 +1,20 @@
 package control;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiModel;
@@ -12,11 +25,15 @@ import model.VFIFE_Model;
 import model.VFIFE_Node;
 import model.VFIFE_repository;
 
-public class Modeling {
+public class Modeling extends JFrame{
 
+	VFIFE_Model m_v5model;
+	
 	public static void main(String[] args) throws SdaiException, FileNotFoundException {
 		
-		VFIFE_Model v5model = loadCIS("eg5-2zxw.stp");
+		Modeling mainFrame = new Modeling();
+		
+		//VFIFE_Model v5model = loadCIS("eg5-2zxw.stp");
 
 		// view of the model
 		//printModel(v5model);
@@ -24,7 +41,121 @@ public class Modeling {
 		// VFIFE_Modeling_view view = new VFIFE_Modeling_view();
 		// view.showModel(v5model);
 
-		exportFile(v5model, "out.stp");
+		//exportFile(v5model, "out.stp");
+		System.out.println("ok");
+	}
+	
+	public Modeling() {
+		
+		m_v5model = new VFIFE_Model();
+		
+		// set frame size
+		this.setSize(800, 600);
+		// set title
+		this.setTitle("VFIFE Modeling Tool");
+		// set frame location
+		Dimension displaySize = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension frameSize = this.getSize();
+		if (frameSize.width > displaySize.width){
+			frameSize.width = displaySize.width; 
+		}
+		if (frameSize.height > displaySize.height){
+			frameSize.height = displaySize.height;
+		}
+		this.setLocation((displaySize.width - frameSize.width) / 2,(displaySize.height - frameSize.height) / 2);
+		
+		// set menubar
+		JMenuBar menubar = new JMenuBar();
+		
+		JMenu menufile = new JMenu("File");
+		JMenuItem itemOpen = new JMenuItem("Open",'O');
+		JMenuItem itemExport = new JMenuItem("Export",'P');
+		
+		itemOpen.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// get file open path
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setFileFilter(new FileNameExtensionFilter("CIS2/STP FILE", "stp"));
+				int i = fileChooser.showOpenDialog(getContentPane());
+			    // 判断用户单击的是否为“打开”按钮
+			    if (i == JFileChooser.APPROVE_OPTION) {
+			    	// 获得选中的文件对象
+			    	File selectedFile = fileChooser.getSelectedFile();
+			    	// 显示选中文件的名称
+			    	String stpFilePath = selectedFile.getAbsolutePath();
+			    	try {
+			    		// load file and parse
+						m_v5model = loadCIS(stpFilePath);	
+						int is = 5;
+						
+					} catch (SdaiException e) {
+						e.printStackTrace();
+					}
+			    }
+			}
+		});
+		menufile.add(itemOpen);
+		
+		
+		itemExport.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(!m_v5model.isEmpty()){
+					// get file save path
+					JFileChooser fileChooser = new JFileChooser();
+				    fileChooser.setSelectedFile(new File("vifife.stp")); // default file name
+				    fileChooser.setFileFilter(new FileNameExtensionFilter("STP & XML FILE", "stp","xml"));
+					int i = fileChooser.showSaveDialog(getContentPane());
+				    if (i == JFileChooser.APPROVE_OPTION) {
+				    	File getfile = fileChooser.getSelectedFile();
+				    	try {
+							if(getfile!=null){
+								exportFile(m_v5model, getfile.getAbsolutePath());
+							}
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						} catch (SdaiException e) {
+							e.printStackTrace();
+						}
+				    }
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "No model to export", "Warning", JOptionPane.WARNING_MESSAGE );
+				}
+			}
+		});
+		menufile.add(itemExport);
+		JMenuItem itemExit = new JMenuItem("Exit",'E');
+		itemExit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		menufile.add(itemExit);
+		menubar.add(menufile);
+		
+		
+		JMenu menuDefine = new JMenu("Define");
+		JMenuItem itemMaterial = new JMenuItem("Material",'M');
+		menuDefine.add(itemMaterial);
+		menubar.add(menuDefine);
+		
+		
+		JMenu menuSpecify = new JMenu("Specify");
+		JMenuItem itemLoad = new JMenuItem("Load",'L');
+		menuSpecify.add(itemLoad);
+		menubar.add(menuSpecify);
+		
+		
+		this.setJMenuBar(menubar);
+		
+		// set visibility
+		this.setVisible(true);
+		
+		// set close action
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public static VFIFE_Model loadCIS(String stpFilePath) throws SdaiException {
@@ -46,7 +177,7 @@ public class Modeling {
 		// end
 		repo_cis.close();
 		
-
+		
 		return v5model;
 	}
 

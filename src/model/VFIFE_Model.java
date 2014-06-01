@@ -15,6 +15,20 @@ public class VFIFE_Model {
 		this.nodes = new ArrayList<VFIFE_Node>();
 	}
 	
+	public void clear(){
+		bars.clear();
+		forces.clear();
+		materiaux.clear();
+		nodes.clear();
+	}
+	
+	public boolean isEmpty(){
+		if(bars.isEmpty() && forces.isEmpty() && materiaux.isEmpty() && nodes.isEmpty()){
+			return true;
+		}
+		return false;
+	}
+	
 	public VFIFE_Bar getBar(int barid){
 		for(VFIFE_Bar bartemp : bars){
 			if(bartemp.getBar_id()==barid){
