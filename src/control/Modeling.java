@@ -1,5 +1,6 @@
 package control;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import jsdai.lang.SdaiException;
@@ -24,25 +26,25 @@ import model.VFIFE_Material;
 import model.VFIFE_Model;
 import model.VFIFE_Node;
 import model.VFIFE_repository;
+import view.VFIFE_Modeling_view;
 
 public class Modeling extends JFrame{
 
-	VFIFE_Model m_v5model;
+	VFIFE_Model m_v5model = null;
+	static VFIFE_Modeling_view view = null;
 	
 	public static void main(String[] args) throws SdaiException, FileNotFoundException {
 		
 		Modeling mainFrame = new Modeling();
 		
-		//VFIFE_Model v5model = loadCIS("eg5-2zxw.stp");
-
 		// view of the model
 		//printModel(v5model);
 		
-		// VFIFE_Modeling_view view = new VFIFE_Modeling_view();
-		// view.showModel(v5model);
+		view = new VFIFE_Modeling_view();
+		mainFrame.getContentPane().add(view,BorderLayout.CENTER);
 
 		//exportFile(v5model, "out.stp");
-		System.out.println("ok");
+		//System.out.println("ok");
 	}
 	
 	public Modeling() {
@@ -67,10 +69,11 @@ public class Modeling extends JFrame{
 		// set menubar
 		JMenuBar menubar = new JMenuBar();
 		
+		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+		
 		JMenu menufile = new JMenu("File");
 		JMenuItem itemOpen = new JMenuItem("Open",'O');
 		JMenuItem itemExport = new JMenuItem("Export",'P');
-		
 		itemOpen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -87,7 +90,9 @@ public class Modeling extends JFrame{
 			    	try {
 			    		// load file and parse
 						m_v5model = loadCIS(stpFilePath);	
-						int is = 5;
+						
+						// show bars
+						view.addBars(m_v5model);
 						
 					} catch (SdaiException e) {
 						e.printStackTrace();
