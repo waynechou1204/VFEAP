@@ -14,7 +14,30 @@ public class VFIFE_Model {
 		this.materiaux = new ArrayList<VFIFE_Material>();
 		this.nodes = new ArrayList<VFIFE_Node>();
 	}
-	
+        
+	public void removeMaterial(String s){
+            for(VFIFE_Material mat : materiaux){
+                if (mat.getName().equals(s)) {
+                    materiaux.remove(mat);
+                    return;
+                }
+            }
+        }
+        public void addMaterial(String name,double density,double young_modulus){
+            VFIFE_Material mat = new VFIFE_Material();
+            mat.setName(name);
+            mat.setDensity(density);
+            mat.setYoung_modulus(young_modulus);
+            materiaux.add(mat);
+        }
+        public VFIFE_Material getMaterial(String s){
+            for(VFIFE_Material mat : materiaux){
+                if (mat.getName().equals(s)) {
+                    return mat;
+                }
+            }
+            return null;
+        }        
 	public void clear(){
 		bars.clear();
 		forces.clear();

@@ -107,7 +107,7 @@ public class Parser_CIS2V5 {
 					v5node.setRestraint(v5boundary);
 				}
 			} catch (SdaiException e) {
-				System.out.println("\t\tNO Constraints");
+				
 			} finally{
 				v5nodes.add(v5node);
 			}
