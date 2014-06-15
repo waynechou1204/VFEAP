@@ -1,10 +1,13 @@
 package model;
 
+import java.util.ArrayList;
+
 public class VFIFE_LoadCase {
 	private String load_case_name;
 	private double load_case_factor;
 	//private enum physical_action_nature {STATIC, DYNAMIC, QUASI_DYNAMIC};
-	private int time_variation;
+	private ArrayList<VFIFE_AnalysisMethod> governing_analyses;
+ 	private VFIFE_PhysicalAction time_variation;
 	
 	public VFIFE_LoadCase(){
 		load_case_factor=0;
@@ -22,24 +25,20 @@ public class VFIFE_LoadCase {
 	public void setLoad_case_factor(double load_case_factor) {
 		this.load_case_factor = load_case_factor;
 	}
-	public int getTime_variation() {
+	public VFIFE_PhysicalAction getTime_variation() {
 		return time_variation;
 	}
-	public String getTime_variation_string() {
-		switch (time_variation){
-		case 1:
-			return "STATIC";
-		case 2:
-			return "DYNAMIC";
-		case 3:
-			return "QUASI_DYNAMIC";
-		default:
-			break;
-		}
-		return null;
+	public void setTime_variation(VFIFE_PhysicalAction time_variation) {
+		this.time_variation = time_variation;
 	}
-	public void setTime_variation(int i) {
-		this.time_variation = i;
+
+	public ArrayList<VFIFE_AnalysisMethod> getGoverning_analyses() {
+		return governing_analyses;
+	}
+
+	public void setGoverning_analyses(
+			ArrayList<VFIFE_AnalysisMethod> governing_analyses) {
+		this.governing_analyses = governing_analyses;
 	}
 	
 	

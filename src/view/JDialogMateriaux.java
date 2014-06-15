@@ -32,8 +32,7 @@ public class JDialogMateriaux extends javax.swing.JDialog {
         m_v5model = v5model;
         
         ArrayList<VFIFE_Material> mats = v5model.getMateriaux();
-        System.out.println("list mat: "+mats.size());
-        
+       
         for (VFIFE_Material mat : mats){
             String s = mat.getName();
             m_model.addMaterial(s);

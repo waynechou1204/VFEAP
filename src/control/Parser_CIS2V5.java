@@ -239,7 +239,9 @@ public class Parser_CIS2V5 {
 			// load case name
 			v5loadcase.setLoad_case_name(loadcase.getLoad_case_name(null));
 			// v5loadcase.setLoad_case_factor(loadcase.getLoad_case_factor(null));
-			v5loadcase.setTime_variation(loadcase.getTime_variation(null).getAction_nature(null));
+			
+			//TODO the time variation has been changed
+			//v5loadcase.setTime_variation(loadcase.getTime_variation(null).getAction_nature(null));
 
 			// set load case
 			v5forcemember.setParent_load_case(v5loadcase);
@@ -339,7 +341,9 @@ public class Parser_CIS2V5 {
 			VFIFE_LoadCase v5loadcase = new VFIFE_LoadCase();
 			v5loadcase.setLoad_case_name(loadcase.getLoad_case_name(null));
 			// v5loadcase.setLoad_case_factor(loadcase.getLoad_case_factor(null));
-			v5loadcase.setTime_variation(loadcase.getTime_variation(null).getAction_nature(null));
+			
+			//TODO the time variation has been changed
+			//v5loadcase.setTime_variation(loadcase.getTime_variation(null).getAction_nature(null));
 
 			// set load case type
 			v5force.setParent_load_case(v5loadcase);

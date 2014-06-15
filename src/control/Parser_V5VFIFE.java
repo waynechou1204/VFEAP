@@ -186,7 +186,9 @@ public class Parser_V5VFIFE {
 				jsdai.SVfife_schema.ELoad_case eloadcase = (jsdai.SVfife_schema.ELoad_case) model.createEntityInstance(CLoad_case.class);
 				eloadcase.setLoad_case_name(null, force.getParent_load_case().getLoad_case_name());
 				eloadcase.setLoad_case_factor(null, force.getParent_load_case().getLoad_case_factor());
-				eloadcase.setTime_variation(null, force.getParent_load_case().getTime_variation());
+				
+				//TODO the time variation has been changed
+				//eloadcase.setTime_variation(null, force.getParent_load_case().getTime_variation());
 
 				eloadnode.setParent_load_case(null, eloadcase);
 
@@ -230,7 +232,9 @@ public class Parser_V5VFIFE {
 				jsdai.SVfife_schema.ELoad_case eloadcase = (jsdai.SVfife_schema.ELoad_case) model.createEntityInstance(CLoad_case.class);
 				eloadcase.setLoad_case_name(null, force.getParent_load_case().getLoad_case_name());
 				eloadcase.setLoad_case_factor(null, force.getParent_load_case().getLoad_case_factor());
-				eloadcase.setTime_variation(null, force.getParent_load_case().getTime_variation());
+				
+				//TODO the time variation has been changed
+				//eloadcase.setTime_variation(null, force.getParent_load_case().getTime_variation());
 
 				eload.setParent_load_case(null, eloadcase);
 
