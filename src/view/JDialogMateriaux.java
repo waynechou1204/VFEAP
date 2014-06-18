@@ -19,6 +19,10 @@ import model.VFIFE_Model;
 public class JDialogMateriaux extends javax.swing.JDialog {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6174165262303362538L;
+	/**
      * Creates new form JDialogMateriaux
      */
     
@@ -47,6 +51,11 @@ public class JDialogMateriaux extends javax.swing.JDialog {
 
     class MateriauxDataModel extends DefaultListModel<String>
     {
+	/**
+		 * 
+		 */
+		private static final long serialVersionUID = -7257357201744602267L;
+
 	public void addMaterial(String matname){
             addElement(matname);
         }

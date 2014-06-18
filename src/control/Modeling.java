@@ -38,16 +38,19 @@ public class Modeling extends JFrame {
 
         Modeling mainFrame = new Modeling();
 
+		
+        //TODO show ELEMENTs , maybe CANVAS ?
+        
+        m_v5model = loadCIS("1memberload.stp");
+        
+        
 		// view of the model
         //printModel(v5model);
-        view = new VFIFE_Modeling_view();
+        view = new VFIFE_Modeling_view(m_v5model);
+        
         mainFrame.getContentPane().add(view, BorderLayout.CENTER);
 
-        // temprary show bars
-        m_v5model = loadCIS("1memberload.stp");
-        view.addBars(m_v5model);
-
-		//exportFile(v5model, "out.stp");
+        //exportFile(v5model, "out.stp");
         //System.out.println("ok");
     }
 
@@ -94,8 +97,9 @@ public class Modeling extends JFrame {
                         m_v5model = loadCIS(stpFilePath);
 
                         // show bars
-                        view.addBars(m_v5model);
-
+                        //view.drawBars(m_v5model);
+                        //view.drawNodes(m_v5model);
+						//view.drawLoads(m_v5model);
                     } catch (SdaiException e) {
                         e.printStackTrace();
                     }
@@ -221,7 +225,7 @@ public class Modeling extends JFrame {
         repo_vfife.close();
     }
 
-    public static void printModel(VFIFE_Model v5model) throws SdaiException,
+/*    public static void printModel(VFIFE_Model v5model) throws SdaiException,
             FileNotFoundException {
         // deal with bars
         for (VFIFE_Bar bar : v5model.getBars()) {
@@ -304,7 +308,7 @@ public class Modeling extends JFrame {
             System.out.println("force load case name: " + force.getParent_load_case().getLoad_case_name());
             System.out.println("force load case factor: " + force.getParent_load_case().getLoad_case_factor());
             System.out.println("force load case time var: " + force.getParent_load_case().getTime_variation_string());
-
+*/
 			// load position
             // coordinates of node
 /*			System.out.println("force load position x: "
@@ -334,8 +338,8 @@ public class Modeling extends JFrame {
              + staticforce.getApplied_moment_my());
              System.out.println("force mz :"
              + staticforce.getApplied_moment_mz());
-             */
-        }
-    }
+            
+        } 
+    }*/
 
 }
