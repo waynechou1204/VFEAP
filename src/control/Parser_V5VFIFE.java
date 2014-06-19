@@ -34,6 +34,7 @@ import model.VFIFE_Node;
 public class Parser_V5VFIFE {
 	
 	private ArrayList<ENode> m_enodes;
+	
 	private ENode getENode(int nodeid) throws SdaiException{
 		for(ENode d : m_enodes){
 			if(d.getNode_id(null)==nodeid){
@@ -44,6 +45,7 @@ public class Parser_V5VFIFE {
 	}
 	
 	private ArrayList<EMaterial> m_materials;
+	
 	private EMaterial getEMaterial(String matname) throws SdaiException{
 		for(EMaterial m : m_materials){
 			if(m.getName(null).equals(matname)){
@@ -54,6 +56,7 @@ public class Parser_V5VFIFE {
 	}
 	
 	private ArrayList<EBar> m_bars;
+	
 	private EBar getEBar(int barid) throws SdaiException{
 		for(EBar b : m_bars){
 			if(b.getBar_id(null)==barid){
