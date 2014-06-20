@@ -1,16 +1,21 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GraphicsConfiguration;
 import java.util.ArrayList;
 
 import javax.media.j3d.Appearance;
+import javax.media.j3d.Background;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.LineArray;
+import javax.media.j3d.LineAttributes;
 import javax.media.j3d.Material;
+import javax.media.j3d.PointArray;
+import javax.media.j3d.PointAttributes;
 import javax.media.j3d.PolygonAttributes;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Transform3D;
@@ -21,6 +26,8 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
+import model.BarInfo;
+import model.NodeInfo;
 import model.VFIFE_AppliedLoadStaticForce;
 import model.VFIFE_Bar;
 import model.VFIFE_CartesianPoint;
@@ -38,6 +45,8 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.Viewer;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
+import control.VFIFEMousePickBehavior;
+
 public class VFIFE_Modeling_view extends JPanel {
 
 	private static final long serialVersionUID = 344029878504734442L;
@@ -45,6 +54,8 @@ public class VFIFE_Modeling_view extends JPanel {
 	private SimpleUniverse universe = null;
 	private TransformGroup objTrans = null;
 	private TransformGroup objScale = null;
+	private VFIFEMousePickBehavior behavior = null;
+	private BranchGroup scene = null;
 	
 	private VFIFE_Model v5model = null;
 
@@ -75,15 +86,23 @@ public class VFIFE_Modeling_view extends JPanel {
 		//nom
 		universe = new SimpleUniverse(canvas);
 		universe.getViewingPlatform().setNominalViewingTransform();
-		BranchGroup scene = createSceneGraph();
+		scene = createSceneGraph(canvas);
 		universe.addBranchGraph(scene);
+		
+		//ËÆæÁΩÆÈº†Ê†áÊãæÂèñÊûÑÈÄ†ÂáΩÊï∞ÁöÑÂèÇÊï∞bouds
+		//BoundingSphere bouds=new BoundingSphere(new Point3d(0.0,0.0,0.0),100);
+//		Background bg=new Background(new Color3f(Color.white));
+//		bg.setApplicationBounds(bouds); 
+//		scene.addChild(bg);
+		
+		
 	}
 
 	public void destroy() {
 		universe.cleanup();
 	}
 
-	public BranchGroup createSceneGraph() {
+	public BranchGroup createSceneGraph(Canvas3D canvas) {
 
 		BranchGroup objRoot = new BranchGroup();
 
@@ -124,6 +143,11 @@ public class VFIFE_Modeling_view extends JPanel {
 		MouseZoom mouseZoom = new MouseZoom(objTrans);
 		mouseZoom.setSchedulingBounds(bounds);
 		objRoot.addChild(mouseZoom);
+		
+		//Èº†Ê†áÊãæÂèñ
+		behavior = new VFIFEMousePickBehavior(canvas,objRoot,bounds);
+		this.behavior.setModel(v5model);
+		behavior.setPanel(this);//Áî®‰∫éÂºπÂá∫ÂØπËØùÊ°Ü
 
 		// Shine it with colored lights.
 		Color3f lColor2 = new Color3f(1.0f, 1.0f, 1.0f);
@@ -148,17 +172,58 @@ public class VFIFE_Modeling_view extends JPanel {
 
 	// draw node
 	public void drawNodes(){
-		for (VFIFE_Node node : this.v5model.getNodes()) {
-			if (node.getRestraint() != null) {
-				float pointx = (float) (node.getCoord().getCoordinate_x());
-				float pointy = (float) (node.getCoord().getCoordinate_y());
-				float pointz = (float) (node.getCoord().getCoordinate_z());
+//		for (VFIFE_Node node : this.v5model.getNodes()) {
+//			if (node.getRestraint() != null) {
+//				float pointx = (float) (node.getCoord().getCoordinate_x());
+//				float pointy = (float) (node.getCoord().getCoordinate_y());
+//				float pointz = (float) (node.getCoord().getCoordinate_z());
+//
+//				// TODO USE DIFFERENT SHAPE TO ILLUSTRATE Restraints
+//				drawConeSimple( pointx, pointy, pointz);
+//				
+//			}
+//		}
+		float color[] = { 0.0f, 0.0f, 1.0f, 0.5f, 0.0f, 1.0f, 
+				 0.0f, 0.0f, 1.0f, 0.5f, 0.0f, 1.0f, };
+		
+	    
+	    for(int point_num=0;point_num<v5model.getNodes().size();point_num=point_num+1){  
+	    	PointArray point = new PointArray(20, PointArray.COORDINATES | PointArray.COLOR_4);
+	    	float pvert[] = {(float)( v5model.getNodes().get(point_num).getCoord().getCoordinate_x()),
+	    			(float) (v5model.getNodes().get(point_num).getCoord().getCoordinate_y()),
+	    			(float) (v5model.getNodes().get(point_num).getCoord().getCoordinate_z())};
+	    	
+	    	point.setCoordinates(0, pvert);
+	    	point.setColors(0, color);
 
-				// TODO USE DIFFERENT SHAPE TO ILLUSTRATE Restraints
-				drawConeSimple( pointx, pointy, pointz);
-				
-			}
-		}
+			
+			PointAttributes pa = new PointAttributes();
+			pa.setPointSize(20.0f);
+			pa.setPointAntialiasingEnable(true);
+			
+			Appearance ap = new Appearance();
+			ap.setPointAttributes(pa);
+			
+			TransformGroup pointGroup = new TransformGroup();  
+		    pointGroup.setTransform(new Transform3D());
+		    pointGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);  
+		    pointGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ); 
+		    pointGroup.setCapability(TransformGroup.ENABLE_PICK_REPORTING);
+			
+			
+			Shape3D sh = new Shape3D();
+			//sh.setName("barid:"+v5model.getBars().get(i).getBar_id());
+			NodeInfo nodeinfo = new NodeInfo();
+			nodeinfo.setNodeid(v5model.getNodes().get(point_num).getNode_id());
+			nodeinfo.setNodename(v5model.getNodes().get(point_num).getNode_name());
+			sh.setUserData(nodeinfo);
+			sh.setGeometry(point);
+			sh.setAppearance(ap);
+			pointGroup.addChild(sh);
+			
+			objTrans.addChild(pointGroup);
+	    }
+	    
 	}
 	
 	public void drawConeSimple(float x,float y,float z){	
@@ -334,32 +399,80 @@ public class VFIFE_Modeling_view extends JPanel {
 			}
 			
 			// copy nodes coords into vertex[]
-			int size = arr.size();
-			float[] vertex = new float[size];
-			for (int x = 0; x < size; x++) {
-				vertex[x] = arr.get(x);
+//			int size = arr.size();
+//			float[] vertex = new float[size];
+//			for (int x = 0; x < size; x++) {
+//				vertex[x] = arr.get(x);
+//			}
+			float[] vert = new float[6];
+			
+			for (int x = 0; x < 6; x++) {
+				//for(int y = 0;y < 6;y++)
+				vert[x] = arr.get(x);
 			}
 			
 			float color[] = { 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f };
 			
-			LineArray line = new LineArray(6, LineArray.COORDINATES | LineArray.COLOR_3);
+//			LineArray line = new LineArray(6, LineArray.COORDINATES | LineArray.COLOR_3);
+//			
+//			line.setCoordinates(0, vertex);
+//			line.setColors(0, color);
+//			
+//			//LineAttributes la = new LineAttributes();
+//			//la.setLineWidth(1.0f);
+//			//la.setLineAntialiasingEnable(true);
+//			
+//		    //Appearance ap = new Appearance();
+//			//ap.setLineAttributes(la);
+//			
+//			Shape3D sh = new Shape3D();
+//			sh.setGeometry(line);
+//			//sh.setAppearance(ap);
+//			objTrans.addChild(sh);
 			
-			line.setCoordinates(0, vertex);
+		    
+		   
+		    
+			TransformGroup lineGroup = new TransformGroup();  
+		    lineGroup.setTransform(new Transform3D());
+		    lineGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);  
+		    lineGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ); 
+		    lineGroup.setCapability(TransformGroup.ENABLE_PICK_REPORTING);
+		    
+		    
+		    LineArray line = new LineArray(20, LineArray.COORDINATES | LineArray.COLOR_3);
+			line.setCoordinates(0, vert);
 			line.setColors(0, color);
-			
-			//LineAttributes la = new LineAttributes();
-			//la.setLineWidth(1.0f);
-			//la.setLineAntialiasingEnable(true);
-			
-		    //Appearance ap = new Appearance();
-			//ap.setLineAttributes(la);
-			
+
+				
+			LineAttributes la = new LineAttributes();
+			la.setLineWidth(2.0f);
+			la.setLineAntialiasingEnable(true);
+				
+			Appearance ap = new Appearance();
+			ap.setLineAttributes(la);
+				
 			Shape3D sh = new Shape3D();
+			BarInfo barinfo = new BarInfo();
+			barinfo.setBarid(bar.getBar_id());
+			sh.setUserData(barinfo);
 			sh.setGeometry(line);
-			//sh.setAppearance(ap);
+			sh.setAppearance(ap);
+			lineGroup.addChild(sh);
+		    
 			
-			objTrans.addChild(sh);
+			
+			objTrans.addChild(lineGroup);
+			
+			//scene.detach();
+			
+			//trans.addChild(pointGroup);
+			
+			//scene.compile();
+			//universe.addBranchGraph(scene);
+			
 		}
+		
 	}
 	
 	/*public void drawBars() {
@@ -375,7 +488,7 @@ public class VFIFE_Modeling_view extends JPanel {
 				al.add((float) (node.getCoord().getCoordinate_y() / scale));
 				al.add((float) (node.getCoord().getCoordinate_z() / scale));
 
-				flag1++;// ¥À¥¶º”flag «Œ™¡À»° ˝◊È÷–µƒµ⁄∂˛∏ˆ ˝æ›£ª
+				flag1++;// ÔøΩÀ¥ÔøΩÔøΩÔøΩflagÔøΩÔøΩŒ™ÔøΩÔøΩ»°ÔøΩÔøΩÔøΩÔøΩÔøΩ–µƒµ⁄∂ÔøΩÔøΩÔøΩÔøΩÔøΩ›£ÔøΩ
 				if (flag1 == 1) {
 					x1 = (float) (node.getCoord().getCoordinate_x() / scale);
 					y1 = (float) (node.getCoord().getCoordinate_y() / scale);
