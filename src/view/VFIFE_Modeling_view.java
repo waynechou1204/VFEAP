@@ -26,8 +26,6 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
-import model.BarInfo;
-import model.NodeInfo;
 import model.VFIFE_AppliedLoadStaticForce;
 import model.VFIFE_Bar;
 import model.VFIFE_CartesianPoint;
@@ -45,6 +43,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.Viewer;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
+import control.VFIFEMouseOverBehavior;
 import control.VFIFEMousePickBehavior;
 
 public class VFIFE_Modeling_view extends JPanel {
@@ -55,6 +54,7 @@ public class VFIFE_Modeling_view extends JPanel {
 	private TransformGroup objTrans = null;
 	private TransformGroup objScale = null;
 	private VFIFEMousePickBehavior behavior = null;
+	private VFIFEMouseOverBehavior behavior2 = null;
 	private BranchGroup scene = null;
 	
 	private VFIFE_Model v5model = null;
@@ -148,6 +148,11 @@ public class VFIFE_Modeling_view extends JPanel {
 		behavior = new VFIFEMousePickBehavior(canvas,objRoot,bounds);
 		this.behavior.setModel(v5model);
 		behavior.setPanel(this);//用于弹出对话框
+		
+		behavior2 = new VFIFEMouseOverBehavior(canvas,objRoot);
+		behavior2.setSchedulingBounds(bounds);
+		objRoot.addChild(behavior2);
+		
 
 		// Shine it with colored lights.
 		Color3f lColor2 = new Color3f(1.0f, 1.0f, 1.0f);
@@ -212,10 +217,12 @@ public class VFIFE_Modeling_view extends JPanel {
 			
 			
 			Shape3D sh = new Shape3D();
-			//sh.setName("barid:"+v5model.getBars().get(i).getBar_id());
-			NodeInfo nodeinfo = new NodeInfo();
-			nodeinfo.setNodeid(v5model.getNodes().get(point_num).getNode_id());
-			nodeinfo.setNodename(v5model.getNodes().get(point_num).getNode_name());
+			sh.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+			sh.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
+			VFIFE_Node nodeinfo = v5model.getNodes().get(point_num);
+			//NodeInfo nodeinfo = new NodeInfo();
+			//nodeinfo.setNodeid(v5model.getNodes().get(point_num).getNode_id());
+			//nodeinfo.setNodename(v5model.getNodes().get(point_num).getNode_name());
 			sh.setUserData(nodeinfo);
 			sh.setGeometry(point);
 			sh.setAppearance(ap);
@@ -453,9 +460,12 @@ public class VFIFE_Modeling_view extends JPanel {
 			ap.setLineAttributes(la);
 				
 			Shape3D sh = new Shape3D();
-			BarInfo barinfo = new BarInfo();
-			barinfo.setBarid(bar.getBar_id());
-			sh.setUserData(barinfo);
+			sh.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+			sh.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
+			//VFIFE_Bar barinfo = bar
+			//BarInfo barinfo = new BarInfo();
+			//barinfo.setBarid(bar.getBar_id());
+			sh.setUserData(bar);
 			sh.setGeometry(line);
 			sh.setAppearance(ap);
 			lineGroup.addChild(sh);
@@ -826,7 +836,9 @@ public class VFIFE_Modeling_view extends JPanel {
 		mainLine.setColor(0, new Color3f(0.0f, 0.0f, 1.0f));    
 		mainLine.setColor(1, new Color3f(0.0f, 0.0f, 1.0f));    
 		
-		Shape3D shape1 = new Shape3D();    
+		Shape3D shape1 = new Shape3D(); 
+		shape1.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+		shape1.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
 		shape1.setGeometry(mainLine);
 		objTrans.addChild(shape1);
 		
