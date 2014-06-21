@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class VFIFE_LoadCase {
 	private String load_case_name;
 	private double load_case_factor;
-	//private enum physical_action_nature {STATIC, DYNAMIC, QUASI_DYNAMIC};
 	private ArrayList<VFIFE_AnalysisMethod> governing_analyses;
  	private VFIFE_PhysicalAction time_variation;
 	
