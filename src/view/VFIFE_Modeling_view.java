@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.util.ArrayList;
 
@@ -54,7 +55,7 @@ public class VFIFE_Modeling_view extends JPanel {
 	private TransformGroup objTrans = null;
 	private TransformGroup objScale = null;
 	private VFIFEMousePickBehavior mousePickBehavior = null;
-	//private VFIFEMouseOverBehavior mouseOverBehavior = null;
+	private VFIFEMouseOverBehavior mouseOverBehavior = null;
 	private BranchGroup scene = null;
 	
 	private VFIFE_Model v5model = null;
@@ -87,7 +88,6 @@ public class VFIFE_Modeling_view extends JPanel {
 //		bg.setApplicationBounds(bouds); 
 //		scene.addChild(bg);
 		
-		
 	}
 
 	public void destroy() {
@@ -102,7 +102,7 @@ public class VFIFE_Modeling_view extends JPanel {
 		objRoot.setCapability(BranchGroup.ALLOW_DETACH);
 
 		BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
-				1.0);
+				100.0);
 
 		// Create a Transformgroup to scale all objects so they appear in the
 		// scene.
@@ -141,9 +141,9 @@ public class VFIFE_Modeling_view extends JPanel {
 		this.mousePickBehavior.setModel(v5model);
 		mousePickBehavior.setPanel(this);//用于弹出对话框
 		
-		//mouseOverBehavior = new VFIFEMouseOverBehavior(canvas,objRoot);
-		//mouseOverBehavior.setSchedulingBounds(bounds);
-		//objRoot.addChild(mouseOverBehavior);
+		mouseOverBehavior = new VFIFEMouseOverBehavior(canvas,objRoot);
+		mouseOverBehavior.setSchedulingBounds(bounds);
+		objRoot.addChild(mouseOverBehavior);
 		
 
 		// Shine it with colored lights.
@@ -206,7 +206,7 @@ public class VFIFE_Modeling_view extends JPanel {
 			
 			if (node.getRestraint() != null) {
 				// TODO USE DIFFERENT SHAPE TO ILLUSTRATE Restraints
-				drawConeSimple( pointx, pointy, pointz);
+				//drawConeSimple( pointx, pointy, pointz);
 				
 			}
 		}

@@ -331,6 +331,9 @@ public class Parser_V5VFIFE {
 			ephysicActionT.setAction_source(null, ((VFIFE_PhysicalActionVariableTransient)v5loadcase.getTime_variation()).getAction_source().ordinal()+1);
 			ephysicAction = ephysicActionT;
 		}
+		else {
+			ephysicAction = (EPhysical_action) model.createEntityInstance(EPhysical_action.class);
+		}
 		
 		ephysicAction.setAction_nature(null, v5loadcase.getTime_variation().getAction_nature().ordinal()+1);
 		ephysicAction.setAction_spatial_variation(null, v5loadcase.getTime_variation().getAction_spatial_variation().ordinal()+1);

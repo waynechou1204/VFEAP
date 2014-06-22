@@ -430,6 +430,9 @@ public class Parser_CIS2V5 {
 			v5phyActionT.setAction_source(TYPE_action_source_variable_transient.values()[src]);
 			v5phyAction = v5phyActionT;
 		}
+		else if(derivedClass.contains("PHYSICAL_ACTION")){
+			v5phyAction = new VFIFE_PhysicalAction();
+		}
 		
 		// set action nature - static or dynamic
 		v5phyAction.setAction_nature(TYPE_static_or_dynamic.values()[ephysicAction.getAction_nature(null)-1]);
