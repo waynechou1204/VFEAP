@@ -38,11 +38,7 @@ public class Modeling extends JFrame {
 
         Modeling mainFrame = new Modeling();
 
-		
-        //TODO show ELEMENTs , maybe CANVAS ?
-        
         m_v5model = loadCIS("1memberload.stp");
-        
         
 		// view of the model
         //printModel(v5model);

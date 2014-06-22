@@ -53,22 +53,13 @@ public class VFIFE_Modeling_view extends JPanel {
 	private SimpleUniverse universe = null;
 	private TransformGroup objTrans = null;
 	private TransformGroup objScale = null;
-	private VFIFEMousePickBehavior behavior = null;
-	private VFIFEMouseOverBehavior behavior2 = null;
+	private VFIFEMousePickBehavior mousePickBehavior = null;
+	//private VFIFEMouseOverBehavior mouseOverBehavior = null;
 	private BranchGroup scene = null;
 	
 	private VFIFE_Model v5model = null;
-
-	private float x1 = 0;
-	private float y1 = 0;
-	private float z1 = 0;
-	private float x2 = 0;
-	private float y2 = 0;
-	private float z2 = 0;
-
-	public VFIFE_Modeling_view() {
-
-	}
+	
+	public VFIFE_Modeling_view() {	}
 
 	public VFIFE_Modeling_view(VFIFE_Model model) {
 
@@ -81,6 +72,7 @@ public class VFIFE_Modeling_view extends JPanel {
 
 		Canvas3D canvas = new Canvas3D(config);
 		canvas.setSize(800, 600);
+		canvas.setDoubleBufferEnable(true);
 		this.add("Center", canvas);
 		
 		//nom
@@ -144,14 +136,14 @@ public class VFIFE_Modeling_view extends JPanel {
 		mouseZoom.setSchedulingBounds(bounds);
 		objRoot.addChild(mouseZoom);
 		
-		//鼠标拾取
-		behavior = new VFIFEMousePickBehavior(canvas,objRoot,bounds);
-		this.behavior.setModel(v5model);
-		behavior.setPanel(this);//用于弹出对话框
+		// Mouse pick
+		mousePickBehavior = new VFIFEMousePickBehavior(canvas,objRoot,bounds);
+		this.mousePickBehavior.setModel(v5model);
+		mousePickBehavior.setPanel(this);//用于弹出对话框
 		
-		behavior2 = new VFIFEMouseOverBehavior(canvas,objRoot);
-		behavior2.setSchedulingBounds(bounds);
-		objRoot.addChild(behavior2);
+		//mouseOverBehavior = new VFIFEMouseOverBehavior(canvas,objRoot);
+		//mouseOverBehavior.setSchedulingBounds(bounds);
+		//objRoot.addChild(mouseOverBehavior);
 		
 
 		// Shine it with colored lights.
@@ -162,11 +154,9 @@ public class VFIFE_Modeling_view extends JPanel {
 		objScale.addChild(lgt2);
 
 		// draw elements here
-		// this.drawTest();
 		if (this.v5model != null) {
 			this.drawNodes();
 			this.drawBars();
-			//this.drawTest();
 			this.drawLoads();
 		}
 
@@ -177,63 +167,56 @@ public class VFIFE_Modeling_view extends JPanel {
 
 	// draw node
 	public void drawNodes(){
-//		for (VFIFE_Node node : this.v5model.getNodes()) {
-//			if (node.getRestraint() != null) {
-//				float pointx = (float) (node.getCoord().getCoordinate_x());
-//				float pointy = (float) (node.getCoord().getCoordinate_y());
-//				float pointz = (float) (node.getCoord().getCoordinate_z());
-//
-//				// TODO USE DIFFERENT SHAPE TO ILLUSTRATE Restraints
-//				drawConeSimple( pointx, pointy, pointz);
-//				
-//			}
-//		}
-		float color[] = { 0.0f, 0.0f, 1.0f, 0.5f, 0.0f, 1.0f, 
-				 0.0f, 0.0f, 1.0f, 0.5f, 0.0f, 1.0f, };
-		
-	    
-	    for(int point_num=0;point_num<v5model.getNodes().size();point_num=point_num+1){  
-	    	PointArray point = new PointArray(20, PointArray.COORDINATES | PointArray.COLOR_4);
-	    	float pvert[] = {(float)( v5model.getNodes().get(point_num).getCoord().getCoordinate_x()),
-	    			(float) (v5model.getNodes().get(point_num).getCoord().getCoordinate_y()),
-	    			(float) (v5model.getNodes().get(point_num).getCoord().getCoordinate_z())};
-	    	
-	    	point.setCoordinates(0, pvert);
-	    	point.setColors(0, color);
+		for (VFIFE_Node node : this.v5model.getNodes()) {
+				float pointx = (float) (node.getCoord().getCoordinate_x());
+				float pointy = (float) (node.getCoord().getCoordinate_y());
+				float pointz = (float) (node.getCoord().getCoordinate_z());
 
+				float color[] = { 0.0f, 0.0f, 1.0f, 0.5f, 0.0f, 1.0f, 
+						 0.0f, 0.0f, 1.0f, 0.5f, 0.0f, 1.0f, };
+				
+			    float pvert[] = {pointx, pointy, pointz};
+			    PointArray point = new PointArray(20, PointArray.COORDINATES | PointArray.COLOR_4);
+		    	point.setCoordinates(0, pvert);
+		    	point.setColors(0, color);
+
+				PointAttributes pa = new PointAttributes();
+				pa.setPointSize(10.0f);
+				pa.setPointAntialiasingEnable(true);
+				
+				Appearance ap = new Appearance();
+				ap.setPointAttributes(pa);
+				
+				TransformGroup pointGroup = new TransformGroup();  
+			    pointGroup.setTransform(new Transform3D());
+			    pointGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);  
+			    pointGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ); 
+			    pointGroup.setCapability(TransformGroup.ENABLE_PICK_REPORTING);
+				
+				
+				Shape3D sh = new Shape3D();
+				sh.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+				sh.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
+				sh.setUserData(node);
+				sh.setGeometry(point);
+				sh.setAppearance(ap);
+				pointGroup.addChild(sh);
+				
+				objTrans.addChild(pointGroup);
 			
-			PointAttributes pa = new PointAttributes();
-			pa.setPointSize(20.0f);
-			pa.setPointAntialiasingEnable(true);
-			
-			Appearance ap = new Appearance();
-			ap.setPointAttributes(pa);
-			
-			TransformGroup pointGroup = new TransformGroup();  
-		    pointGroup.setTransform(new Transform3D());
-		    pointGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);  
-		    pointGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ); 
-		    pointGroup.setCapability(TransformGroup.ENABLE_PICK_REPORTING);
-			
-			
-			Shape3D sh = new Shape3D();
-			sh.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
-			sh.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-			VFIFE_Node nodeinfo = v5model.getNodes().get(point_num);
-			//NodeInfo nodeinfo = new NodeInfo();
-			//nodeinfo.setNodeid(v5model.getNodes().get(point_num).getNode_id());
-			//nodeinfo.setNodename(v5model.getNodes().get(point_num).getNode_name());
-			sh.setUserData(nodeinfo);
-			sh.setGeometry(point);
-			sh.setAppearance(ap);
-			pointGroup.addChild(sh);
-			
-			objTrans.addChild(pointGroup);
-	    }
-	    
+			if (node.getRestraint() != null) {
+				// TODO USE DIFFERENT SHAPE TO ILLUSTRATE Restraints
+				drawConeSimple( pointx, pointy, pointz);
+				
+			}
+		}
 	}
 	
-	public void drawConeSimple(float x,float y,float z){	
+	private void drawConeSimple(float x,float y,float z){	
+		
+		TransformGroup coneGroup = new TransformGroup();
+		coneGroup.setTransform(new Transform3D());
+		
 		LineArray tri1Line1=new LineArray(2,LineArray.COORDINATES|LineArray.COLOR_3);
 		tri1Line1.setCoordinate(0,new Point3f(x, y ,z));
 		tri1Line1.setCoordinate(1,new Point3f(x, y-0.289f ,z-0.5f));        
@@ -272,27 +255,29 @@ public class VFIFE_Modeling_view extends JPanel {
 		
 		Shape3D shape1 = new Shape3D();    
 		shape1.setGeometry(tri1Line1);
-		objTrans.addChild(shape1);
+		coneGroup.addChild(shape1);
 		
 		Shape3D shape2 = new Shape3D();    
 		shape2.setGeometry(tri1Line2);
-		objTrans.addChild(shape2);
+		coneGroup.addChild(shape2);
 		
 		Shape3D shape3 = new Shape3D();    
 		shape3.setGeometry(tri1Line3);
-		objTrans.addChild(shape3);
+		coneGroup.addChild(shape3);
 		
 		Shape3D shape4 = new Shape3D();    
 		shape4.setGeometry(tri2Line1);
-		objTrans.addChild(shape4);
+		coneGroup.addChild(shape4);
 		
 		Shape3D shape5 = new Shape3D();    
 		shape5.setGeometry(tri2Line2);
-		objTrans.addChild(shape5);
+		coneGroup.addChild(shape5);
 		
 		Shape3D shape6 = new Shape3D();    
 		shape6.setGeometry(tri2Line3);
-		objTrans.addChild(shape6);
+		coneGroup.addChild(shape6);
+		
+		objTrans.addChild(coneGroup);
 	}
 	
 	/*public void drawNodes() {
@@ -406,40 +391,14 @@ public class VFIFE_Modeling_view extends JPanel {
 			}
 			
 			// copy nodes coords into vertex[]
-//			int size = arr.size();
-//			float[] vertex = new float[size];
-//			for (int x = 0; x < size; x++) {
-//				vertex[x] = arr.get(x);
-//			}
-			float[] vert = new float[6];
-			
-			for (int x = 0; x < 6; x++) {
-				//for(int y = 0;y < 6;y++)
-				vert[x] = arr.get(x);
+			int size = arr.size();
+			float[] vertex = new float[size];
+			for (int x = 0; x < size; x++) {
+				vertex[x] = arr.get(x);
 			}
 			
 			float color[] = { 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f };
 			
-//			LineArray line = new LineArray(6, LineArray.COORDINATES | LineArray.COLOR_3);
-//			
-//			line.setCoordinates(0, vertex);
-//			line.setColors(0, color);
-//			
-//			//LineAttributes la = new LineAttributes();
-//			//la.setLineWidth(1.0f);
-//			//la.setLineAntialiasingEnable(true);
-//			
-//		    //Appearance ap = new Appearance();
-//			//ap.setLineAttributes(la);
-//			
-//			Shape3D sh = new Shape3D();
-//			sh.setGeometry(line);
-//			//sh.setAppearance(ap);
-//			objTrans.addChild(sh);
-			
-		    
-		   
-		    
 			TransformGroup lineGroup = new TransformGroup();  
 		    lineGroup.setTransform(new Transform3D());
 		    lineGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);  
@@ -448,12 +407,11 @@ public class VFIFE_Modeling_view extends JPanel {
 		    
 		    
 		    LineArray line = new LineArray(20, LineArray.COORDINATES | LineArray.COLOR_3);
-			line.setCoordinates(0, vert);
+			line.setCoordinates(0, vertex);
 			line.setColors(0, color);
 
-				
 			LineAttributes la = new LineAttributes();
-			la.setLineWidth(2.0f);
+			la.setLineWidth(1.0f);
 			la.setLineAntialiasingEnable(true);
 				
 			Appearance ap = new Appearance();
@@ -462,24 +420,13 @@ public class VFIFE_Modeling_view extends JPanel {
 			Shape3D sh = new Shape3D();
 			sh.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
 			sh.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-			//VFIFE_Bar barinfo = bar
-			//BarInfo barinfo = new BarInfo();
-			//barinfo.setBarid(bar.getBar_id());
 			sh.setUserData(bar);
 			sh.setGeometry(line);
 			sh.setAppearance(ap);
+			
 			lineGroup.addChild(sh);
-		    
-			
-			
+
 			objTrans.addChild(lineGroup);
-			
-			//scene.detach();
-			
-			//trans.addChild(pointGroup);
-			
-			//scene.compile();
-			//universe.addBranchGraph(scene);
 			
 		}
 		
@@ -824,6 +771,7 @@ public class VFIFE_Modeling_view extends JPanel {
 		return len;
 	}
 	
+	//TODO Arrow is not finished yet
 	private void drawArrow(double px,double py, double pz, double fx, double fy, double fz){
 		
 		// draw main line of the force arrow
