@@ -33,7 +33,7 @@ public class VFIFEMousePickBehavior extends PickMouseBehavior{
     
 	public VFIFEMousePickBehavior(Canvas3D canvas, BranchGroup bg, Bounds bounds) {
 		super(canvas, bg, bounds);
-		// TODO Auto-generated constructor stub
+
 		this.setSchedulingBounds(bounds);
 		bg.addChild(this);
 		pickCanvas.setMode(PickTool.GEOMETRY);
@@ -45,7 +45,7 @@ public class VFIFEMousePickBehavior extends PickMouseBehavior{
 
 	@Override
 	public void updateScene(int xpos, int ypos) {
-		// TODO Auto-generated method stub
+		
 		PickResult pickResult = null;  
         Shape3D shape = null;  
         pickCanvas.setShapeLocation(xpos, ypos);  
@@ -62,7 +62,7 @@ public class VFIFEMousePickBehavior extends PickMouseBehavior{
             	System.out.println(d[0]+","+d[1]+","+d[2]);
             	//System.out.println("node-name:"+((NodeInfo)shape.getUserData()).getNodename());
             	//JOptionPane.showInternalMessageDialog(panel,"node-id:"+((NodeInfo)shape.getUserData()).getNodeid()+"\n"+"node-name:"+((NodeInfo)shape.getUserData()).getNodename(),"info",JOptionPane.INFORMATION_MESSAGE);
-            	JOptionPane.showMessageDialog(panel,"node-id:"+((VFIFE_Node)shape.getUserData()).getNode_id()+"\n"+"node-name:"+((VFIFE_Node)shape.getUserData()).getNode_name(),"info",JOptionPane.INFORMATION_MESSAGE);
+            	JOptionPane.showMessageDialog(panel,"node-id:"+((VFIFE_Node)shape.getUserData()).getNode_id(),"info",JOptionPane.INFORMATION_MESSAGE);
             }
             else if(shape.getUserData().getClass().equals(VFIFE_Bar.class))
             {

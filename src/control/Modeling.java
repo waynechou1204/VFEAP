@@ -38,20 +38,18 @@ public class Modeling extends JFrame {
 
         Modeling mainFrame = new Modeling();
 
-		
-        //TODO show ELEMENTs , maybe CANVAS ?
-        
-        m_v5model = loadCIS("1memberload.stp");
-        
         
 		// view of the model
-        //printModel(v5model);
+        //view = new VFIFE_Modeling_view();
+        
+        // for test
+        m_v5model = loadCIS("1memberload.stp");
         view = new VFIFE_Modeling_view(m_v5model);
+        
+        
         
         mainFrame.getContentPane().add(view, BorderLayout.CENTER);
 
-        //exportFile(v5model, "out.stp");
-        //System.out.println("ok");
     }
 
     public Modeling() {
@@ -94,8 +92,9 @@ public class Modeling extends JFrame {
                     String stpFilePath = selectedFile.getAbsolutePath();
                     try {
                         // load file and parse
-                        m_v5model = loadCIS(stpFilePath);
-
+                    	m_v5model = loadCIS(stpFilePath);
+                        view = new VFIFE_Modeling_view(m_v5model);
+                       
                         // show bars
                         //view.drawBars(m_v5model);
                         //view.drawNodes(m_v5model);

@@ -2,6 +2,7 @@ package control;
 
 import java.util.ArrayList;
 
+import jsdai.SGeometry_schema.EPyramid_volume;
 import jsdai.SVfife_schema.ANode;
 import jsdai.SVfife_schema.CApplied_load_static_force;
 import jsdai.SVfife_schema.CBar;
@@ -12,24 +13,43 @@ import jsdai.SVfife_schema.CLoad_member_concentrated;
 import jsdai.SVfife_schema.CLoad_node;
 import jsdai.SVfife_schema.CMaterial;
 import jsdai.SVfife_schema.CNode;
+import jsdai.SVfife_schema.EAnalysis_method;
+import jsdai.SVfife_schema.EApplied_load;
+import jsdai.SVfife_schema.EApplied_load_static_force;
 import jsdai.SVfife_schema.EBar;
 import jsdai.SVfife_schema.ECartesian_point;
+import jsdai.SVfife_schema.ELoad_case;
 import jsdai.SVfife_schema.ELoad_member_concentrated;
 import jsdai.SVfife_schema.ELoad_node;
 import jsdai.SVfife_schema.EMaterial;
 import jsdai.SVfife_schema.ENode;
+import jsdai.SVfife_schema.EPhysical_action;
+import jsdai.SVfife_schema.EPhysical_action_accidental;
+import jsdai.SVfife_schema.EPhysical_action_permanent;
+import jsdai.SVfife_schema.EPhysical_action_seismic;
+import jsdai.SVfife_schema.EPhysical_action_variable_long_term;
+import jsdai.SVfife_schema.EPhysical_action_variable_short_term;
+import jsdai.SVfife_schema.EPhysical_action_variable_transient;
 import jsdai.lang.A_double;
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiIterator;
 import jsdai.lang.SdaiModel;
+import model.TYPE_static_or_dynamic;
+import model.VFIFE_AppliedLoad;
 import model.VFIFE_AppliedLoadStaticForce;
 import model.VFIFE_Bar;
 import model.VFIFE_Load;
+import model.VFIFE_LoadCase;
 import model.VFIFE_LoadMemberConcentrated;
 import model.VFIFE_LoadNode;
 import model.VFIFE_Material;
 import model.VFIFE_Model;
 import model.VFIFE_Node;
+import model.VFIFE_PhysicalActionAccidental;
+import model.VFIFE_PhysicalActionPermanent;
+import model.VFIFE_PhysicalActionVariableLongTerm;
+import model.VFIFE_PhysicalActionVariableShortTerm;
+import model.VFIFE_PhysicalActionVariableTransient;
 
 public class Parser_V5VFIFE {
 	
@@ -186,37 +206,17 @@ public class Parser_V5VFIFE {
 				eloadnode.setEnd_time(null, force.getEnd_time());
 				
 				// load case of force
-				jsdai.SVfife_schema.ELoad_case eloadcase = (jsdai.SVfife_schema.ELoad_case) model.createEntityInstance(CLoad_case.class);
-				eloadcase.setLoad_case_name(null, force.getParent_load_case().getLoad_case_name());
-				eloadcase.setLoad_case_factor(null, force.getParent_load_case().getLoad_case_factor());
+				eloadnode.setParent_load_case(null, this.parseLoadCase(v5nodeforce.getParent_load_case(), model));
 				
-				//TODO the time variation has been changed
-				//eloadcase.setTime_variation(null, force.getParent_load_case().getTime_variation());
-
-				eloadnode.setParent_load_case(null, eloadcase);
-
-			
 				// specific to loadNode
 					// supporting node
 				ENode enode = getENode(v5nodeforce.getSupporting_node().getNode_id());
 				eloadnode.setSupporting_node(null, enode);
 				
 					// applied load force with value and type
-				jsdai.SVfife_schema.EApplied_load_static_force eloadvalue = (jsdai.SVfife_schema.EApplied_load_static_force) model
-						.createEntityInstance(CApplied_load_static_force.class);
-					//set applied load name
-				eloadvalue.setApplied_load_name(null, v5nodeforce.getLoad_values().getAppliedload_name());
 				VFIFE_AppliedLoadStaticForce staticforce = (VFIFE_AppliedLoadStaticForce) v5nodeforce.getLoad_values();
-
-				eloadvalue.setApplied_force_fx(null,staticforce.getApplied_force_fx());
-				eloadvalue.setApplied_force_fy(null,staticforce.getApplied_force_fy());
-				eloadvalue.setApplied_force_fz(null,staticforce.getApplied_force_fz());
-
-				eloadvalue.setApplied_moment_mx(null,staticforce.getApplied_moment_mx());
-				eloadvalue.setApplied_moment_my(null,staticforce.getApplied_moment_my());
-				eloadvalue.setApplied_moment_mz(null,staticforce.getApplied_moment_mz());
-
-				eloadnode.setLoad_values(null, eloadvalue);
+				eloadnode.setLoad_values(null, this.parseAppliedLoad(staticforce, model));
+				
 			}
 			else if(force.getClass().toString().contains("VFIFE_LoadMemberConcentrated")){
 				
@@ -232,37 +232,16 @@ public class Parser_V5VFIFE {
 				eload.setEnd_time(null, force.getEnd_time());
 				
 				// load case of force
-				jsdai.SVfife_schema.ELoad_case eloadcase = (jsdai.SVfife_schema.ELoad_case) model.createEntityInstance(CLoad_case.class);
-				eloadcase.setLoad_case_name(null, force.getParent_load_case().getLoad_case_name());
-				eloadcase.setLoad_case_factor(null, force.getParent_load_case().getLoad_case_factor());
+				eload.setParent_load_case(null, this.parseLoadCase(v5memforce.getParent_load_case(), model));
 				
-				//TODO the time variation has been changed
-				//eloadcase.setTime_variation(null, force.getParent_load_case().getTime_variation());
-
-				eload.setParent_load_case(null, eloadcase);
-
-			
-				// specific to loadNode
+				// specific to load member concentrated
 					//supporting bar
 				EBar ebar = getEBar(v5memforce.getSupporting_member().getBar_id());
 				eload.setSupporting_member(null, ebar);
-					// applied load force with value and type
-				jsdai.SVfife_schema.EApplied_load_static_force eloadvalue = (jsdai.SVfife_schema.EApplied_load_static_force) model
-						.createEntityInstance(CApplied_load_static_force.class);
 						
-						//set applied load name
-				eloadvalue.setApplied_load_name(null, v5memforce.getLoad_value().getAppliedload_name());
+					//set applied load value
 				VFIFE_AppliedLoadStaticForce staticforce = (VFIFE_AppliedLoadStaticForce) v5memforce.getLoad_value();
-	
-				eloadvalue.setApplied_force_fx(null,staticforce.getApplied_force_fx());
-				eloadvalue.setApplied_force_fy(null,staticforce.getApplied_force_fy());
-				eloadvalue.setApplied_force_fz(null,staticforce.getApplied_force_fz());
-	
-				eloadvalue.setApplied_moment_mx(null,staticforce.getApplied_moment_mx());
-				eloadvalue.setApplied_moment_my(null,staticforce.getApplied_moment_my());
-				eloadvalue.setApplied_moment_mz(null,staticforce.getApplied_moment_mz());
-	
-				eload.setLoad_value(null, eloadvalue);
+				eload.setLoad_value(null, this.parseAppliedLoad(staticforce, model));
 					
 					// set load position
 					// coordinates of node
@@ -278,5 +257,93 @@ public class Parser_V5VFIFE {
 
 			}
 		}
+	}
+	
+	// parse load value of STATIC FORCE
+	private EApplied_load parseAppliedLoad(VFIFE_AppliedLoad v5appliedload, SdaiModel model) throws SdaiException{
+		
+		EApplied_load eappliedload = null;
+		
+		if (v5appliedload.getClass().toString().contains("VFIFE_AppliedLoadStaticForce")){
+			EApplied_load_static_force eloadvalue = (EApplied_load_static_force) model.createEntityInstance(CApplied_load_static_force.class);
+			
+			//set applied load name
+			eloadvalue.setApplied_load_name(null, v5appliedload.getAppliedload_name());
+			
+			VFIFE_AppliedLoadStaticForce staticforce = (VFIFE_AppliedLoadStaticForce) v5appliedload;
+
+			eloadvalue.setApplied_force_fx(null,staticforce.getApplied_force_fx());
+			eloadvalue.setApplied_force_fy(null,staticforce.getApplied_force_fy());
+			eloadvalue.setApplied_force_fz(null,staticforce.getApplied_force_fz());
+
+			eloadvalue.setApplied_moment_mx(null,staticforce.getApplied_moment_mx());
+			eloadvalue.setApplied_moment_my(null,staticforce.getApplied_moment_my());
+			eloadvalue.setApplied_moment_mz(null,staticforce.getApplied_moment_mz());
+			
+			eappliedload = eloadvalue;
+		}
+		
+		return eappliedload;
+	}
+	
+	
+	// parse load case 
+	private ELoad_case parseLoadCase(VFIFE_LoadCase v5loadcase, SdaiModel model) throws SdaiException{
+		
+		ELoad_case eloadcase = (ELoad_case) model.createEntityInstance(ELoad_case.class);
+		
+		// set load case name and factor
+		eloadcase.setLoad_case_name(null, v5loadcase.getLoad_case_name());
+		eloadcase.setLoad_case_factor(null, v5loadcase.getLoad_case_factor());
+		
+		// governing analysis method is null (not useful for now, FIXME later) 
+		//EAnalysis_method eanalysisMethod = (EAnalysis_method) model.createEntityInstance(EAnalysis_method.class);
+
+		// deal with physical action
+		EPhysical_action ephysicAction = null;
+		
+		if(v5loadcase.getTime_variation().getClass().toString().contains("Accidental")){
+			EPhysical_action_accidental ephysicActionA = (EPhysical_action_accidental) model.createEntityInstance(EPhysical_action_accidental.class);	
+			ephysicActionA.setAction_source(null, ((VFIFE_PhysicalActionAccidental)v5loadcase.getTime_variation()).getAction_source().ordinal()+1);
+			ephysicAction = ephysicActionA;
+		}
+		else if(v5loadcase.getTime_variation().getClass().toString().contains("Permanent")){
+			EPhysical_action_permanent ephysicActionP = (EPhysical_action_permanent) model.createEntityInstance(EPhysical_action_permanent.class);	
+			ephysicActionP.setAction_source(null, ((VFIFE_PhysicalActionPermanent)v5loadcase.getTime_variation()).getAction_source().ordinal()+1);
+			ephysicAction = ephysicActionP;
+		}
+		else if(v5loadcase.getTime_variation().getClass().toString().contains("Seismic")){
+			EPhysical_action_seismic ephysicActionS = (EPhysical_action_seismic) model.createEntityInstance(EPhysical_action_seismic.class);	
+			ephysicAction = ephysicActionS;
+		}
+		else if(v5loadcase.getTime_variation().getClass().toString().contains("LongTerm")){
+			EPhysical_action_variable_long_term ephysicActionL = (EPhysical_action_variable_long_term) model.createEntityInstance(EPhysical_action_variable_long_term.class);
+			ephysicActionL.setAction_source(null, ((VFIFE_PhysicalActionVariableLongTerm)v5loadcase.getTime_variation()).getAction_source().ordinal()+1);
+			ephysicAction = ephysicActionL;
+		}
+		else if(v5loadcase.getTime_variation().getClass().toString().contains("ShortTerm")){
+			EPhysical_action_variable_short_term ephysicActionS = (EPhysical_action_variable_short_term) model.createEntityInstance(EPhysical_action_variable_short_term.class);	
+			ephysicActionS.setAction_source(null, ((VFIFE_PhysicalActionVariableShortTerm)v5loadcase.getTime_variation()).getAction_source().ordinal()+1);
+			ephysicAction = ephysicActionS;
+		}
+		else if(v5loadcase.getTime_variation().getClass().toString().contains("Transient")){
+			EPhysical_action_variable_transient ephysicActionT = (EPhysical_action_variable_transient) model.createEntityInstance(EPhysical_action_variable_transient.class);	
+			ephysicActionT.setAction_source(null, ((VFIFE_PhysicalActionVariableTransient)v5loadcase.getTime_variation()).getAction_source().ordinal()+1);
+			ephysicAction = ephysicActionT;
+		}
+		else {
+			ephysicAction = (EPhysical_action) model.createEntityInstance(EPhysical_action.class);
+		}
+		
+		ephysicAction.setAction_nature(null, v5loadcase.getTime_variation().getAction_nature().ordinal()+1);
+		ephysicAction.setAction_spatial_variation(null, v5loadcase.getTime_variation().getAction_spatial_variation().ordinal()+1);
+		ephysicAction.setAction_type(null, v5loadcase.getTime_variation().getAction_type().ordinal()+1);
+		
+		// derivations are null in the 5-1
+		// leave it empty
+		
+		eloadcase.setTime_variation(null, ephysicAction);
+		
+		return eloadcase;
 	}
 }

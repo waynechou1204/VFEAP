@@ -331,30 +331,19 @@ public class Parser_CIS2V5 {
 			VFIFE_LoadNode v5force = new VFIFE_LoadNode();
 			v5force.setForce_name((nodeforce.getLoad_name(null).trim()));
 
-			// deal with load type
-			ELoad_case loadcase = nodeforce.getParent_load_case(null);
-			VFIFE_LoadCase v5loadcase = new VFIFE_LoadCase();
-			v5loadcase.setLoad_case_name(loadcase.getLoad_case_name(null));
-			// v5loadcase.setLoad_case_factor(loadcase.getLoad_case_factor(null));
 			
-			//TODO the time variation has been changed
-			//v5loadcase.setTime_variation(loadcase.getTime_variation(null).getAction_nature(null));
+			///////////////// deal with load case - load type
+			ELoad_case eloadcase = nodeforce.getParent_load_case(null);
+			v5force.setParent_load_case(this.parseLoadCase(eloadcase));
 
-			// set load case type
-			v5force.setParent_load_case(v5loadcase);
-
-			// deal with supporting element
-			// EElement_curve_complex supelement = (EElement_curve_complex)
-			// concen.getSupporting_element(null);
-			// System.out.println("\tElement name: "+supelement.getElement_name(null));
-
-			// deal with supporting node 
+			
+			////////////////// deal with supporting node 
 			jsdai.SStructural_frame_schema.ENode supnode = (ENode) nodeforce.getSupporting_node(null);
-			
 			// set supporting node
 			v5force.setSupporting_node(v5model.getNode(Integer.parseInt(supnode.getNode_name(null).trim())));
 
-			// load value
+			
+			///////////////// load value
 			EApplied_load_static_force appforce = (EApplied_load_static_force) nodeforce.getLoad_values(null);
 
 			// v5 applied force name
@@ -364,26 +353,19 @@ public class Parser_CIS2V5 {
 			try {
 				// directions and force values
 				EForce_measure_with_unit forcemes = appforce.getApplied_force_fx(null);
-				v5appliedforce.setApplied_force_fx(forcemes.get_double(forcemes.getAttributeDefinition("value_component")));
-
-				// unit
-				//ESi_unit unit = (ESi_unit) forcemes.getUnit_component(null);
-				//System.out.println("\t\tUnit: "+ ESi_unit_name.toString(unit.getName(null)));
+				v5appliedforce.setApplied_force_fx(forcemes.get_double(forcemes.getAttributeDefinition("value_component")));				
 			} catch (SdaiException e) {	}
-
 			try {
 				EForce_measure_with_unit forcemes = appforce.getApplied_force_fy(null);
 				v5appliedforce.setApplied_force_fy(forcemes.get_double(forcemes.getAttributeDefinition("value_component")));
-				
 			} catch (SdaiException e) {	}
-
 			try {
 				EForce_measure_with_unit forcemes = appforce.getApplied_force_fz(null);
 				v5appliedforce.setApplied_force_fz(forcemes.get_double(forcemes.getAttributeDefinition("value_component")));
-			
 			} catch (SdaiException e) {	}
 			
 			v5force.setLoad_values(v5appliedforce);
+			
 			
 			v5forces_node.add(v5force);
 		}
@@ -447,6 +429,9 @@ public class Parser_CIS2V5 {
 			VFIFE_PhysicalActionVariableTransient v5phyActionT = new VFIFE_PhysicalActionVariableTransient();
 			v5phyActionT.setAction_source(TYPE_action_source_variable_transient.values()[src]);
 			v5phyAction = v5phyActionT;
+		}
+		else if(derivedClass.contains("PHYSICAL_ACTION")){
+			v5phyAction = new VFIFE_PhysicalAction();
 		}
 		
 		// set action nature - static or dynamic
