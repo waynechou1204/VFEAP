@@ -15,6 +15,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.vecmath.Color3f;
 
+import view.BarInfoDialog;
+import view.NodeInfoDialog;
+
 import model.VFIFE_Bar;
 import model.VFIFE_Model;
 import model.VFIFE_Node;
@@ -60,15 +63,14 @@ public class VFIFEMousePickBehavior extends PickMouseBehavior{
             	float [] d = new float[3];
             	((PointArray)shape.getGeometry()).getCoordinate(0, d);
             	System.out.println(d[0]+","+d[1]+","+d[2]);
-            	//System.out.println("node-name:"+((NodeInfo)shape.getUserData()).getNodename());
-            	//JOptionPane.showInternalMessageDialog(panel,"node-id:"+((NodeInfo)shape.getUserData()).getNodeid()+"\n"+"node-name:"+((NodeInfo)shape.getUserData()).getNodename(),"info",JOptionPane.INFORMATION_MESSAGE);
-            	JOptionPane.showMessageDialog(panel,"node-id:"+((VFIFE_Node)shape.getUserData()).getNode_id(),"info",JOptionPane.INFORMATION_MESSAGE);
+
+            	NodeInfoDialog nodeinfodlg = new NodeInfoDialog((VFIFE_Node)shape.getUserData());
+            	nodeinfodlg.show();
             }
             else if(shape.getUserData().getClass().equals(VFIFE_Bar.class))
             {
-            	//System.out.println("bar-id:"+((BarInfo)shape.getUserData()).getBarid());
-            	//JOptionPane.showInternalMessageDialog(panel,"bar-id:"+((BarInfo)shape.getUserData()).getBarid(),"info",JOptionPane.INFORMATION_MESSAGE);
-            	JOptionPane.showMessageDialog(panel,"bar-id:"+((VFIFE_Bar)shape.getUserData()).getBar_id(),"info",JOptionPane.INFORMATION_MESSAGE);
+            	BarInfoDialog barinfodlg = new BarInfoDialog((VFIFE_Bar)shape.getUserData());
+            	barinfodlg.show();
             }
         }
 	}
