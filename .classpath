@@ -2,13 +2,16 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="/VFIFE_SCHEMA/VFIFE_SCHEMA.jar"/>
-	<classpathentry kind="lib" path="/demo1-ExpressCompile/demo1-ExpressCompile.jar"/>
-	<classpathentry kind="lib" path="F:/Eclipse_Kepler/plugins/net.jsdai.runtime_4.1.505.v201112201320/jsdai_runtime.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Java3DLib">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Program Files/Java/Java3D/1.5.1/bin"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="demo1-ExpressCompile.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Java/Java3D/1.5.2/lib/ext/j3dcore.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Java/Java3D/1.5.2/lib/ext/j3dutils.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Java/Java3D/1.5.2/lib/ext/vecmath.jar"/>
+	<classpathentry kind="lib" path="D:/java/eclipse/eclipse-standard-kepler-SR2-win32/eclipse/plugins/net.jsdai.runtime_4.1.505.v201112201320/jsdai_runtime.jar"/>
+	<classpathentry kind="lib" path="D:/JAVA3D项目/fgy/VFIFE_Schema/VFIFE_SCHEMA.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

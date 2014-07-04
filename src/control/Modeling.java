@@ -2,6 +2,7 @@ package control;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,22 +36,23 @@ public class Modeling extends JFrame {
     static VFIFE_Modeling_view view = null;
 
     public static void main(String[] args) throws SdaiException, FileNotFoundException {
-
-        Modeling mainFrame = new Modeling();
-
         
-		// view of the model
-        //view = new VFIFE_Modeling_view();
+    	Modeling mainFrame = new Modeling();
+    	
+  		// view of the model
         
         // for test
-        m_v5model = loadCIS("1memberload.stp");
-        view = new VFIFE_Modeling_view(m_v5model);
-        
-        
-        
-        mainFrame.getContentPane().add(view, BorderLayout.CENTER);
-
+        m_v5model = loadCIS("eg5-3.stp");
+    	//view=new VFIFE_Modeling_view();
+    	//m_v5model=loadCIS();
+    	view=new VFIFE_Modeling_view(m_v5model);
+    	mainFrame.getContentPane().add(view, BorderLayout.CENTER);	
+   
     }
+
+	protected String fName;
+
+  
 
     public Modeling() {
 
@@ -90,15 +92,20 @@ public class Modeling extends JFrame {
                 if (i == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
                     String stpFilePath = selectedFile.getAbsolutePath();
+                   
+                    
                     try {
                         // load file and parse
-                    	m_v5model = loadCIS(stpFilePath);
-                        view = new VFIFE_Modeling_view(m_v5model);
-                       
+                    	m_v5model = loadCIS(stpFilePath);    
+ 
+                    	
+                        view = new VFIFE_Modeling_view(m_v5model);  
+                      
                         // show bars
-                        //view.drawBars(m_v5model);
-                        //view.drawNodes(m_v5model);
-						//view.drawLoads(m_v5model);
+                        
+                       // view.drawBars();
+                       // view.drawNodes();
+						//view.drawLoads();
                     } catch (SdaiException e) {
                         e.printStackTrace();
                     }
@@ -175,7 +182,7 @@ public class Modeling extends JFrame {
         // set model as return value
         VFIFE_Model v5model = new VFIFE_Model();
 
-        VFIFE_repository repo_cis = new VFIFE_repository("repositories", "G:\\Repositories");
+        VFIFE_repository repo_cis = new VFIFE_repository("repositories", "D:\\Repositories");
         SdaiModel model_cis = repo_cis.loadFile("MyCisRepo", stpFilePath);
 
         // parse
@@ -196,7 +203,7 @@ public class Modeling extends JFrame {
     public static void exportFile(VFIFE_Model v5model, String outFilePath) throws SdaiException, FileNotFoundException {
         // set repository
         VFIFE_repository repo_vfife = new VFIFE_repository("repositories",
-                "G:\\Repositories");
+                "D:\\Repositories");
 
         // create new model -- bind with vfife schema
         SdaiModel model = repo_vfife.setVfifeOutModel("MyV5Repo", "MyV5Model");
