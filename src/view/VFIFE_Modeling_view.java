@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.util.ArrayList;
-
+import java.util.*;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.Background;
 import javax.media.j3d.BoundingSphere;
@@ -59,7 +59,7 @@ public class VFIFE_Modeling_view extends JPanel {
 	private BranchGroup scene = null;
 	
 	private VFIFE_Model v5model = null;
-	
+	 //private float scale;
 	public VFIFE_Modeling_view() {	}
 
 	public VFIFE_Modeling_view(VFIFE_Model model) {
@@ -82,6 +82,7 @@ public class VFIFE_Modeling_view extends JPanel {
 		scene = createSceneGraph(canvas);
 		universe.addBranchGraph(scene);
 		
+		
 		//设置鼠标拾取构造函数的参数bouds
 		//BoundingSphere bouds=new BoundingSphere(new Point3d(0.0,0.0,0.0),100);
 //		Background bg=new Background(new Color3f(Color.white));
@@ -95,9 +96,21 @@ public class VFIFE_Modeling_view extends JPanel {
 	}
 
 	public BranchGroup createSceneGraph(Canvas3D canvas) {
-
+		
+		ArrayList<Float> arr0 = new ArrayList<Float>();
+		for (VFIFE_Node node : this.v5model.getNodes()) {
+			float nodex=(float)(Math.abs(node.getCoord().getCoordinate_x()));
+			float nodey=(float)(Math.abs(node.getCoord().getCoordinate_y()));
+			float nodez=(float)(Math.abs(node.getCoord().getCoordinate_z()));
+			arr0.add(nodex);
+			arr0.add(nodey);
+			arr0.add(nodez);
+		}
+		float scale=(float)(0.6/Collections.max(arr0));
+		
+		//System.out.println(scale);
+		
 		BranchGroup objRoot = new BranchGroup();
-
 		objRoot.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
 		objRoot.setCapability(BranchGroup.ALLOW_DETACH);
 
@@ -108,7 +121,7 @@ public class VFIFE_Modeling_view extends JPanel {
 		// scene.
 		objScale = new TransformGroup();
 		Transform3D t3d = new Transform3D();
-		t3d.setScale(0.1);
+		t3d.setScale(scale);
 		objScale.setTransform(t3d);
 		objRoot.addChild(objScale);
 
@@ -154,6 +167,7 @@ public class VFIFE_Modeling_view extends JPanel {
 		objScale.addChild(lgt2);
 
 		// draw elements here
+		
 		if (this.v5model != null) {
 			this.drawNodes();
 			this.drawBars();
@@ -167,11 +181,16 @@ public class VFIFE_Modeling_view extends JPanel {
 
 	// draw node
 	public void drawNodes(){
+		//ArrayList<Float> arr0 = new ArrayList<Float>();
 		for (VFIFE_Node node : this.v5model.getNodes()) {
 				float pointx = (float) (node.getCoord().getCoordinate_x());
 				float pointy = (float) (node.getCoord().getCoordinate_y());
 				float pointz = (float) (node.getCoord().getCoordinate_z());
-
+			
+				//arr0.add((float) (node.getCoord().getCoordinate_x()));
+				//arr0.add((float) (node.getCoord().getCoordinate_y()));
+				//arr0.add((float) (node.getCoord().getCoordinate_z()));
+				
 				float color[] = { 0.0f, 0.0f, 1.0f, 0.5f, 0.0f, 1.0f, 
 						 0.0f, 0.0f, 1.0f, 0.5f, 0.0f, 1.0f, };
 				
@@ -203,13 +222,16 @@ public class VFIFE_Modeling_view extends JPanel {
 				pointGroup.addChild(sh);
 				
 				objTrans.addChild(pointGroup);
-			
+				//System.out.println("fgy");
 			if (node.getRestraint() != null) {
 				// TODO USE DIFFERENT SHAPE TO ILLUSTRATE Restraints
 				//drawConeSimple( pointx, pointy, pointz);
 				
 			}
+			
 		}
+		//System.out.println("max is"+Collections.max(arr0));
+		// float scale=(float)(0.7/Collections.max(arr0));
 	}
 	
 	private void drawConeSimple(float x,float y,float z){	
@@ -382,6 +404,7 @@ public class VFIFE_Modeling_view extends JPanel {
 	}*/
 
 	public void drawBars(){
+		
 		for(VFIFE_Bar bar : this.v5model.getBars()){
 			ArrayList<Float> arr = new ArrayList<Float>();
 			for (VFIFE_Node node : bar.getNodes()){
@@ -427,7 +450,7 @@ public class VFIFE_Modeling_view extends JPanel {
 			lineGroup.addChild(sh);
 
 			objTrans.addChild(lineGroup);
-			
+			//System.out.println("max is"+Collections.max(arr));
 		}
 		
 	}
