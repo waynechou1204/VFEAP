@@ -60,7 +60,6 @@ public class VFIFE_Modeling_view extends JPanel {
         this.v5model = model;
 
         //this.setLayout(new BorderLayout());
-
         GraphicsConfiguration config = SimpleUniverse
                 .getPreferredConfiguration();
 
@@ -89,6 +88,7 @@ public class VFIFE_Modeling_view extends JPanel {
 
         float scale = 1;
         if (!v5model.isEmpty()) {
+
             // scale array for the max distance among nodes
             ArrayList<Float> arr_scale = new ArrayList<Float>();
             for (VFIFE_Node node : this.v5model.getNodes()) {
@@ -100,6 +100,7 @@ public class VFIFE_Modeling_view extends JPanel {
                 arr_scale.add(nodez);
             }
             scale = (float) (1 / Collections.max(arr_scale));
+
         }
 
         BranchGroup objRoot = new BranchGroup();
@@ -159,6 +160,14 @@ public class VFIFE_Modeling_view extends JPanel {
         lgt2.setInfluencingBounds(bounds);
         objScale.addChild(lgt2);
 
+        if (!v5model.isEmpty()) {
+            drawNodes();
+            drawBars();
+            drawLoads();
+
+            objRoot.compile();
+        }
+
         return objRoot;
     }
 
@@ -199,9 +208,7 @@ public class VFIFE_Modeling_view extends JPanel {
             sh.setAppearance(ap);
             pointGroup.addChild(sh);
 
-            scene.detach();
             objTrans.addChild(pointGroup);
-            universe.addBranchGraph(scene);
 
             if (node.getRestraint() != null) {
                 // TODO USE DIFFERENT SHAPE TO ILLUSTRATE Restraints
@@ -258,9 +265,8 @@ public class VFIFE_Modeling_view extends JPanel {
 
             lineGroup.addChild(sh);
 
-            scene.detach();
             objTrans.addChild(lineGroup);
-            universe.addBranchGraph(scene);
+
         }
 
     }
@@ -417,9 +423,8 @@ public class VFIFE_Modeling_view extends JPanel {
         shape6.setGeometry(tri2Line3);
         coneGroup.addChild(shape6);
 
-        scene.detach();
         objTrans.addChild(coneGroup);
-        universe.addBranchGraph(scene);
+
     }
 
     // TODO Arrow is not finished yet
@@ -444,11 +449,10 @@ public class VFIFE_Modeling_view extends JPanel {
         shape1.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
         shape1.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
         shape1.setGeometry(mainLine);
-        
-        scene.detach();
+
         objTrans.addChild(shape1);
-        universe.addBranchGraph(scene);
-	// draw other for
+
+        // draw other for
     }
 
     public void drawTest() {

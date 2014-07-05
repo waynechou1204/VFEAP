@@ -59,9 +59,9 @@ public class JFrameMain extends javax.swing.JFrame {
         // set model data
         m_v5model = v5model;
         m_view = new VFIFE_Modeling_view(m_v5model);
-        
+
         //m_view=new VFIFE_Modeling_view();
-        this.getContentPane().add(m_view,BorderLayout.CENTER);
+        this.getContentPane().add(m_view, BorderLayout.CENTER);
     }
 
     /**
@@ -170,13 +170,8 @@ public class JFrameMain extends javax.swing.JFrame {
                 this.getContentPane().remove(m_view);
                 m_v5model = loadCIS(stpFilePath);
                 m_view = new VFIFE_Modeling_view(m_v5model);
-                this.getContentPane().add(m_view,BorderLayout.CENTER);
-                
-                // draw
-                m_view.drawBars();
-                m_view.drawNodes();
-                m_view.drawLoads();
-                
+                this.getContentPane().add(m_view, BorderLayout.CENTER);
+
             } catch (SdaiException e) {
                 e.printStackTrace();
             }
