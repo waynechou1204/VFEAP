@@ -42,24 +42,21 @@ public class Modeling extends JFrame {
   		// view of the model
         
         // for test
-        m_v5model = loadCIS("eg5-3.stp");
+        m_v5model = loadCIS("1memberload.stp");
     	//view=new VFIFE_Modeling_view();
     	//m_v5model=loadCIS();
-    	view=new VFIFE_Modeling_view(m_v5model);
+    	
+        view=new VFIFE_Modeling_view(m_v5model);
     	mainFrame.getContentPane().add(view, BorderLayout.CENTER);	
    
     }
 
-	protected String fName;
-
-  
-
+    
     public Modeling() {
-
         m_v5model = new VFIFE_Model();
 
         // set frame size
-        this.setSize(800, 600);
+        this.setSize(1024, 768);
         // set title
         this.setTitle("VFIFE Modeling Tool");
         // set frame location
@@ -97,14 +94,12 @@ public class Modeling extends JFrame {
                     try {
                         // load file and parse
                     	m_v5model = loadCIS(stpFilePath);    
- 
-                    	
                         view = new VFIFE_Modeling_view(m_v5model);  
                       
                         // show bars
                         
-                       // view.drawBars();
-                       // view.drawNodes();
+                        //view.drawBars();
+                        //view.drawNodes();
 						//view.drawLoads();
                     } catch (SdaiException e) {
                         e.printStackTrace();
