@@ -1,13 +1,10 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.util.*;
 
 import javax.media.j3d.Appearance;
-import javax.media.j3d.Background;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
@@ -25,7 +22,6 @@ import javax.swing.JPanel;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
-import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
 import model.VFIFE_AppliedLoadStaticForce;
@@ -42,8 +38,6 @@ import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.universe.SimpleUniverse;
-import com.sun.j3d.utils.universe.Viewer;
-import com.sun.j3d.utils.universe.ViewingPlatform;
 
 import control.VFIFEMouseOverBehavior;
 import control.VFIFEMousePickBehavior;
@@ -61,30 +55,34 @@ public class VFIFE_Modeling_view extends JPanel {
 	
 	private VFIFE_Model v5model = null;
 	
+	
 	public VFIFE_Modeling_view() {	}
 
 	public VFIFE_Modeling_view(VFIFE_Model model) {
-		this.v5model = model;
 		
-		this.setLayout(new BorderLayout());
-
-		GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
-
-		Canvas3D canvas = new Canvas3D(config);
-		canvas.setSize(1024, 768);
-		canvas.setDoubleBufferEnable(true);
-		this.add("Center", canvas);
-		
-		// set universe with canvas
-		universe = new SimpleUniverse(canvas);
-		universe.getViewingPlatform().setNominalViewingTransform();
-		
-		// set viewer anti aliasing
-		universe.getViewer().getView().setSceneAntialiasingEnable(true);
-		
-		scene = createSceneGraph(canvas);
-		universe.addBranchGraph(scene);
-		
+		if(!model.isEmpty()){
+			
+			this.v5model = model;
+			
+			this.setLayout(new BorderLayout());
+	
+			GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
+	
+			Canvas3D canvas = new Canvas3D(config);
+			canvas.setSize(1024, 768);
+			canvas.setDoubleBufferEnable(true);
+			this.add("Center", canvas);
+			
+			// set universe with canvas
+			universe = new SimpleUniverse(canvas);
+			universe.getViewingPlatform().setNominalViewingTransform();
+			
+			// set viewer anti aliasing
+			universe.getViewer().getView().setSceneAntialiasingEnable(true);
+			
+			scene = createSceneGraph(canvas);
+			universe.addBranchGraph(scene);
+		}
 	}
 
 	public void destroy() {
@@ -121,7 +119,7 @@ public class VFIFE_Modeling_view extends JPanel {
 		// Rotate the object to XZ orientation
 		Transform3D rotate3d = new Transform3D();
 		rotate3d.rotX(-Math.PI/2);
-		rotate3d.setTranslation( new Vector3f ( -5.0f, 0.0f, 0.0f ) );
+		rotate3d.setTranslation( new Vector3f ( -5.0f, 0.0f, -5.0f ) );
 		
 		// This TG is used by the mouse manipulators to move the object
 		objTrans = new TransformGroup(rotate3d);
