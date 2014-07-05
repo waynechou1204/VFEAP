@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package view;
 
 import static control.Modeling.exportFile;
@@ -15,6 +14,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import jsdai.lang.SdaiException;
 import model.VFIFE_Model;
@@ -25,22 +25,23 @@ import model.VFIFE_Model;
  */
 public class JFrameMain extends javax.swing.JFrame {
 
-    
     private VFIFE_Model m_v5model = null;
-    
+
     // panel
-    private VFIFE_Modeling_view m_view = null; 
-    
+    private VFIFE_Modeling_view m_view = null;
+
     /**
      * Creates new form JFrameMain
+     *
      * @param v5model as the model passed in
      */
     public JFrameMain(VFIFE_Model v5model) {
+
+        // make menu always before
+        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
         initComponents();
-        
-        // set model data
-        m_v5model = v5model;
-        
+
         // set frame location
         Dimension displaySize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = this.getSize();
@@ -54,10 +55,13 @@ public class JFrameMain extends javax.swing.JFrame {
 
         // set visibility
         this.setVisible(true);
+
+        // set model data
+        m_v5model = v5model;
+        m_view = new VFIFE_Modeling_view(m_v5model);
         
-        m_view=new VFIFE_Modeling_view(m_v5model);
-    	this.getContentPane().add(m_view, BorderLayout.CENTER);	
-   
+        //m_view=new VFIFE_Modeling_view();
+        this.getContentPane().add(m_view,BorderLayout.CENTER);
     }
 
     /**
@@ -161,17 +165,18 @@ public class JFrameMain extends javax.swing.JFrame {
             File selectedFile = fileChooser.getSelectedFile();
             String stpFilePath = selectedFile.getAbsolutePath();
 
-
             try {
                 // load file and parse
-                m_v5model = loadCIS(stpFilePath);    
-                m_view = new VFIFE_Modeling_view(m_v5model);  
-
-                // show bars
-
-                //view.drawBars();
-                //view.drawNodes();
-                                        //view.drawLoads();
+                this.getContentPane().remove(m_view);
+                m_v5model = loadCIS(stpFilePath);
+                m_view = new VFIFE_Modeling_view(m_v5model);
+                this.getContentPane().add(m_view,BorderLayout.CENTER);
+                
+                // draw
+                m_view.drawBars();
+                m_view.drawNodes();
+                m_view.drawLoads();
+                
             } catch (SdaiException e) {
                 e.printStackTrace();
             }
@@ -207,7 +212,7 @@ public class JFrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemExitActionPerformed
 
     private void jMenuItemMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMaterialActionPerformed
-         if (!m_v5model.isEmpty()) {
+        if (!m_v5model.isEmpty()) {
             JDialogMateriaux materiaux = new JDialogMateriaux(m_v5model);
         }
     }//GEN-LAST:event_jMenuItemMaterialActionPerformed
