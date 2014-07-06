@@ -422,6 +422,8 @@ public class VFIFE_Modeling_view extends JPanel {
         Shape3D shape6 = new Shape3D();
         shape6.setGeometry(tri2Line3);
         coneGroup.addChild(shape6);
+        
+        coneGroup.setPickable(false);
 
         objTrans.addChild(coneGroup);
 

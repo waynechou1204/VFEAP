@@ -14,9 +14,12 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import model.VFIFE_Bar;
+import model.VFIFE_Material;
+import model.VFIFE_Model;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Vector;
 
 public class BarInfoDialog extends JDialog {
 
@@ -25,6 +28,7 @@ public class BarInfoDialog extends JDialog {
 	private JLabel baridLabel;
 	private JComboBox comboBox;
 	private VFIFE_Bar vbar;
+	private VFIFE_Model v5model;
 
 	/**
 	 * Launch the application.
@@ -44,8 +48,9 @@ public class BarInfoDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public BarInfoDialog(VFIFE_Bar vbar) {
+	public BarInfoDialog(VFIFE_Bar vbar,VFIFE_Model v5model) {
 		this.vbar = vbar;
+		this.v5model = v5model;
 		setBounds(100, 100, 188, 242);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -68,8 +73,12 @@ public class BarInfoDialog extends JDialog {
 		lblMaterial.setBounds(10, 47, 54, 21);
 		contentPanel.add(lblMaterial);
 		
-		String materials[] = {"Solid","Soft","Other"};
+		Vector<String> materials = new Vector<String>();
+		for(VFIFE_Material vm : this.v5model.getMateriaux()){
+			materials.add(vm.getName());
+		}
 		comboBox = new JComboBox(materials);
+		//comboBox.setSelectedItem(vbar.getMaterial().getName());
 		comboBox.setSelectedIndex(0);
 		comboBox.setBounds(98, 47, 64, 21);
 		contentPanel.add(comboBox);
@@ -92,7 +101,15 @@ public class BarInfoDialog extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						BarInfoDialog.this.vbar.setSection_area(Double.parseDouble(BarInfoDialog.this.textField.getText()));
-						//BarInfoDialog.this.vbar.setMaterial(material)
+						for(VFIFE_Material vm : BarInfoDialog.this.v5model.getMateriaux())
+						{
+							if((String)comboBox.getSelectedItem() == vm.getName())
+							{
+								BarInfoDialog.this.vbar.setMaterial(vm);
+								break;
+							}
+						}
+						
 						BarInfoDialog.this.dispose();
 					}
 				});
