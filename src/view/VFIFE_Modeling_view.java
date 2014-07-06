@@ -206,7 +206,7 @@ public class VFIFE_Modeling_view extends JPanel {
 			
 			if (node.getRestraint() != null) {
 				// TODO USE DIFFERENT SHAPE TO ILLUSTRATE Restraints
-				//drawConeSimple( pointx, pointy, pointz);
+				drawConeSimple( pointx, pointy, pointz);
 				
 			}
 		}
@@ -276,6 +276,8 @@ public class VFIFE_Modeling_view extends JPanel {
 		Shape3D shape6 = new Shape3D();    
 		shape6.setGeometry(tri2Line3);
 		coneGroup.addChild(shape6);
+		
+		coneGroup.setPickable(false);
 		
 		objTrans.addChild(coneGroup);
 	}

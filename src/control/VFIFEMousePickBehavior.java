@@ -69,7 +69,7 @@ public class VFIFEMousePickBehavior extends PickMouseBehavior{
             }
             else if(shape.getUserData().getClass().equals(VFIFE_Bar.class))
             {
-            	BarInfoDialog barinfodlg = new BarInfoDialog((VFIFE_Bar)shape.getUserData());
+            	BarInfoDialog barinfodlg = new BarInfoDialog((VFIFE_Bar)shape.getUserData(),this.v5model);
             	barinfodlg.show();
             }
         }
