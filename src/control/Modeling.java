@@ -8,21 +8,22 @@ import jsdai.lang.SdaiModel;
 import model.VFIFE_Model;
 import model.VFIFE_repository;
 import view.JFrameMain;
-import view.VFIFE_Modeling_view;
 
 public class Modeling {
 
+    public JFrameMain m_frameMain;
+    
     public static void main(String[] args) throws SdaiException {
-        Modeling mainFrame = new Modeling();
+        Modeling mainClass = new Modeling();
     }
 
     public Modeling() throws SdaiException {
 
-        VFIFE_Model m_v5model = new VFIFE_Model();
-        //VFIFE_Model m_v5model = loadCIS("eg5-2zxw.stp");
+        //VFIFE_Model m_v5model = new VFIFE_Model();
+        VFIFE_Model m_v5model = loadCIS("1memberload.stp");
 
-        // view of the model
-        JFrameMain frameMain = new JFrameMain(m_v5model);
+        // main window of the model
+        m_frameMain = new JFrameMain(m_v5model);
     }
 
     public static VFIFE_Model loadCIS(String stpFilePath) throws SdaiException {
@@ -45,7 +46,7 @@ public class Modeling {
                     parser.parseLoadMemberCon(model_cis, v5model));
             v5model.getForces()
                     .addAll(parser.parseLoadNode(model_cis, v5model));
-        } catch (Exception e) {
+        } catch (SdaiException e) {
             e.printStackTrace();
         } finally {// end
             repo_cis.close();
@@ -80,12 +81,14 @@ public class Modeling {
             } else {
                 repo_vfife.outputFile(outFilePath);
             }
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (SdaiException e) {
             e.printStackTrace();
         } finally {
             // end
             System.out.println("out over");
-
+            
             repo_vfife.close();
         }
     }
