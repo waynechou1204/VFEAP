@@ -87,20 +87,31 @@ public class VFIFE_Modeling_view extends JPanel {
     public BranchGroup createSceneGraph(Canvas3D canvas) {
 
         float scale = 1;
+        float offset_x=0;
+        float offset_y=0;
+        float offset_z=0;
+        
         if (!v5model.isEmpty()) {
-
             // scale array for the max distance among nodes
-            ArrayList<Float> arr_scale = new ArrayList<Float>();
+            ArrayList<Float> arr_x = new ArrayList<Float>();
+            ArrayList<Float> arr_y = new ArrayList<Float>();
+            ArrayList<Float> arr_z = new ArrayList<Float>();
+            
             for (VFIFE_Node node : this.v5model.getNodes()) {
-                float nodex = (float) (Math.abs(node.getCoord().getCoordinate_x()));
-                float nodey = (float) (Math.abs(node.getCoord().getCoordinate_y()));
-                float nodez = (float) (Math.abs(node.getCoord().getCoordinate_z()));
-                arr_scale.add(nodex);
-                arr_scale.add(nodey);
-                arr_scale.add(nodez);
+                arr_x.add((float)(node.getCoord().getCoordinate_x()));
+                arr_y.add((float)(node.getCoord().getCoordinate_y()));
+                arr_z.add((float)(node.getCoord().getCoordinate_z()));
             }
-            scale = (float) (1 / Collections.max(arr_scale));
-
+            
+            float span_x = getSpanValueF(arr_x);
+            float span_y = getSpanValueF(arr_y);
+            float span_z = getSpanValueF(arr_z);
+            
+            offset_x = getMidValueF(arr_x);
+            offset_y = getMidValueF(arr_y);
+            offset_z = getMidValueF(arr_z);
+            
+            scale = (1 / getMaxOfThreeF(span_x, span_y, span_z));
         }
 
         BranchGroup objRoot = new BranchGroup();
@@ -119,7 +130,9 @@ public class VFIFE_Modeling_view extends JPanel {
         // Rotate the object to XZ orientation
         Transform3D rotate3d = new Transform3D();
         rotate3d.rotX(-Math.PI / 2);
-        rotate3d.setTranslation(new Vector3f(-5.0f, 0.0f, -5.0f));
+        
+        // set object to the center of window by offsets
+        rotate3d.setTranslation(new Vector3f(-offset_x, -offset_y, -offset_z));
 
         // This TG is used by the mouse manipulators to move the object
         objTrans = new TransformGroup(rotate3d);
@@ -473,4 +486,21 @@ public class VFIFE_Modeling_view extends JPanel {
 
     }
 
+    private float getMidValueF(ArrayList<Float> arr_scale){
+        float min = Collections.min(arr_scale);
+        float max = Collections.max(arr_scale);
+        return (min+max)/2;
+    }
+    
+    private float getSpanValueF(ArrayList<Float> arr_scale){
+        float min = Collections.min(arr_scale);
+        float max = Collections.max(arr_scale);
+        return (max-min);
+    }
+    
+    private float getMaxOfThreeF(float a, float b, float c){
+        float max = Math.max(a, b);
+        max = Math.max(max, c);
+        return max;
+    }
 }
