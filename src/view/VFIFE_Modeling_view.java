@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.GraphicsConfiguration;
 import java.util.*;
 
@@ -305,13 +304,12 @@ public class VFIFE_Modeling_view extends JPanel {
                 double fz = staticforce.getApplied_force_fz();
 
                 // draw Load
-                drawArrow(px, py, pz, fx, fy, fz);
+                drawArrow(px, py, pz, fx, fy, fz, force);
 
                 continue;
             }
 
-            if (force.getClass().toString()
-                    .contains("VFIFE_LoadMemberConcentrated")) {
+            if (force.getClass().toString().contains("VFIFE_LoadMemberConcentrated")) {
 
                 VFIFE_LoadMemberConcentrated v5force = (VFIFE_LoadMemberConcentrated) force;
 
@@ -348,14 +346,13 @@ public class VFIFE_Modeling_view extends JPanel {
                 double fz = staticforce.getApplied_force_fz();
 
                 // draw Load
-                drawArrow(px, py, pz, fx, fy, fz);
+                drawArrow(px, py, pz, fx, fy, fz, force);
 
-                continue;
             }
         }
     }
 
-    private double getLength(double p1x, double p1y, double p1z, double p2x,
+    public double getLength(double p1x, double p1y, double p1z, double p2x,
             double p2y, double p2z) {
         double len = 0;
         len += Math.pow(p1x - p2x, 2);
@@ -444,7 +441,13 @@ public class VFIFE_Modeling_view extends JPanel {
 
     // TODO Arrow is not finished yet
     private void drawArrow(double px, double py, double pz, double fx,
-            double fy, double fz) {
+            double fy, double fz, VFIFE_Load force) {
+
+        TransformGroup arrowGroup = new TransformGroup();
+        arrowGroup.setTransform(new Transform3D());
+        arrowGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        arrowGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+        arrowGroup.setCapability(TransformGroup.ENABLE_PICK_REPORTING);
 
         // draw main line of the force arrow
         LineArray mainLine = new LineArray(2, LineArray.COORDINATES
@@ -460,12 +463,15 @@ public class VFIFE_Modeling_view extends JPanel {
         mainLine.setColor(0, new Color3f(0.0f, 0.0f, 1.0f));
         mainLine.setColor(1, new Color3f(0.0f, 0.0f, 1.0f));
 
-        Shape3D shape1 = new Shape3D();
-        shape1.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
-        shape1.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-        shape1.setGeometry(mainLine);
-
-        objTrans.addChild(shape1);
+        Shape3D shape = new Shape3D();
+        shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+        shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
+        shape.setUserData(force);
+        shape.setGeometry(mainLine);
+        
+        arrowGroup.addChild(shape);
+        
+        objTrans.addChild(arrowGroup);
 
         // draw other for
     }
