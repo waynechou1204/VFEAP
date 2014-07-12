@@ -182,8 +182,8 @@ public class JFrameMain extends javax.swing.JFrame {
         if (!m_v5model.isEmpty()) {
             // get file save path
             JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setSelectedFile(new File("vifife.stp")); // default file name
-            fileChooser.setFileFilter(new FileNameExtensionFilter("STP & XML FILE", "stp", "xml"));
+            fileChooser.setSelectedFile(new File("model.v5m")); // default file name
+            fileChooser.setFileFilter(new FileNameExtensionFilter("V5M & XML FILE", "v5m", "xml"));
             int i = fileChooser.showSaveDialog(getContentPane());
             if (i == JFileChooser.APPROVE_OPTION) {
                 File getfile = fileChooser.getSelectedFile();

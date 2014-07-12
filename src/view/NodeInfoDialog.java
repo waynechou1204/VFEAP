@@ -94,9 +94,12 @@ public class NodeInfoDialog extends JDialog {
         contentPanel.add(lblNewLabel_1);
 
         JLabel boundConDesclbl = new JLabel("");
-        boundConDesclbl.setText(m_vnode.getRestraint().getBoundary_condition_description());
         boundConDesclbl.setHorizontalAlignment(SwingConstants.CENTER);
         boundConDesclbl.setBounds(108, 146, 100, 15);
+        if (m_vnode.getRestraint()!=null) {
+            boundConDesclbl.setText(m_vnode.getRestraint().getBoundary_condition_description());
+            
+        }
         contentPanel.add(boundConDesclbl);
 
         JPanel buttonPane = new JPanel();

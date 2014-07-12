@@ -19,8 +19,8 @@ public class Modeling {
 
     public Modeling() throws SdaiException {
 
-        //VFIFE_Model m_v5model = new VFIFE_Model();
-        VFIFE_Model m_v5model = loadCIS("1memberload.stp");
+        VFIFE_Model m_v5model = new VFIFE_Model();
+       // VFIFE_Model m_v5model = loadCIS("1memberload.stp");
 
         // main window of the model
         m_frameMain = new JFrameMain(m_v5model);
@@ -46,6 +46,7 @@ public class Modeling {
                     parser.parseLoadMemberCon(model_cis, v5model));
             v5model.getForces()
                     .addAll(parser.parseLoadNode(model_cis, v5model));
+            
         } catch (SdaiException e) {
             e.printStackTrace();
         } finally {// end
