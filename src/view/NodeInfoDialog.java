@@ -158,6 +158,16 @@ public class NodeInfoDialog extends JDialog {
 			zrotationfree.setSelected(true);
 		}
 		contentPanel.add(zrotationfree);
+		
+		if(m_vnode.getRestraint()==null)
+		{
+			xdisplacementfree.setEnabled(false);
+			ydisplacementfree.setEnabled(false);
+			zdisplacementfree.setEnabled(false);
+			xrotationfree.setEnabled(false);
+			yrotationfree.setEnabled(false);
+			zrotationfree.setEnabled(false);
+		}
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -166,17 +176,17 @@ public class NodeInfoDialog extends JDialog {
         JButton okButton = new JButton("OK");
         okButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-            	if(NodeInfoDialog.this.m_vnode.getRestraint()==null)
-				{
-					VFIFE_BoundaryCondition vbc = new VFIFE_BoundaryCondition();
-					vbc.setBc_x_displacement_free(false);
-					vbc.setBc_x_rotation_free(false);
-					vbc.setBc_y_displacement_free(false);
-					vbc.setBc_y_rotation_free(false);
-					vbc.setBc_z_displacement_free(false);
-					vbc.setBc_z_rotation_free(false);
-					NodeInfoDialog.this.m_vnode.setRestraint(vbc);
-				}
+//            	if(NodeInfoDialog.this.m_vnode.getRestraint()==null)
+//				{
+//					VFIFE_BoundaryCondition vbc = new VFIFE_BoundaryCondition();
+//					vbc.setBc_x_displacement_free(false);
+//					vbc.setBc_x_rotation_free(false);
+//					vbc.setBc_y_displacement_free(false);
+//					vbc.setBc_y_rotation_free(false);
+//					vbc.setBc_z_displacement_free(false);
+//					vbc.setBc_z_rotation_free(false);
+//					NodeInfoDialog.this.m_vnode.setRestraint(vbc);
+//				}
 				if(NodeInfoDialog.this.xdisplacementfree.isSelected())
 				{
 					NodeInfoDialog.this.m_vnode.getRestraint().setBc_x_displacement_free(true);
