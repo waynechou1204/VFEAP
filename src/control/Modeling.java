@@ -31,7 +31,7 @@ public class Modeling {
         VFIFE_Model v5model = new VFIFE_Model();
 
         VFIFE_repository repo_cis = new VFIFE_repository("repositories",
-                "G:\\Repositories");
+                "D:\\Repositories");
 
         try {
             SdaiModel model_cis = repo_cis.loadFile("MyCisRepo", stpFilePath);
@@ -58,7 +58,7 @@ public class Modeling {
             throws SdaiException, FileNotFoundException {
         // set repository
         VFIFE_repository repo_vfife = new VFIFE_repository("repositories",
-                "G:\\Repositories");
+                "D:\\Repositories");
 
         try {
             // create new model -- bind with vfife schema
