@@ -18,9 +18,11 @@ import javax.media.j3d.Shape3D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.swing.JPanel;
+import javax.vecmath.AxisAngle4d;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
+import javax.vecmath.Vector3d;//...
 import javax.vecmath.Vector3f;
 
 import model.VFIFE_AppliedLoadStaticForce;
@@ -35,7 +37,9 @@ import model.VFIFE_Node;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
+import com.sun.j3d.utils.geometry.Cone;//...
 import com.sun.j3d.utils.geometry.Cylinder;
+import com.sun.j3d.utils.geometry.Primitive;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
 import control.VFIFEMouseOverBehavior;
@@ -48,7 +52,7 @@ public class VFIFE_Modeling_view extends JPanel {
     private SimpleUniverse universe = null;
     private BranchGroup scene = null;
     private TransformGroup objTrans = null;
-
+    private Transform3D ta = new Transform3D();
     private VFIFEMousePickBehavior mousePickBehavior = null;
     private VFIFEMouseOverBehavior mouseOverBehavior = null;
 
@@ -304,7 +308,7 @@ public class VFIFE_Modeling_view extends JPanel {
                 double fz = staticforce.getApplied_force_fz();
 
                 // draw Load
-                drawArrow(px, py, pz, fx, fy, fz, force);
+                drawArrow(px, py, pz, fx, fy, fz);
 
                 continue;
             }
@@ -346,8 +350,11 @@ public class VFIFE_Modeling_view extends JPanel {
                 double fz = staticforce.getApplied_force_fz();
 
                 // draw Load
-                drawArrow(px, py, pz, fx, fy, fz, force);
-
+//<<<<<<< HEAD
+                drawArrow(px, py, pz, fx, fy, fz);
+                //for test
+                //drawArrow(5.0, 0.0, 2.5, -20.0, -40.0,-36.0);
+              
             }
         }
     }
@@ -441,7 +448,7 @@ public class VFIFE_Modeling_view extends JPanel {
 
     // TODO Arrow is not finished yet
     private void drawArrow(double px, double py, double pz, double fx,
-            double fy, double fz, VFIFE_Load force) {
+            double fy, double fz) {
 
         TransformGroup arrowGroup = new TransformGroup();
         arrowGroup.setTransform(new Transform3D());
@@ -463,18 +470,227 @@ public class VFIFE_Modeling_view extends JPanel {
         mainLine.setColor(0, new Color3f(0.0f, 0.0f, 1.0f));
         mainLine.setColor(1, new Color3f(0.0f, 0.0f, 1.0f));
 
-        Shape3D shape = new Shape3D();
-        shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
-        shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-        shape.setUserData(force);
-        shape.setGeometry(mainLine);
+
+        Shape3D shape1 = new Shape3D();
+        shape1.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+        shape1.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
+        shape1.setGeometry(mainLine);
+        objTrans.addChild(shape1);
+        //力的方向
         
-        arrowGroup.addChild(shape);
+        double pow=Math.pow(fx,2)+ Math.pow(fy,2)+ Math.pow(fz,2);
+        double Mforce= Math.sqrt(pow);
+       
+        double directx=Math.acos(fx/Mforce);//与坐标轴的夹角，弧度制
+        double directy=Math.acos(fy/Mforce);
+        double directz=Math.acos(fz/Mforce);
         
-        objTrans.addChild(arrowGroup);
+        Appearance ap=new Appearance();
+		Material mat=new Material();
+		mat.setDiffuseColor(new Color3f(1f,0,0));
+		mat.setShininess(128);
+		ap.setMaterial(mat);
+		Transform3D t=new Transform3D();
+		Transform3D t0=new Transform3D();
+		//7种情况 
+		if(fz!=0&&fx==0&&fy==0){//只受fz上面的力的作用
+			if(fz<0){
+			t.rotX(-directx);
+			t.setTranslation(new Vector3f(0.0f, -(float)pz,(float)pz));
+			}
+			else{
+				t.rotX(directx);
+				t.setTranslation(new Vector3f(0.0f, (float)pz,(float)pz));
+				}
+			Transform3D tmp=new Transform3D();
+			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
+			t.mul(tmp);
+			TransformGroup g1=new TransformGroup(t);
+			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
+			g1.addChild(cone2);
+			objTrans.addChild(g1);
+		}
+		else if(fz==0&&fx!=0&&fy==0){//只受fx上面的力的作用
+			if(fx>0){
+			t.rotZ(-directy);
+			t.setTranslation(new Vector3f((float)px, (float)px,0.0f));
+			}
+			else{
+				t.rotZ(directy);
+				t.setTranslation(new Vector3f((float)px, -(float)px,0.0f));
+			}
+			Transform3D tmp=new Transform3D();
+			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
+			t.mul(tmp);
+			TransformGroup g1=new TransformGroup(t);
+			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
+			g1.addChild(cone2);
+			objTrans.addChild(g1);
+		}
+		else if(fz==0&&fx==0&&fy!=0){  //因为cone初始视图是尖头朝着Y轴的，因此Y轴上受正方向上的力无需旋转
+			if(fy>0){
+			//t.rotY(-directz);
+			//t.setTranslation(new Vector3f((float)py, 0.0f,(float)py));
+			}
+			else{     //因为cone初始视图是尖头朝着Y轴的，因此Y轴上受负方向上的力需要绕x旋转，并平移2倍pz
+				t.rotX(directy);
+				t.setTranslation(new Vector3f(0.0f, 0.0f,2*((float)pz)));				
+			}
+			Transform3D tmp=new Transform3D();
+			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
+			t.mul(tmp);
+			TransformGroup g1=new TransformGroup(t);
+			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
+			g1.addChild(cone2);
+			objTrans.addChild(g1);
+		}
+		
+		else if(fz!=0&&fx!=0&&fy==0){ //两个方向受力
+			
+			
+			t0.rotX(Math.PI/2);
+			if(fx>0){
+			t.rotY(directz);
+			}
+			else{
+				t.rotY(-directz);
+			}
+			t.mul(t0);
+			Transform3D tmp=new Transform3D();
+			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
+			tmp.mul(t);
+			TransformGroup g1=new TransformGroup(tmp);
+			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
+			g1.addChild(cone2);
+			objTrans.addChild(g1);
+		}
+		
+		else if(fz!=0&&fx==0&&fy!=0){//两个方向受力
+			t0.rotX(Math.PI/2-directz);
+			if(fy>0){
+		
+				t0.rotX(Math.PI/2-directz);
+			}
+			else{
+				
+				t0.rotX(Math.PI/2+directz);
+				}
+			
+			Transform3D tmp=new Transform3D();
+			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
+			tmp.mul(t0);
+			TransformGroup g1=new TransformGroup(tmp);
+			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
+			g1.addChild(cone2);
+			objTrans.addChild(g1);	
+		}
+		
+		else if(fz==0&&fx!=0&&fy!=0){//两个方向受力
+			
+			if(fx>0){
+				t0.rotZ(-directy);			
+			}
+			else{
+				t0.rotZ(directy);			
+			}
+			Transform3D tmp=new Transform3D();
+			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
+			tmp.mul(t0);
+			TransformGroup g1=new TransformGroup(tmp);
+			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
+			g1.addChild(cone2);
+			objTrans.addChild(g1);						
+			}	
+		
+		
+		else{   //三个方向受力
+			double pow1=Math.pow(fx,2)+ Math.pow(fy,2);
+			double Mforce1= Math.sqrt(pow1);//fx,fy合成力，在xoy平面上
+			double directy1=Math.acos(fy/Mforce1);
+			double bili=Math.acos(Mforce1/Mforce);//fx,fy合成力除以fx，fy，fz的合成力，为了求旋转角度
+			if(fx>0){
+				t0.rotZ(-directy1);
+				if(fy>0)
+				{
+					if(fz>0){
+						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, bili);//绕经过原点，和1,-（fx/fy）,0,旋转bili弧度
+						ta.setRotation(angle);
+						ta.mul(t0);
+					}//quan dayu 0
+					else{
+						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, -bili);
+						//Transform3D ta = new Transform3D();
+						ta.setRotation(angle);
+						ta.mul(t0);
+					}//(fz<0)
+				}//(fy>0)
+				else{
+					if(fz>0){
+					AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, -bili);
+					ta.setRotation(angle);
+					ta.mul(t0);
+					}
+					else{
+						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, bili);
+						ta.setRotation(angle);
+						ta.mul(t0);
+					}
+				}
+			}//(fx>0)
+			else{
+				t0.rotZ(directy1);	
+				if(fy>0)
+				{
+					if(fz>0){
+						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, bili);
+						ta.setRotation(angle);
+						ta.mul(t0);
+					}//(fz>0)
+					else{
+						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, -bili);
+						ta.setRotation(angle);
+						ta.mul(t0);
+					}//(fy<0)
+				}//(fy>0)
+				else{
+					if(fz>0){
+					AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, -bili);
+					ta.setRotation(angle);
+					ta.mul(t0);
+					}
+					else{
+						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, bili);
+						ta.setRotation(angle);
+						ta.mul(t0);
+					}
+				}
+			}
+			Transform3D tmp=new Transform3D();
+			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
+			tmp.mul(ta);
+			TransformGroup g1=new TransformGroup(tmp);
+			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
+			g1.addChild(cone2);
+			objTrans.addChild(g1);		
+		}		
+			
+}	
+			
+    
+
+        //Shape3D shape = new Shape3D();
+        //shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+       // shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
+      //  shape.setUserData(force);
+       // shape.setGeometry(mainLine);
+        
+        //arrowGroup.addChild(shape);
+        
+        //objTrans.addChild(arrowGroup);
 
         // draw other for
-    }
+    
+
 
     public void drawTest() {
         // Create a cylinder
@@ -490,6 +706,24 @@ public class VFIFE_Modeling_view extends JPanel {
         Cylinder CylinderObj = new Cylinder(1.0f, 2.0f, ap);
         objTrans.addChild(CylinderObj);
 
+    }
+    public void  cone(){
+    TransformGroup lineconeGroup=new TransformGroup();  
+          Transform3D  lineconeTransform3D=new Transform3D();  
+          lineconeTransform3D.setTranslation(new Vector3d(0,0,0));  
+          lineconeGroup.setTransform(lineconeTransform3D);  
+          Cone lineCone=new Cone(0.5f, 1.5f);  
+     
+          Appearance lineconeAppearance=new Appearance();  
+    
+          PolygonAttributes lineconepolygonAttributes=new  PolygonAttributes();  
+          lineconepolygonAttributes.setPolygonMode(PolygonAttributes.CULL_BACK);  
+          lineconeAppearance.setPolygonAttributes(lineconepolygonAttributes);  
+    
+          lineCone.setAppearance(lineconeAppearance);  
+     
+          lineconeGroup.addChild(lineCone);  
+          objTrans.addChild(lineconeGroup);
     }
 
     private float getMidValueF(ArrayList<Float> arr_scale){
