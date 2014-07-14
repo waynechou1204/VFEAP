@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.GraphicsConfiguration;
 import java.util.*;
 
@@ -91,20 +90,31 @@ public class VFIFE_Modeling_view extends JPanel {
     public BranchGroup createSceneGraph(Canvas3D canvas) {
 
         float scale = 1;
+        float offset_x=0;
+        float offset_y=0;
+        float offset_z=0;
+        
         if (!v5model.isEmpty()) {
-
             // scale array for the max distance among nodes
-            ArrayList<Float> arr_scale = new ArrayList<Float>();
+            ArrayList<Float> arr_x = new ArrayList<Float>();
+            ArrayList<Float> arr_y = new ArrayList<Float>();
+            ArrayList<Float> arr_z = new ArrayList<Float>();
+            
             for (VFIFE_Node node : this.v5model.getNodes()) {
-                float nodex = (float) (Math.abs(node.getCoord().getCoordinate_x()));
-                float nodey = (float) (Math.abs(node.getCoord().getCoordinate_y()));
-                float nodez = (float) (Math.abs(node.getCoord().getCoordinate_z()));
-                arr_scale.add(nodex);
-                arr_scale.add(nodey);
-                arr_scale.add(nodez);
+                arr_x.add((float)(node.getCoord().getCoordinate_x()));
+                arr_y.add((float)(node.getCoord().getCoordinate_y()));
+                arr_z.add((float)(node.getCoord().getCoordinate_z()));
             }
-            scale = (float) (1 / Collections.max(arr_scale));
-
+            
+            float span_x = getSpanValueF(arr_x);
+            float span_y = getSpanValueF(arr_y);
+            float span_z = getSpanValueF(arr_z);
+            
+            offset_x = getMidValueF(arr_x);
+            offset_y = getMidValueF(arr_y);
+            offset_z = getMidValueF(arr_z);
+            
+            scale = (1 / getMaxOfThreeF(span_x, span_y, span_z));
         }
 
         BranchGroup objRoot = new BranchGroup();
@@ -123,7 +133,9 @@ public class VFIFE_Modeling_view extends JPanel {
         // Rotate the object to XZ orientation
         Transform3D rotate3d = new Transform3D();
         rotate3d.rotX(-Math.PI / 2);
-        rotate3d.setTranslation(new Vector3f(-5.0f, 0.0f, -5.0f));
+        
+        // set object to the center of window by offsets
+        rotate3d.setTranslation(new Vector3f(-offset_x, -offset_y, -offset_z));
 
         // This TG is used by the mouse manipulators to move the object
         objTrans = new TransformGroup(rotate3d);
@@ -301,8 +313,7 @@ public class VFIFE_Modeling_view extends JPanel {
                 continue;
             }
 
-            if (force.getClass().toString()
-                    .contains("VFIFE_LoadMemberConcentrated")) {
+            if (force.getClass().toString().contains("VFIFE_LoadMemberConcentrated")) {
 
                 VFIFE_LoadMemberConcentrated v5force = (VFIFE_LoadMemberConcentrated) force;
 
@@ -339,15 +350,16 @@ public class VFIFE_Modeling_view extends JPanel {
                 double fz = staticforce.getApplied_force_fz();
 
                 // draw Load
+//<<<<<<< HEAD
                 drawArrow(px, py, pz, fx, fy, fz);
                 //for test
                 //drawArrow(5.0, 0.0, 2.5, -20.0, -40.0,-36.0);
-                continue;
+              
             }
         }
     }
 
-    private double getLength(double p1x, double p1y, double p1z, double p2x,
+    public double getLength(double p1x, double p1y, double p1z, double p2x,
             double p2y, double p2z) {
         double len = 0;
         len += Math.pow(p1x - p2x, 2);
@@ -438,6 +450,12 @@ public class VFIFE_Modeling_view extends JPanel {
     private void drawArrow(double px, double py, double pz, double fx,
             double fy, double fz) {
 
+        TransformGroup arrowGroup = new TransformGroup();
+        arrowGroup.setTransform(new Transform3D());
+        arrowGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        arrowGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+        arrowGroup.setCapability(TransformGroup.ENABLE_PICK_REPORTING);
+
         // draw main line of the force arrow
         LineArray mainLine = new LineArray(2, LineArray.COORDINATES
                 | LineArray.COLOR_3);
@@ -451,6 +469,7 @@ public class VFIFE_Modeling_view extends JPanel {
                 (float) (py - fy * 2 / f), (float) (pz - fz * 2 / f)));
         mainLine.setColor(0, new Color3f(0.0f, 0.0f, 1.0f));
         mainLine.setColor(1, new Color3f(0.0f, 0.0f, 1.0f));
+
 
         Shape3D shape1 = new Shape3D();
         shape1.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
@@ -659,6 +678,20 @@ public class VFIFE_Modeling_view extends JPanel {
 			
     
 
+        //Shape3D shape = new Shape3D();
+        //shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+       // shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
+      //  shape.setUserData(force);
+       // shape.setGeometry(mainLine);
+        
+        //arrowGroup.addChild(shape);
+        
+        //objTrans.addChild(arrowGroup);
+
+        // draw other for
+    
+
+
     public void drawTest() {
         // Create a cylinder
         PolygonAttributes attr = new PolygonAttributes();
@@ -693,4 +726,21 @@ public class VFIFE_Modeling_view extends JPanel {
           objTrans.addChild(lineconeGroup);
     }
 
+    private float getMidValueF(ArrayList<Float> arr_scale){
+        float min = Collections.min(arr_scale);
+        float max = Collections.max(arr_scale);
+        return (min+max)/2;
+    }
+    
+    private float getSpanValueF(ArrayList<Float> arr_scale){
+        float min = Collections.min(arr_scale);
+        float max = Collections.max(arr_scale);
+        return (max-min);
+    }
+    
+    private float getMaxOfThreeF(float a, float b, float c){
+        float max = Math.max(a, b);
+        max = Math.max(max, c);
+        return max;
+    }
 }
