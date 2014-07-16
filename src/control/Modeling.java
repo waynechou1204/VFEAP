@@ -19,8 +19,8 @@ public class Modeling {
 
     public Modeling() throws SdaiException {
 
-        VFIFE_Model m_v5model = new VFIFE_Model();
-       // VFIFE_Model m_v5model = loadCIS("1memberload.stp");
+       // VFIFE_Model m_v5model = new VFIFE_Model();
+        VFIFE_Model m_v5model = loadCIS("model_resources\\5-1.stp");
 
         // main window of the model
         m_frameMain = new JFrameMain(m_v5model);
@@ -37,7 +37,7 @@ public class Modeling {
             SdaiModel model_cis = repo_cis.loadFile("MyCisRepo", stpFilePath);
 
             // parse
-            Parser_CIS2V5 parser = new Parser_CIS2V5();
+            Parser_ImportSTP parser = new Parser_ImportSTP();
 
             v5model.setNodes(parser.parseNodes(model_cis, v5model));
             parser.parseBars(model_cis, v5model); // v5model.setBars();
@@ -67,7 +67,7 @@ public class Modeling {
                     "MyV5Model");
 
             // parse
-            Parser_V5VFIFE parser = new Parser_V5VFIFE();
+            Parser_ExportV5M parser = new Parser_ExportV5M();
 
             parser.parseNodes(v5model, model);
             parser.parseMaterials(v5model, model);

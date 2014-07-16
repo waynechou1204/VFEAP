@@ -63,7 +63,7 @@ import model.VFIFE_PhysicalActionVariableLongTerm;
 import model.VFIFE_PhysicalActionVariableShortTerm;
 import model.VFIFE_PhysicalActionVariableTransient;
 
-public class Parser_CIS2V5 {
+public class Parser_ImportSTP {
 
     public ArrayList<VFIFE_Node> parseNodes(SdaiModel model_cis, VFIFE_Model v5model) throws SdaiException {
 
