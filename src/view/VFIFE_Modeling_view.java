@@ -476,12 +476,12 @@ public class VFIFE_Modeling_view extends JPanel {
         shape1.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
         shape1.setGeometry(mainLine);
         objTrans.addChild(shape1);
-        //力的方向
+        //鍔涚殑鏂瑰悜
         
         double pow=Math.pow(fx,2)+ Math.pow(fy,2)+ Math.pow(fz,2);
         double Mforce= Math.sqrt(pow);
        
-        double directx=Math.acos(fx/Mforce);//与坐标轴的夹角，弧度制
+        double directx=Math.acos(fx/Mforce);//涓庡潗鏍囪酱鐨勫す瑙掞紝寮у害鍒�
         double directy=Math.acos(fy/Mforce);
         double directz=Math.acos(fz/Mforce);
         
@@ -492,8 +492,8 @@ public class VFIFE_Modeling_view extends JPanel {
 		ap.setMaterial(mat);
 		Transform3D t=new Transform3D();
 		Transform3D t0=new Transform3D();
-		//7种情况 
-		if(fz!=0&&fx==0&&fy==0){//只受fz上面的力的作用
+		//7绉嶆儏鍐�
+		if(fz!=0&&fx==0&&fy==0){//鍙彈fz涓婇潰鐨勫姏鐨勪綔鐢�
 			if(fz<0){
 			t.rotX(-directx);
 			t.setTranslation(new Vector3f(0.0f, -(float)pz,(float)pz));
@@ -510,7 +510,7 @@ public class VFIFE_Modeling_view extends JPanel {
 			g1.addChild(cone2);
 			objTrans.addChild(g1);
 		}
-		else if(fz==0&&fx!=0&&fy==0){//只受fx上面的力的作用
+		else if(fz==0&&fx!=0&&fy==0){//鍙彈fx涓婇潰鐨勫姏鐨勪綔鐢�
 			if(fx>0){
 			t.rotZ(-directy);
 			t.setTranslation(new Vector3f((float)px, (float)px,0.0f));
@@ -527,12 +527,12 @@ public class VFIFE_Modeling_view extends JPanel {
 			g1.addChild(cone2);
 			objTrans.addChild(g1);
 		}
-		else if(fz==0&&fx==0&&fy!=0){  //因为cone初始视图是尖头朝着Y轴的，因此Y轴上受正方向上的力无需旋转
+		else if(fz==0&&fx==0&&fy!=0){  //鍥犱负cone鍒濆瑙嗗浘鏄皷澶存湞鐫�杞寸殑锛屽洜姝杞翠笂鍙楁鏂瑰悜涓婄殑鍔涙棤闇�棆杞�
 			if(fy>0){
 			//t.rotY(-directz);
 			//t.setTranslation(new Vector3f((float)py, 0.0f,(float)py));
 			}
-			else{     //因为cone初始视图是尖头朝着Y轴的，因此Y轴上受负方向上的力需要绕x旋转，并平移2倍pz
+			else{     //鍥犱负cone鍒濆瑙嗗浘鏄皷澶存湞鐫�杞寸殑锛屽洜姝杞翠笂鍙楄礋鏂瑰悜涓婄殑鍔涢渶瑕佺粫x鏃嬭浆锛屽苟骞崇Щ2鍊峱z
 				t.rotX(directy);
 				t.setTranslation(new Vector3f(0.0f, 0.0f,2*((float)pz)));				
 			}
@@ -545,7 +545,7 @@ public class VFIFE_Modeling_view extends JPanel {
 			objTrans.addChild(g1);
 		}
 		
-		else if(fz!=0&&fx!=0&&fy==0){ //两个方向受力
+		else if(fz!=0&&fx!=0&&fy==0){ //涓や釜鏂瑰悜鍙楀姏
 			
 			
 			t0.rotX(Math.PI/2);
@@ -565,7 +565,7 @@ public class VFIFE_Modeling_view extends JPanel {
 			objTrans.addChild(g1);
 		}
 		
-		else if(fz!=0&&fx==0&&fy!=0){//两个方向受力
+		else if(fz!=0&&fx==0&&fy!=0){//涓や釜鏂瑰悜鍙楀姏
 			t0.rotX(Math.PI/2-directz);
 			if(fy>0){
 		
@@ -585,7 +585,7 @@ public class VFIFE_Modeling_view extends JPanel {
 			objTrans.addChild(g1);	
 		}
 		
-		else if(fz==0&&fx!=0&&fy!=0){//两个方向受力
+		else if(fz==0&&fx!=0&&fy!=0){//涓や釜鏂瑰悜鍙楀姏
 			
 			if(fx>0){
 				t0.rotZ(-directy);			
@@ -603,17 +603,17 @@ public class VFIFE_Modeling_view extends JPanel {
 			}	
 		
 		
-		else{   //三个方向受力
+		else{   //涓変釜鏂瑰悜鍙楀姏
 			double pow1=Math.pow(fx,2)+ Math.pow(fy,2);
-			double Mforce1= Math.sqrt(pow1);//fx,fy合成力，在xoy平面上
+			double Mforce1= Math.sqrt(pow1);//fx,fy鍚堟垚鍔涳紝鍦▁oy骞抽潰涓�
 			double directy1=Math.acos(fy/Mforce1);
-			double bili=Math.acos(Mforce1/Mforce);//fx,fy合成力除以fx，fy，fz的合成力，为了求旋转角度
+			double bili=Math.acos(Mforce1/Mforce);//fx,fy鍚堟垚鍔涢櫎浠x锛宖y锛宖z鐨勫悎鎴愬姏锛屼负浜嗘眰鏃嬭浆瑙掑害
 			if(fx>0){
 				t0.rotZ(-directy1);
 				if(fy>0)
 				{
 					if(fz>0){
-						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, bili);//绕经过原点，和1,-（fx/fy）,0,旋转bili弧度
+						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, bili);//缁曠粡杩囧師鐐癸紝鍜�,-锛坒x/fy锛�0,鏃嬭浆bili寮у害
 						ta.setRotation(angle);
 						ta.mul(t0);
 					}//quan dayu 0

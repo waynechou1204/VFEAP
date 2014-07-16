@@ -54,6 +54,30 @@ public class Modeling {
         }
         return v5model;
     }
+    public static VFIFE_Model loadV5(String stpFilePath) throws SdaiException {
+        // set model as return value
+        VFIFE_Model v5model = new VFIFE_Model();
+
+        VFIFE_repository repo_v5 = new VFIFE_repository("repositories", "D:\\Repositories");
+        SdaiModel model_v5 = repo_v5.loadFile("MyCisRepo", stpFilePath);
+
+        // parse
+        Parser_nwV5VFIFE parser = new Parser_nwV5VFIFE();
+        
+        
+        v5model.setNodes(parser.parseNodes(model_v5, v5model));
+        parser.parseBars(model_v5, v5model); //v5model.setBars();
+        v5model.setMateriaux(parser.parseMaterials(v5model,model_v5));
+        v5model.setForces(parser.parseLoads_r(v5model,model_v5));
+        
+   //     v5model.getForces().addAll(parser.parseLoadMemberCon(model_v5, v5model));
+   //     v5model.getForces().addAll(parser.parseLoadNode(model_v5, v5model));
+
+        // end
+        repo_v5.close();
+
+        return v5model;
+    }
 
     public static void exportFile(VFIFE_Model v5model, String outFilePath)
             throws SdaiException, FileNotFoundException {

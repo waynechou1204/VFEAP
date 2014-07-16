@@ -76,6 +76,7 @@ public class JFrameMain extends javax.swing.JFrame {
         jMenuBar = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
+        jMenuItemOpenv5m = new javax.swing.JMenuItem();
         jMenuItemExport = new javax.swing.JMenuItem();
         jMenuItemExit = new javax.swing.JMenuItem();
         jMenuDefine = new javax.swing.JMenu();
@@ -101,7 +102,15 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         });
         jMenuFile.add(jMenuItemOpen);
-
+        
+        jMenuItemOpenv5m.setText("Openv5m");
+        jMenuItemOpenv5m.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	jMenuItemOpenv5mActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuItemOpenv5m);
+        
         jMenuItemExport.setText("Export");
         jMenuItemExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,6 +187,30 @@ public class JFrameMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
 
+    
+    private void jMenuItemOpenv5mActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
+        // get file open path
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("V5M FILE", "v5m"));
+        int i = fileChooser.showOpenDialog(getContentPane());
+
+        if (i == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            String stpFilePath = selectedFile.getAbsolutePath();
+
+            try {
+                // load file and parse
+                this.getContentPane().remove(m_view);
+                m_v5model = control.Modeling.loadV5(stpFilePath);
+                m_view = new VFIFE_Modeling_view(m_v5model);
+                this.getContentPane().add(m_view, BorderLayout.CENTER);
+
+            } catch (SdaiException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
     private void jMenuItemExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExportActionPerformed
         if (!m_v5model.isEmpty()) {
             // get file save path
@@ -222,6 +255,7 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemLoad;
     private javax.swing.JMenuItem jMenuItemMaterial;
     private javax.swing.JMenuItem jMenuItemOpen;
+    private javax.swing.JMenuItem jMenuItemOpenv5m;
     private javax.swing.JMenu jMenuSpecify;
     // End of variables declaration//GEN-END:variables
 }
