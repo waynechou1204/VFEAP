@@ -53,6 +53,7 @@ public class VFIFE_Modeling_view extends JPanel {
     private BranchGroup scene = null;
     private TransformGroup objTrans = null;
     private Transform3D ta = new Transform3D();
+    private Transform3D arrow = new Transform3D();
     private VFIFEMousePickBehavior mousePickBehavior = null;
     private VFIFEMouseOverBehavior mouseOverBehavior = null;
 
@@ -308,8 +309,8 @@ public class VFIFE_Modeling_view extends JPanel {
                 double fz = staticforce.getApplied_force_fz();
 
                 // draw Load
-                drawArrow(px, py, pz, fx, fy, fz);
-
+                drawArrow(px, py, pz, fx, fy, fz,force);
+               // drawArrow(5.0, 0.0, 2.5, 0.0,-40.0,0.0,force);
                 continue;
             }
 
@@ -350,10 +351,10 @@ public class VFIFE_Modeling_view extends JPanel {
                 double fz = staticforce.getApplied_force_fz();
 
                 // draw Load
-//<<<<<<< HEAD
-                drawArrow(px, py, pz, fx, fy, fz);
-                //for test
-                //drawArrow(5.0, 0.0, 2.5, -20.0, -40.0,-36.0);
+
+                drawArrow(px, py, pz, fx, fy, fz,force);
+              
+             
               
             }
         }
@@ -448,7 +449,7 @@ public class VFIFE_Modeling_view extends JPanel {
 
     // TODO Arrow is not finished yet
     private void drawArrow(double px, double py, double pz, double fx,
-            double fy, double fz) {
+            double fy, double fz,VFIFE_Load force) {
 
         TransformGroup arrowGroup = new TransformGroup();
         arrowGroup.setTransform(new Transform3D());
@@ -470,12 +471,13 @@ public class VFIFE_Modeling_view extends JPanel {
         mainLine.setColor(0, new Color3f(0.0f, 0.0f, 1.0f));
         mainLine.setColor(1, new Color3f(0.0f, 0.0f, 1.0f));
 
-
+/*
         Shape3D shape1 = new Shape3D();
         shape1.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
         shape1.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
         shape1.setGeometry(mainLine);
         objTrans.addChild(shape1);
+        */
         //力的方向
         
         double pow=Math.pow(fx,2)+ Math.pow(fy,2)+ Math.pow(fz,2);
@@ -487,7 +489,8 @@ public class VFIFE_Modeling_view extends JPanel {
         
         Appearance ap=new Appearance();
 		Material mat=new Material();
-		mat.setDiffuseColor(new Color3f(1f,0,0));
+	
+		mat.setDiffuseColor(new Color3f(0,0,1.0f));
 		mat.setShininess(128);
 		ap.setMaterial(mat);
 		Transform3D t=new Transform3D();
@@ -495,60 +498,73 @@ public class VFIFE_Modeling_view extends JPanel {
 		//7种情况 
 		if(fz!=0&&fx==0&&fy==0){//只受fz上面的力的作用
 			if(fz<0){
+			arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));//因为默认的cone在中心，cone长度是0.5，所以尖头在圆心，需要先平移Y0.25个单位
 			t.rotX(-directx);
-			t.setTranslation(new Vector3f(0.0f, -(float)pz,(float)pz));
+			t.mul(arrow);
+			//t.setTranslation(new Vector3f(0.0f, -(float)pz,(float)pz));
 			}
 			else{
+				arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
 				t.rotX(directx);
-				t.setTranslation(new Vector3f(0.0f, (float)pz,(float)pz));
+				t.mul(arrow);
+				//t.setTranslation(new Vector3f(0.0f, (float)pz,(float)pz));
 				}
 			Transform3D tmp=new Transform3D();
 			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
-			t.mul(tmp);
-			TransformGroup g1=new TransformGroup(t);
+			tmp.mul(t);
+			TransformGroup g1=new TransformGroup(tmp);
 			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
 			g1.addChild(cone2);
 			objTrans.addChild(g1);
 		}
 		else if(fz==0&&fx!=0&&fy==0){//只受fx上面的力的作用
 			if(fx>0){
+			arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
 			t.rotZ(-directy);
-			t.setTranslation(new Vector3f((float)px, (float)px,0.0f));
+			t.mul(arrow);
+			//t.setTranslation(new Vector3f((float)px, (float)px,0.0f));
 			}
 			else{
+				arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
 				t.rotZ(directy);
-				t.setTranslation(new Vector3f((float)px, -(float)px,0.0f));
+				t.mul(arrow);
+				//t.setTranslation(new Vector3f((float)px, -(float)px,0.0f));
 			}
 			Transform3D tmp=new Transform3D();
 			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
-			t.mul(tmp);
-			TransformGroup g1=new TransformGroup(t);
+			tmp.mul(t);
+			TransformGroup g1=new TransformGroup(tmp);
 			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
 			g1.addChild(cone2);
 			objTrans.addChild(g1);
 		}
 		else if(fz==0&&fx==0&&fy!=0){  //因为cone初始视图是尖头朝着Y轴的，因此Y轴上受正方向上的力无需旋转
 			if(fy>0){
+				arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
+				t.mul(arrow);
 			//t.rotY(-directz);
 			//t.setTranslation(new Vector3f((float)py, 0.0f,(float)py));
 			}
 			else{     //因为cone初始视图是尖头朝着Y轴的，因此Y轴上受负方向上的力需要绕x旋转，并平移2倍pz
+				arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
 				t.rotX(directy);
-				t.setTranslation(new Vector3f(0.0f, 0.0f,2*((float)pz)));				
+				t.mul(arrow);
+				//t.setTranslation(new Vector3f(0.0f, 0.0f,2*((float)pz)));				
 			}
 			Transform3D tmp=new Transform3D();
 			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
-			t.mul(tmp);
-			TransformGroup g1=new TransformGroup(t);
+			tmp.mul(t);
+			TransformGroup g1=new TransformGroup(tmp);
 			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
 			g1.addChild(cone2);
 			objTrans.addChild(g1);
 		}
 		
 		else if(fz!=0&&fx!=0&&fy==0){ //两个方向受力
-			
+			arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
 			
 			t0.rotX(Math.PI/2);
+			t0.mul(arrow);
 			if(fx>0){
 			t.rotY(directz);
 			}
@@ -566,7 +582,9 @@ public class VFIFE_Modeling_view extends JPanel {
 		}
 		
 		else if(fz!=0&&fx==0&&fy!=0){//两个方向受力
+			arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
 			t0.rotX(Math.PI/2-directz);
+			t0.mul(arrow);
 			if(fy>0){
 		
 				t0.rotX(Math.PI/2-directz);
@@ -586,12 +604,14 @@ public class VFIFE_Modeling_view extends JPanel {
 		}
 		
 		else if(fz==0&&fx!=0&&fy!=0){//两个方向受力
-			
+			arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
 			if(fx>0){
-				t0.rotZ(-directy);			
+				t0.rotZ(-directy);	
+				t0.mul(arrow);
 			}
 			else{
-				t0.rotZ(directy);			
+				t0.rotZ(directy);	
+				t0.mul(arrow);
 			}
 			Transform3D tmp=new Transform3D();
 			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
@@ -609,7 +629,9 @@ public class VFIFE_Modeling_view extends JPanel {
 			double directy1=Math.acos(fy/Mforce1);
 			double bili=Math.acos(Mforce1/Mforce);//fx,fy合成力除以fx，fy，fz的合成力，为了求旋转角度
 			if(fx>0){
+				arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
 				t0.rotZ(-directy1);
+				t0.mul(arrow);
 				if(fy>0)
 				{
 					if(fz>0){
@@ -638,7 +660,9 @@ public class VFIFE_Modeling_view extends JPanel {
 				}
 			}//(fx>0)
 			else{
+				arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
 				t0.rotZ(directy1);	
+				t0.mul(arrow);
 				if(fy>0)
 				{
 					if(fz>0){
@@ -673,24 +697,19 @@ public class VFIFE_Modeling_view extends JPanel {
 			g1.addChild(cone2);
 			objTrans.addChild(g1);		
 		}		
-			
-}	
-			
-    
-
-        //Shape3D shape = new Shape3D();
-        //shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
-       // shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-      //  shape.setUserData(force);
-       // shape.setGeometry(mainLine);
-        
-        //arrowGroup.addChild(shape);
-        
-        //objTrans.addChild(arrowGroup);
+		
+         Shape3D shape = new Shape3D();
+         shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+         shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
+         shape.setUserData(force);
+         shape.setGeometry(mainLine);
+         arrowGroup.addChild(shape);
+         arrowGroup.setPickable(true);
+         objTrans.addChild(arrowGroup);
 
         // draw other for
     
-
+    }
 
     public void drawTest() {
         // Create a cylinder
