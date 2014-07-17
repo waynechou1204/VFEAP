@@ -22,7 +22,7 @@ import javax.vecmath.AxisAngle4d;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
-import javax.vecmath.Vector3d;//...
+import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
 import model.VFIFE_AppliedLoadStaticForce;
@@ -37,13 +37,14 @@ import model.VFIFE_Node;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
-import com.sun.j3d.utils.geometry.Cone;//...
-import com.sun.j3d.utils.geometry.Cylinder;
+import com.sun.j3d.utils.geometry.Cone;
 import com.sun.j3d.utils.geometry.Primitive;
+import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
 import control.VFIFEMouseOverBehavior;
 import control.VFIFEMousePickBehavior;
+import javax.media.j3d.ColoringAttributes;
 
 public class VFIFE_Modeling_view extends JPanel {
 
@@ -52,11 +53,18 @@ public class VFIFE_Modeling_view extends JPanel {
     private SimpleUniverse universe = null;
     private BranchGroup scene = null;
     private TransformGroup objTrans = null;
+//<<<<<<< HEAD
     private Transform3D ta = new Transform3D();
     private Transform3D arrow = new Transform3D();
+//=======
+    
+//private Transform3D ta = new Transform3D();
+//>>>>>>> 948f8b200f6f6a0aedba6a2f0c8d082ef80da03d
     private VFIFEMousePickBehavior mousePickBehavior = null;
     private VFIFEMouseOverBehavior mouseOverBehavior = null;
 
+    private float m_scale=1;
+    
     private VFIFE_Model v5model = null;
 
     public VFIFE_Modeling_view(VFIFE_Model model) {
@@ -90,32 +98,31 @@ public class VFIFE_Modeling_view extends JPanel {
 
     public BranchGroup createSceneGraph(Canvas3D canvas) {
 
-        float scale = 1;
-        float offset_x=0;
-        float offset_y=0;
-        float offset_z=0;
-        
+        float offset_x = 0;
+        float offset_y = 0;
+        float offset_z = 0;
+
         if (!v5model.isEmpty()) {
             // scale array for the max distance among nodes
             ArrayList<Float> arr_x = new ArrayList<Float>();
             ArrayList<Float> arr_y = new ArrayList<Float>();
             ArrayList<Float> arr_z = new ArrayList<Float>();
-            
+
             for (VFIFE_Node node : this.v5model.getNodes()) {
-                arr_x.add((float)(node.getCoord().getCoordinate_x()));
-                arr_y.add((float)(node.getCoord().getCoordinate_y()));
-                arr_z.add((float)(node.getCoord().getCoordinate_z()));
+                arr_x.add((float) (node.getCoord().getCoordinate_x()));
+                arr_y.add((float) (node.getCoord().getCoordinate_y()));
+                arr_z.add((float) (node.getCoord().getCoordinate_z()));
             }
-            
+
             float span_x = getSpanValueF(arr_x);
             float span_y = getSpanValueF(arr_y);
             float span_z = getSpanValueF(arr_z);
-            
+
             offset_x = getMidValueF(arr_x);
             offset_y = getMidValueF(arr_y);
             offset_z = getMidValueF(arr_z);
-            
-            scale = (1 / getMaxOfThreeF(span_x, span_y, span_z));
+
+            m_scale = (1 / getMaxOfThreeF(span_x, span_y, span_z));
         }
 
         BranchGroup objRoot = new BranchGroup();
@@ -127,14 +134,13 @@ public class VFIFE_Modeling_view extends JPanel {
 
         // Create a TG to scale all objects appear in the scene.
         Transform3D t3d = new Transform3D();
-        t3d.setScale(scale);
+        t3d.setScale(m_scale);
         TransformGroup objScale = new TransformGroup(t3d);
         objRoot.addChild(objScale);
 
-        // Rotate the object to XZ orientation
+        // NO NEED TO Rotate the object to XY orientation
         Transform3D rotate3d = new Transform3D();
-        rotate3d.rotX(-Math.PI / 2);
-        
+         
         // set object to the center of window by offsets
         rotate3d.setTranslation(new Vector3f(-offset_x, -offset_y, -offset_z));
 
@@ -229,7 +235,31 @@ public class VFIFE_Modeling_view extends JPanel {
 
             if (node.getRestraint() != null) {
                 // TODO USE DIFFERENT SHAPE TO ILLUSTRATE Restraints
-                drawConeSimple(pointx, pointy, pointz);
+                boolean xdis = node.getRestraint().getBc_x_displacement_free();
+                boolean ydis = node.getRestraint().getBc_y_displacement_free();
+                boolean zdis = node.getRestraint().getBc_z_displacement_free();
+                boolean xrot = node.getRestraint().getBc_x_rotation_free();
+                boolean yrot = node.getRestraint().getBc_y_rotation_free();
+                boolean zrot = node.getRestraint().getBc_z_rotation_free();
+                
+                // ball joint /_\
+                if (!xdis && !ydis && !zdis && xrot && yrot && zrot) {
+                    drawBalljointCone(pointx, pointy, pointz);
+                }
+                // fixed |__|
+                else if (!xdis && !ydis && !zdis && !xrot && !yrot && !zrot) {
+                    drawFixedjointCross(pointx, pointy, pointz);
+                }
+                // fixed z (|)
+                else if (xdis && ydis && !zdis && xrot && yrot && zrot) {
+                    drawFixZDisjointSphere(pointx, pointy, pointz);
+                }
+                // free
+                else if (xdis && ydis && zdis && xrot && yrot && zrot) { }
+                // other boundary conditions : draw X
+                else {
+                    drawOtherjoints(pointx, pointy, pointz);
+                }
 
             }
 
@@ -351,102 +381,146 @@ public class VFIFE_Modeling_view extends JPanel {
                 double fz = staticforce.getApplied_force_fz();
 
                 // draw Load
+//<<<<<<< HEAD
 
                 drawArrow(px, py, pz, fx, fy, fz,force);
               
              
               
+//=======
+               // drawArrow(px, py, pz, fx, fy, fz);
+                
+//>>>>>>> 948f8b200f6f6a0aedba6a2f0c8d082ef80da03d
             }
         }
     }
 
-    public double getLength(double p1x, double p1y, double p1z, double p2x,
-            double p2y, double p2z) {
-        double len = 0;
-        len += Math.pow(p1x - p2x, 2);
-        len += Math.pow(p1y - p2y, 2);
-        len += Math.pow(p1z - p2z, 2);
-        len = Math.sqrt(len);
-        return len;
-    }
 
-    private void drawConeSimple(float x, float y, float z) {
+    private void drawBalljointCone(float x, float y, float z) {
 
-        TransformGroup coneGroup = new TransformGroup();
-        coneGroup.setTransform(new Transform3D());
-
-        LineArray tri1Line1 = new LineArray(2, LineArray.COORDINATES
-                | LineArray.COLOR_3);
-        tri1Line1.setCoordinate(0, new Point3f(x, y, z));
-        tri1Line1.setCoordinate(1, new Point3f(x, y - 0.289f, z - 0.5f));
-        tri1Line1.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
-        tri1Line1.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
-
-        LineArray tri1Line2 = new LineArray(2, LineArray.COORDINATES
-                | LineArray.COLOR_3);
-        tri1Line2.setCoordinate(0, new Point3f(x, y, z));
-        tri1Line2.setCoordinate(1, new Point3f(x, y + 0.289f, z - 0.5f));
-        tri1Line2.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
-        tri1Line2.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
-
-        LineArray tri1Line3 = new LineArray(2, LineArray.COORDINATES
-                | LineArray.COLOR_3);
-        tri1Line3.setCoordinate(0, new Point3f(x, y + 0.289f, z - 0.5f));
-        tri1Line3.setCoordinate(1, new Point3f(x, y - 0.289f, z - 0.5f));
-        tri1Line3.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
-        tri1Line3.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
-
-        LineArray tri2Line1 = new LineArray(2, LineArray.COORDINATES
-                | LineArray.COLOR_3);
-        tri2Line1.setCoordinate(0, new Point3f(x, y, z));
-        tri2Line1.setCoordinate(1, new Point3f(x - 0.289f, y, z - 0.5f));
-        tri2Line1.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
-        tri2Line1.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
-
-        LineArray tri2Line2 = new LineArray(2, LineArray.COORDINATES
-                | LineArray.COLOR_3);
-        tri2Line2.setCoordinate(0, new Point3f(x, y, z));
-        tri2Line2.setCoordinate(1, new Point3f(x + 0.289f, y, z - 0.5f));
-        tri2Line2.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
-        tri2Line2.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
-
-        LineArray tri2Line3 = new LineArray(2, LineArray.COORDINATES
-                | LineArray.COLOR_3);
-        tri2Line3.setCoordinate(0, new Point3f(x + 0.289f, y, z - 0.5f));
-        tri2Line3.setCoordinate(1, new Point3f(x - 0.289f, y, z - 0.5f));
-        tri2Line3.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
-        tri2Line3.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
-
-        Shape3D shape1 = new Shape3D();
-        shape1.setGeometry(tri1Line1);
-        coneGroup.addChild(shape1);
-
-        Shape3D shape2 = new Shape3D();
-        shape2.setGeometry(tri1Line2);
-        coneGroup.addChild(shape2);
-
-        Shape3D shape3 = new Shape3D();
-        shape3.setGeometry(tri1Line3);
-        coneGroup.addChild(shape3);
-
-        Shape3D shape4 = new Shape3D();
-        shape4.setGeometry(tri2Line1);
-        coneGroup.addChild(shape4);
-
-        Shape3D shape5 = new Shape3D();
-        shape5.setGeometry(tri2Line2);
-        coneGroup.addChild(shape5);
-
-        Shape3D shape6 = new Shape3D();
-        shape6.setGeometry(tri2Line3);
-        coneGroup.addChild(shape6);
+        float scale = 0.1f/m_scale;
         
+        Transform3D tf3d = new Transform3D();
+        tf3d.setTranslation(new Vector3f(x,y-scale/4,z));
+        
+        PolygonAttributes lineconepolygonAttributes = new PolygonAttributes();
+        lineconepolygonAttributes.setPolygonMode(PolygonAttributes.POLYGON_LINE);
+        
+        Appearance lineconeAppearance = new Appearance();
+        lineconeAppearance.setPolygonAttributes(lineconepolygonAttributes);
+        lineconeAppearance.setColoringAttributes(new ColoringAttributes(new Color3f(0, 1, 0), ColoringAttributes.FASTEST));
+        
+        Cone lineCone = new Cone(scale/3.5f, scale/2, Primitive.GENERATE_NORMALS, 4, 1, lineconeAppearance);
+
+        TransformGroup coneGroup = new TransformGroup(tf3d);
+        coneGroup.addChild(lineCone);
+
         coneGroup.setPickable(false);
 
         objTrans.addChild(coneGroup);
+    }
+    
+    private void drawFixedjointCross(float x, float y, float z) {
+        
+        float scale = 0.1f/m_scale;
+        
+        TransformGroup squareGroup = new TransformGroup();
+       
+        LineArray mainLine = new LineArray(2, LineArray.COORDINATES
+                | LineArray.COLOR_3);
+        mainLine.setCoordinate(0, new Point3f((float)x,(float)y,(float)z));
+        mainLine.setCoordinate(1, new Point3f((float)x,(float)y-0.5f*scale,(float)z));
+        mainLine.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
+        mainLine.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
 
+        Shape3D shape1 = new Shape3D();
+        shape1.setGeometry(mainLine);
+        squareGroup.addChild(shape1);
+        
+        LineArray xLine = new LineArray(2, LineArray.COORDINATES
+                | LineArray.COLOR_3);
+        xLine.setCoordinate(0, new Point3f((float)x-0.5f*scale,(float)y-0.5f*scale,(float)z));
+        xLine.setCoordinate(1, new Point3f((float)x+0.5f*scale,(float)y-0.5f*scale,(float)z));
+        xLine.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
+        xLine.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
+
+        Shape3D shape2 = new Shape3D();
+        shape2.setGeometry(xLine);
+        squareGroup.addChild(shape2);
+        
+        LineArray yLine = new LineArray(2, LineArray.COORDINATES
+                | LineArray.COLOR_3);
+        yLine.setCoordinate(0, new Point3f((float)x,(float)y-0.5f*scale,(float)z-0.5f*scale));
+        yLine.setCoordinate(1, new Point3f((float)x,(float)y-0.5f*scale,(float)z+0.5f*scale));
+        yLine.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
+        yLine.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
+
+        Shape3D shape3 = new Shape3D();
+        shape3.setGeometry(yLine);
+        squareGroup.addChild(shape3);
+        
+        squareGroup.setPickable(false);
+
+        objTrans.addChild(squareGroup);
     }
 
+    private void drawFixZDisjointSphere(float pointx, float pointy, float pointz) {
+        
+        float radius = 0.125f *0.1f/m_scale;
+        
+        Transform3D tf3d = new Transform3D();
+        tf3d.setTranslation(new Vector3f(pointx,pointy-radius,pointz));
+        
+        PolygonAttributes polygonAttributes = new PolygonAttributes();
+        polygonAttributes.setPolygonMode(PolygonAttributes.POLYGON_FILL);
+        
+        Appearance ap = new Appearance();
+        ap.setPolygonAttributes(polygonAttributes);
+        ap.setColoringAttributes(new ColoringAttributes(new Color3f(0, 1, 0), ColoringAttributes.FASTEST));
+        
+        Sphere ball = new Sphere(radius, Primitive.GENERATE_NORMALS, 64, ap);
+
+        TransformGroup ballGroup = new TransformGroup(tf3d);
+        ballGroup.addChild(ball);
+
+        ballGroup.setPickable(false);
+
+        objTrans.addChild(ballGroup);
+    }
+    
+    private void drawOtherjoints(float x, float y, float z){
+        
+        float scale = 0.1f/m_scale;
+        
+        TransformGroup xtg = new TransformGroup();
+        
+        LineArray xLine = new LineArray(2, LineArray.COORDINATES
+                | LineArray.COLOR_3);
+        xLine.setCoordinate(0, new Point3f((float)x-0.3f*scale,(float)y-0.3f*scale,(float)z));
+        xLine.setCoordinate(1, new Point3f((float)x+0.3f*scale,(float)y+0.3f*scale,(float)z));
+        xLine.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
+        xLine.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
+
+        Shape3D shape1 = new Shape3D();
+        shape1.setGeometry(xLine);
+        xtg.addChild(shape1);
+        
+        LineArray yLine = new LineArray(2, LineArray.COORDINATES
+                | LineArray.COLOR_3);
+        yLine.setCoordinate(0, new Point3f((float)x+0.3f*scale,(float)y-0.3f*scale,(float)z));
+        yLine.setCoordinate(1, new Point3f((float)x-0.3f*scale,(float)y+0.3f*scale,(float)z));
+        yLine.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
+        yLine.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
+
+        Shape3D shape2 = new Shape3D();
+        shape2.setGeometry(yLine);
+        xtg.addChild(shape2);
+        
+        xtg.setPickable(false);
+
+        objTrans.addChild(xtg);
+    }
+    
     // TODO Arrow is not finished yet
     private void drawArrow(double px, double py, double pz, double fx,
             double fy, double fz,VFIFE_Load force) {
@@ -460,37 +534,38 @@ public class VFIFE_Modeling_view extends JPanel {
         // draw main line of the force arrow
         LineArray mainLine = new LineArray(2, LineArray.COORDINATES
                 | LineArray.COLOR_3);
-        mainLine.setCoordinate(0, new Point3f((float) px, (float) py,
-                (float) pz));
-
+        
         // get force volume
         double f = getLength(fx, fy, fz, 0, 0, 0);
-
+        mainLine.setCoordinate(0, new Point3f((float)px,(float)py,(float)pz));
         mainLine.setCoordinate(1, new Point3f((float) (px - fx * 2 / f),
                 (float) (py - fy * 2 / f), (float) (pz - fz * 2 / f)));
-        mainLine.setColor(0, new Color3f(0.0f, 0.0f, 1.0f));
-        mainLine.setColor(1, new Color3f(0.0f, 0.0f, 1.0f));
+        mainLine.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
+        mainLine.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
+
 
 /*
+
+>>>>>>> 948f8b200f6f6a0aedba6a2f0c8d082ef80da03d
         Shape3D shape1 = new Shape3D();
         shape1.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
         shape1.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
         shape1.setGeometry(mainLine);
         objTrans.addChild(shape1);
+<<<<<<< HEAD
         */
         //力的方向
-        
-        double pow=Math.pow(fx,2)+ Math.pow(fy,2)+ Math.pow(fz,2);
-        double Mforce= Math.sqrt(pow);
-       
-        double directx=Math.acos(fx/Mforce);//与坐标轴的夹角，弧度制
-        double directy=Math.acos(fy/Mforce);
-        double directz=Math.acos(fz/Mforce);
-        
+
+        double pow = Math.pow(fx, 2) + Math.pow(fy, 2) + Math.pow(fz, 2);
+        double Mforce = Math.sqrt(pow);
+
+        double directx = Math.acos(fx / Mforce);//与坐标轴的夹角，弧度制
+        double directy = Math.acos(fy / Mforce);
+        double directz = Math.acos(fz / Mforce);
         Appearance ap=new Appearance();
 		Material mat=new Material();
 	
-		mat.setDiffuseColor(new Color3f(0,0,1.0f));
+		mat.setDiffuseColor(new Color3f(0,1.0f,0.0f));
 		mat.setShininess(128);
 		ap.setMaterial(mat);
 		Transform3D t=new Transform3D();
@@ -711,55 +786,53 @@ public class VFIFE_Modeling_view extends JPanel {
     
     }
 
-    public void drawTest() {
-        // Create a cylinder
-        PolygonAttributes attr = new PolygonAttributes();
-        attr.setCullFace(PolygonAttributes.CULL_NONE);
-        Appearance ap = new Appearance();
-        Material mat = new Material();
-        mat.setEmissiveColor(new Color3f(1.0f, 0.0f, 0.0f));
-        mat.setLightingEnable(true);
-        ap.setMaterial(mat);
-        ap.setPolygonAttributes(attr);
-
-        Cylinder CylinderObj = new Cylinder(1.0f, 2.0f, ap);
-        objTrans.addChild(CylinderObj);
-
-    }
-    public void  cone(){
-    TransformGroup lineconeGroup=new TransformGroup();  
-          Transform3D  lineconeTransform3D=new Transform3D();  
-          lineconeTransform3D.setTranslation(new Vector3d(0,0,0));  
-          lineconeGroup.setTransform(lineconeTransform3D);  
-          Cone lineCone=new Cone(0.5f, 1.5f);  
-     
-          Appearance lineconeAppearance=new Appearance();  
     
-          PolygonAttributes lineconepolygonAttributes=new  PolygonAttributes();  
-          lineconepolygonAttributes.setPolygonMode(PolygonAttributes.CULL_BACK);  
-          lineconeAppearance.setPolygonAttributes(lineconepolygonAttributes);  
-    
-          lineCone.setAppearance(lineconeAppearance);  
-     
-          lineconeGroup.addChild(lineCone);  
-          objTrans.addChild(lineconeGroup);
+    public void cone() {
+        TransformGroup lineconeGroup = new TransformGroup();
+        Transform3D lineconeTransform3D = new Transform3D();
+        lineconeTransform3D.setTranslation(new Vector3d(0, 0, 0));
+        lineconeGroup.setTransform(lineconeTransform3D);
+        Cone lineCone = new Cone(0.5f, 1.5f);
+
+        Appearance lineconeAppearance = new Appearance();
+
+
+        PolygonAttributes lineconepolygonAttributes = new PolygonAttributes();
+        lineconepolygonAttributes.setPolygonMode(PolygonAttributes.CULL_BACK);
+        lineconeAppearance.setPolygonAttributes(lineconepolygonAttributes);
+
+        lineCone.setAppearance(lineconeAppearance);
+
+        lineconeGroup.addChild(lineCone);
+        objTrans.addChild(lineconeGroup);
     }
 
-    private float getMidValueF(ArrayList<Float> arr_scale){
+    public double getLength(double p1x, double p1y, double p1z, double p2x,
+            double p2y, double p2z) {
+        double len = 0;
+        len += Math.pow(p1x - p2x, 2);
+        len += Math.pow(p1y - p2y, 2);
+        len += Math.pow(p1z - p2z, 2);
+        len = Math.sqrt(len);
+        return len;
+    }
+    
+    private float getMidValueF(ArrayList<Float> arr_scale) {
         float min = Collections.min(arr_scale);
         float max = Collections.max(arr_scale);
-        return (min+max)/2;
+        return (min + max) / 2;
     }
-    
-    private float getSpanValueF(ArrayList<Float> arr_scale){
+
+    private float getSpanValueF(ArrayList<Float> arr_scale) {
         float min = Collections.min(arr_scale);
         float max = Collections.max(arr_scale);
-        return (max-min);
+        return (max - min);
     }
-    
-    private float getMaxOfThreeF(float a, float b, float c){
+
+    private float getMaxOfThreeF(float a, float b, float c) {
         float max = Math.max(a, b);
         max = Math.max(max, c);
         return max;
     }
+
 }

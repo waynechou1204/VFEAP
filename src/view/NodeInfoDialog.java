@@ -20,12 +20,12 @@ public class NodeInfoDialog extends JDialog {
 
     private final JPanel contentPanel = new JPanel();
     private VFIFE_Node m_vnode;
-    private JCheckBox xdisplacementfree;
-	private JCheckBox ydisplacementfree;
-	private JCheckBox zdisplacementfree;
-	private JCheckBox xrotationfree;
-	private JCheckBox yrotationfree;
-	private JCheckBox zrotationfree;
+    private JCheckBox xdisplacementRestraint;
+    private JCheckBox ydisplacementRestraint;
+    private JCheckBox zdisplacementRestraint;
+    private JCheckBox xrotationRestraint;
+    private JCheckBox yrotationRestraint;
+    private JCheckBox zrotationRestraint;
 
     /**
      * Launch the application.
@@ -35,7 +35,7 @@ public class NodeInfoDialog extends JDialog {
      */
     public NodeInfoDialog(VFIFE_Node vnode) {
         this.m_vnode = vnode;
-        
+
         setBounds(500, 300, 300, 346);
         getContentPane().setLayout(new BorderLayout());
         contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -47,7 +47,7 @@ public class NodeInfoDialog extends JDialog {
         contentPanel.add(lblNewLabel);
 
         JLabel nodeidLabel = new JLabel();
-        nodeidLabel.setText(m_vnode.getNode_name()+ "");
+        nodeidLabel.setText(m_vnode.getNode_name() + "");
         nodeidLabel.setHorizontalAlignment(SwingConstants.CENTER);
         nodeidLabel.setBounds(98, 10, 64, 15);
         contentPanel.add(nodeidLabel);
@@ -87,87 +87,75 @@ public class NodeInfoDialog extends JDialog {
         contentPanel.add(label);
 
         JLabel boundConNamelbl = new JLabel("");
-        if (m_vnode.getRestraint()!=null) {
-            boundConNamelbl.setText(m_vnode.getRestraint().getBoundary_condition_name()); 
-        }
-        else{
+        if (m_vnode.getRestraint() != null) {
+            boundConNamelbl.setText(m_vnode.getRestraint().getBoundary_condition_name());
+        } else {
             boundConNamelbl.setText("Free node");
         }
         boundConNamelbl.setHorizontalAlignment(SwingConstants.CENTER);
         boundConNamelbl.setBounds(108, 121, 100, 15);
         contentPanel.add(boundConNamelbl);
 
-        JLabel lblNewLabel_1 = new JLabel("Constraint Detail:");
-        lblNewLabel_1.setBounds(10, 146, 120, 15);
+        JLabel lblNewLabel_1 = new JLabel("Restraints of freedom:");
+        lblNewLabel_1.setBounds(10, 146, 200, 15);
         contentPanel.add(lblNewLabel_1);
 
         JLabel boundConDesclbl = new JLabel("");
         boundConDesclbl.setHorizontalAlignment(SwingConstants.CENTER);
         boundConDesclbl.setBounds(108, 146, 100, 15);
-        if (m_vnode.getRestraint()!=null) {
+        if (m_vnode.getRestraint() != null) {
             boundConDesclbl.setText(m_vnode.getRestraint().getBoundary_condition_description());
-            
         }
         contentPanel.add(boundConDesclbl);
-        
-        
-        xdisplacementfree = new JCheckBox("x_displacement_free");
-		xdisplacementfree.setBounds(10, 174, 139, 23);
-		if(vnode.getRestraint()!=null&&vnode.getRestraint().getBc_x_displacement_free())
-		{
-			xdisplacementfree.setSelected(true);
-		}
-		contentPanel.add(xdisplacementfree);
-		
-		xrotationfree = new JCheckBox("x_rotation_free");
-		xrotationfree.setBounds(163, 174, 132, 23);
-		if(vnode.getRestraint()!=null&&vnode.getRestraint().getBc_x_rotation_free())
-		{
-			xrotationfree.setSelected(true);
-		}
-		contentPanel.add(xrotationfree);
-		
-		ydisplacementfree = new JCheckBox("y_displacement_free");
-		ydisplacementfree.setBounds(10, 199, 139, 23);
-		if(vnode.getRestraint()!=null&&vnode.getRestraint().getBc_y_displacement_free())
-		{
-			ydisplacementfree.setSelected(true);
-		}
-		contentPanel.add(ydisplacementfree);
-		
-		yrotationfree = new JCheckBox("y_rotation_free");
-		yrotationfree.setBounds(163, 199, 132, 23);
-		if(vnode.getRestraint()!=null&&vnode.getRestraint().getBc_y_rotation_free())
-		{
-			yrotationfree.setSelected(true);
-		}
-		contentPanel.add(yrotationfree);
-		
-		zdisplacementfree = new JCheckBox("z_displacement_free");
-		zdisplacementfree.setBounds(10, 234, 139, 23);
-		if(vnode.getRestraint()!=null&&vnode.getRestraint().getBc_z_displacement_free())
-		{
-			zdisplacementfree.setSelected(true);
-		}
-		contentPanel.add(zdisplacementfree);
-		
-		zrotationfree = new JCheckBox("z_rotation_free");
-		zrotationfree.setBounds(163, 234, 132, 23);
-		if(vnode.getRestraint()!=null&&vnode.getRestraint().getBc_z_rotation_free())
-		{
-			zrotationfree.setSelected(true);
-		}
-		contentPanel.add(zrotationfree);
-		
-		if(m_vnode.getRestraint()==null)
-		{
-			xdisplacementfree.setEnabled(false);
-			ydisplacementfree.setEnabled(false);
-			zdisplacementfree.setEnabled(false);
-			xrotationfree.setEnabled(false);
-			yrotationfree.setEnabled(false);
-			zrotationfree.setEnabled(false);
-		}
+
+        xdisplacementRestraint = new JCheckBox("X Displacement");
+        xdisplacementRestraint.setBounds(10, 174, 139, 23);
+        if (vnode.getRestraint() != null && !vnode.getRestraint().getBc_x_displacement_free()) {
+            xdisplacementRestraint.setSelected(true);
+        }
+        contentPanel.add(xdisplacementRestraint);
+
+        xrotationRestraint = new JCheckBox("X Rotation");
+        xrotationRestraint.setBounds(163, 174, 132, 23);
+        if (vnode.getRestraint() != null && !vnode.getRestraint().getBc_x_rotation_free()) {
+            xrotationRestraint.setSelected(true);
+        }
+        contentPanel.add(xrotationRestraint);
+
+        ydisplacementRestraint = new JCheckBox("Y Displacement");
+        ydisplacementRestraint.setBounds(10, 199, 139, 23);
+        if (vnode.getRestraint() != null && !vnode.getRestraint().getBc_y_displacement_free()) {
+            ydisplacementRestraint.setSelected(true);
+        }
+        contentPanel.add(ydisplacementRestraint);
+
+        yrotationRestraint = new JCheckBox("Y Rotation");
+        yrotationRestraint.setBounds(163, 199, 132, 23);
+        if (vnode.getRestraint() != null && !vnode.getRestraint().getBc_y_rotation_free()) {
+            yrotationRestraint.setSelected(true);
+        }
+        contentPanel.add(yrotationRestraint);
+
+        zdisplacementRestraint = new JCheckBox("Z Displacement");
+        zdisplacementRestraint.setBounds(10, 224, 139, 23);
+        if (vnode.getRestraint() != null && !vnode.getRestraint().getBc_z_displacement_free()) {
+            zdisplacementRestraint.setSelected(true);
+        }
+        contentPanel.add(zdisplacementRestraint);
+
+        zrotationRestraint = new JCheckBox("Z Rotation");
+        zrotationRestraint.setBounds(163, 224, 132, 23);
+        if (vnode.getRestraint() != null && !vnode.getRestraint().getBc_z_rotation_free()) {
+            zrotationRestraint.setSelected(true);
+        }
+        contentPanel.add(zrotationRestraint);
+
+        xdisplacementRestraint.setEnabled(true);
+        ydisplacementRestraint.setEnabled(true);
+        zdisplacementRestraint.setEnabled(true);
+        xrotationRestraint.setEnabled(true);
+        yrotationRestraint.setEnabled(true);
+        zrotationRestraint.setEnabled(true);
 
         JPanel buttonPane = new JPanel();
         buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -176,41 +164,20 @@ public class NodeInfoDialog extends JDialog {
         JButton okButton = new JButton("OK");
         okButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-//            	if(NodeInfoDialog.this.m_vnode.getRestraint()==null)
-//				{
-//					VFIFE_BoundaryCondition vbc = new VFIFE_BoundaryCondition();
-//					vbc.setBc_x_displacement_free(false);
-//					vbc.setBc_x_rotation_free(false);
-//					vbc.setBc_y_displacement_free(false);
-//					vbc.setBc_y_rotation_free(false);
-//					vbc.setBc_z_displacement_free(false);
-//					vbc.setBc_z_rotation_free(false);
-//					NodeInfoDialog.this.m_vnode.setRestraint(vbc);
-//				}
-				if(NodeInfoDialog.this.xdisplacementfree.isSelected())
-				{
-					NodeInfoDialog.this.m_vnode.getRestraint().setBc_x_displacement_free(true);
-				}
-				if(NodeInfoDialog.this.ydisplacementfree.isSelected())
-				{
-					NodeInfoDialog.this.m_vnode.getRestraint().setBc_y_displacement_free(true);
-				}
-				if(NodeInfoDialog.this.zdisplacementfree.isSelected())
-				{
-					NodeInfoDialog.this.m_vnode.getRestraint().setBc_z_displacement_free(true);
-				}
-				if(NodeInfoDialog.this.xrotationfree.isSelected())
-				{
-					NodeInfoDialog.this.m_vnode.getRestraint().setBc_x_rotation_free(true);
-				}
-				if(NodeInfoDialog.this.yrotationfree.isSelected())
-				{
-					NodeInfoDialog.this.m_vnode.getRestraint().setBc_y_rotation_free(true);
-				}
-				if(NodeInfoDialog.this.zrotationfree.isSelected())
-				{
-					NodeInfoDialog.this.m_vnode.getRestraint().setBc_z_rotation_free(true);
-				}
+                
+                // if there is no boundary condition, create one
+                if (m_vnode.getRestraint() == null) {
+                    m_vnode.setRestraint(new VFIFE_BoundaryCondition());
+                }
+
+                // set restraint values and save
+                NodeInfoDialog.this.m_vnode.getRestraint().setBc_x_displacement_free(!NodeInfoDialog.this.xdisplacementRestraint.isSelected());
+                NodeInfoDialog.this.m_vnode.getRestraint().setBc_y_displacement_free(!NodeInfoDialog.this.ydisplacementRestraint.isSelected());
+                NodeInfoDialog.this.m_vnode.getRestraint().setBc_z_displacement_free(!NodeInfoDialog.this.zdisplacementRestraint.isSelected());
+                NodeInfoDialog.this.m_vnode.getRestraint().setBc_x_rotation_free(!NodeInfoDialog.this.xrotationRestraint.isSelected());
+                NodeInfoDialog.this.m_vnode.getRestraint().setBc_y_rotation_free(!NodeInfoDialog.this.yrotationRestraint.isSelected());
+                NodeInfoDialog.this.m_vnode.getRestraint().setBc_z_rotation_free(!NodeInfoDialog.this.zrotationRestraint.isSelected());
+
                 NodeInfoDialog.this.dispose();
             }
         });
