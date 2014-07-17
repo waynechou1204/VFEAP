@@ -3,7 +3,7 @@ HEADER;
 FILE_DESCRIPTION(/* description */ ('{cimsteel logical product model version (6) object (1) structural-frame-schema (1)}',
 'CC504'),/* implementation_level */ '2;1');
 FILE_NAME('5-3', /* name */
-'16-2014-7T20:29:15+8:00', /* time_stamp */
+'17-2014-7T23:49:20+8:00', /* time_stamp */
 (''), /* author */
 (''), /* organization */
 '14.1.0', /* preprocessor_version */
@@ -176,11 +176,12 @@ ELEMENT_WITH_MATERIAL(#85)
 #123=ASSEMBLY_MAP(#120,(#108));
 #124=LOAD_NODE(#125,'2','DEAD',#78,#126);
 #125=LOAD_CASE('DEAD',$,(),#127);
-#126=APPLIED_LOAD_STATIC_FORCE('2',$,#128,$,$,$,$);
+#126=APPLIED_LOAD_STATIC_FORCE('2',#128,#129,$,$,$,$);
 #127=PHYSICAL_ACTION_PERMANENT(.STATIC.,.FIXED_ACTION.,.INDIRECT_ACTION.,$,$,(),(),
 .DEAD.);
-#128=FORCE_MEASURE_WITH_UNIT(FORCE_MEASURE(10.0000000),#129);
-#129=(FORCE_UNIT()
+#128=FORCE_MEASURE_WITH_UNIT(FORCE_MEASURE(10.0000000),#130);
+#129=FORCE_MEASURE_WITH_UNIT(FORCE_MEASURE(10.0000000),#130);
+#130=(FORCE_UNIT()
 NAMED_UNIT(*)
 SI_UNIT($,.NEWTON.)
 );

@@ -20,7 +20,7 @@ public class Modeling {
     public Modeling() throws SdaiException {
 
        // VFIFE_Model m_v5model = new VFIFE_Model();
-        VFIFE_Model m_v5model = loadCIS("model_resources\\5-1.stp");
+        VFIFE_Model m_v5model = loadCIS("model_resources\\5-3.stp");
 
         // main window of the model
         m_frameMain = new JFrameMain(m_v5model);

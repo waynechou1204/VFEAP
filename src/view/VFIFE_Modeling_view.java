@@ -53,18 +53,12 @@ public class VFIFE_Modeling_view extends JPanel {
     private SimpleUniverse universe = null;
     private BranchGroup scene = null;
     private TransformGroup objTrans = null;
-//<<<<<<< HEAD
-    private Transform3D ta = new Transform3D();
-    private Transform3D arrow = new Transform3D();
-//=======
-    
-//private Transform3D ta = new Transform3D();
-//>>>>>>> 948f8b200f6f6a0aedba6a2f0c8d082ef80da03d
+
     private VFIFEMousePickBehavior mousePickBehavior = null;
     private VFIFEMouseOverBehavior mouseOverBehavior = null;
 
-    private float m_scale=1;
-    
+    private float m_scale = 1;
+
     private VFIFE_Model v5model = null;
 
     public VFIFE_Modeling_view(VFIFE_Model model) {
@@ -140,7 +134,7 @@ public class VFIFE_Modeling_view extends JPanel {
 
         // NO NEED TO Rotate the object to XY orientation
         Transform3D rotate3d = new Transform3D();
-         
+
         // set object to the center of window by offsets
         rotate3d.setTranslation(new Vector3f(-offset_x, -offset_y, -offset_z));
 
@@ -241,22 +235,19 @@ public class VFIFE_Modeling_view extends JPanel {
                 boolean xrot = node.getRestraint().getBc_x_rotation_free();
                 boolean yrot = node.getRestraint().getBc_y_rotation_free();
                 boolean zrot = node.getRestraint().getBc_z_rotation_free();
-                
+
                 // ball joint /_\
                 if (!xdis && !ydis && !zdis && xrot && yrot && zrot) {
                     drawBalljointCone(pointx, pointy, pointz);
-                }
-                // fixed |__|
+                } // fixed |__|
                 else if (!xdis && !ydis && !zdis && !xrot && !yrot && !zrot) {
                     drawFixedjointCross(pointx, pointy, pointz);
-                }
-                // fixed z (|)
+                } // fixed z (|)
                 else if (xdis && ydis && !zdis && xrot && yrot && zrot) {
                     drawFixZDisjointSphere(pointx, pointy, pointz);
-                }
-                // free
-                else if (xdis && ydis && zdis && xrot && yrot && zrot) { }
-                // other boundary conditions : draw X
+                } // free
+                else if (xdis && ydis && zdis && xrot && yrot && zrot) {
+                } // other boundary conditions : draw X
                 else {
                     drawOtherjoints(pointx, pointy, pointz);
                 }
@@ -339,8 +330,8 @@ public class VFIFE_Modeling_view extends JPanel {
                 double fz = staticforce.getApplied_force_fz();
 
                 // draw Load
-                drawArrow(px, py, pz, fx, fy, fz,force);
-               // drawArrow(5.0, 0.0, 2.5, 0.0,-40.0,0.0,force);
+                drawArrow(px, py, pz, fx, fy, fz, force);
+                // drawArrow(5.0, 0.0, 2.5, 0.0,-40.0,0.0,force);
                 continue;
             }
 
@@ -381,36 +372,27 @@ public class VFIFE_Modeling_view extends JPanel {
                 double fz = staticforce.getApplied_force_fz();
 
                 // draw Load
-//<<<<<<< HEAD
+                drawArrow(px, py, pz, fx, fy, fz, force);
 
-                drawArrow(px, py, pz, fx, fy, fz,force);
-              
-             
-              
-//=======
-               // drawArrow(px, py, pz, fx, fy, fz);
-                
-//>>>>>>> 948f8b200f6f6a0aedba6a2f0c8d082ef80da03d
             }
         }
     }
 
-
     private void drawBalljointCone(float x, float y, float z) {
 
-        float scale = 0.1f/m_scale;
-        
+        float scale = 0.1f / m_scale;
+
         Transform3D tf3d = new Transform3D();
-        tf3d.setTranslation(new Vector3f(x,y-scale/4,z));
-        
+        tf3d.setTranslation(new Vector3f(x, y - scale / 4, z));
+
         PolygonAttributes lineconepolygonAttributes = new PolygonAttributes();
         lineconepolygonAttributes.setPolygonMode(PolygonAttributes.POLYGON_LINE);
-        
+
         Appearance lineconeAppearance = new Appearance();
         lineconeAppearance.setPolygonAttributes(lineconepolygonAttributes);
         lineconeAppearance.setColoringAttributes(new ColoringAttributes(new Color3f(0, 1, 0), ColoringAttributes.FASTEST));
-        
-        Cone lineCone = new Cone(scale/3.5f, scale/2, Primitive.GENERATE_NORMALS, 4, 1, lineconeAppearance);
+
+        Cone lineCone = new Cone(scale / 3.5f, scale / 2, Primitive.GENERATE_NORMALS, 4, 1, lineconeAppearance);
 
         TransformGroup coneGroup = new TransformGroup(tf3d);
         coneGroup.addChild(lineCone);
@@ -419,65 +401,65 @@ public class VFIFE_Modeling_view extends JPanel {
 
         objTrans.addChild(coneGroup);
     }
-    
+
     private void drawFixedjointCross(float x, float y, float z) {
-        
-        float scale = 0.1f/m_scale;
-        
+
+        float scale = 0.1f / m_scale;
+
         TransformGroup squareGroup = new TransformGroup();
-       
+
         LineArray mainLine = new LineArray(2, LineArray.COORDINATES
                 | LineArray.COLOR_3);
-        mainLine.setCoordinate(0, new Point3f((float)x,(float)y,(float)z));
-        mainLine.setCoordinate(1, new Point3f((float)x,(float)y-0.5f*scale,(float)z));
+        mainLine.setCoordinate(0, new Point3f((float) x, (float) y, (float) z));
+        mainLine.setCoordinate(1, new Point3f((float) x, (float) y - 0.5f * scale, (float) z));
         mainLine.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
         mainLine.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
 
         Shape3D shape1 = new Shape3D();
         shape1.setGeometry(mainLine);
         squareGroup.addChild(shape1);
-        
+
         LineArray xLine = new LineArray(2, LineArray.COORDINATES
                 | LineArray.COLOR_3);
-        xLine.setCoordinate(0, new Point3f((float)x-0.5f*scale,(float)y-0.5f*scale,(float)z));
-        xLine.setCoordinate(1, new Point3f((float)x+0.5f*scale,(float)y-0.5f*scale,(float)z));
+        xLine.setCoordinate(0, new Point3f((float) x - 0.5f * scale, (float) y - 0.5f * scale, (float) z));
+        xLine.setCoordinate(1, new Point3f((float) x + 0.5f * scale, (float) y - 0.5f * scale, (float) z));
         xLine.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
         xLine.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
 
         Shape3D shape2 = new Shape3D();
         shape2.setGeometry(xLine);
         squareGroup.addChild(shape2);
-        
+
         LineArray yLine = new LineArray(2, LineArray.COORDINATES
                 | LineArray.COLOR_3);
-        yLine.setCoordinate(0, new Point3f((float)x,(float)y-0.5f*scale,(float)z-0.5f*scale));
-        yLine.setCoordinate(1, new Point3f((float)x,(float)y-0.5f*scale,(float)z+0.5f*scale));
+        yLine.setCoordinate(0, new Point3f((float) x, (float) y - 0.5f * scale, (float) z - 0.5f * scale));
+        yLine.setCoordinate(1, new Point3f((float) x, (float) y - 0.5f * scale, (float) z + 0.5f * scale));
         yLine.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
         yLine.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
 
         Shape3D shape3 = new Shape3D();
         shape3.setGeometry(yLine);
         squareGroup.addChild(shape3);
-        
+
         squareGroup.setPickable(false);
 
         objTrans.addChild(squareGroup);
     }
 
     private void drawFixZDisjointSphere(float pointx, float pointy, float pointz) {
-        
-        float radius = 0.125f *0.1f/m_scale;
-        
+
+        float radius = 0.125f * 0.1f / m_scale;
+
         Transform3D tf3d = new Transform3D();
-        tf3d.setTranslation(new Vector3f(pointx,pointy-radius,pointz));
-        
+        tf3d.setTranslation(new Vector3f(pointx, pointy - radius, pointz));
+
         PolygonAttributes polygonAttributes = new PolygonAttributes();
         polygonAttributes.setPolygonMode(PolygonAttributes.POLYGON_FILL);
-        
+
         Appearance ap = new Appearance();
         ap.setPolygonAttributes(polygonAttributes);
         ap.setColoringAttributes(new ColoringAttributes(new Color3f(0, 1, 0), ColoringAttributes.FASTEST));
-        
+
         Sphere ball = new Sphere(radius, Primitive.GENERATE_NORMALS, 64, ap);
 
         TransformGroup ballGroup = new TransformGroup(tf3d);
@@ -487,44 +469,46 @@ public class VFIFE_Modeling_view extends JPanel {
 
         objTrans.addChild(ballGroup);
     }
-    
-    private void drawOtherjoints(float x, float y, float z){
-        
-        float scale = 0.1f/m_scale;
-        
+
+    private void drawOtherjoints(float x, float y, float z) {
+
+        float scale = 0.1f / m_scale;
+
         TransformGroup xtg = new TransformGroup();
-        
+
         LineArray xLine = new LineArray(2, LineArray.COORDINATES
                 | LineArray.COLOR_3);
-        xLine.setCoordinate(0, new Point3f((float)x-0.3f*scale,(float)y-0.3f*scale,(float)z));
-        xLine.setCoordinate(1, new Point3f((float)x+0.3f*scale,(float)y+0.3f*scale,(float)z));
+        xLine.setCoordinate(0, new Point3f((float) x - 0.3f * scale, (float) y - 0.3f * scale, (float) z));
+        xLine.setCoordinate(1, new Point3f((float) x + 0.3f * scale, (float) y + 0.3f * scale, (float) z));
         xLine.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
         xLine.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
 
         Shape3D shape1 = new Shape3D();
         shape1.setGeometry(xLine);
         xtg.addChild(shape1);
-        
+
         LineArray yLine = new LineArray(2, LineArray.COORDINATES
                 | LineArray.COLOR_3);
-        yLine.setCoordinate(0, new Point3f((float)x+0.3f*scale,(float)y-0.3f*scale,(float)z));
-        yLine.setCoordinate(1, new Point3f((float)x-0.3f*scale,(float)y+0.3f*scale,(float)z));
+        yLine.setCoordinate(0, new Point3f((float) x + 0.3f * scale, (float) y - 0.3f * scale, (float) z));
+        yLine.setCoordinate(1, new Point3f((float) x - 0.3f * scale, (float) y + 0.3f * scale, (float) z));
         yLine.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
         yLine.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
 
         Shape3D shape2 = new Shape3D();
         shape2.setGeometry(yLine);
         xtg.addChild(shape2);
-        
+
         xtg.setPickable(false);
 
         objTrans.addChild(xtg);
     }
-    
+
     // TODO Arrow is not finished yet
     private void drawArrow(double px, double py, double pz, double fx,
-            double fy, double fz,VFIFE_Load force) {
+            double fy, double fz, VFIFE_Load force) {
 
+        float scale = 0.1f/m_scale;
+        
         TransformGroup arrowGroup = new TransformGroup();
         arrowGroup.setTransform(new Transform3D());
         arrowGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -534,259 +518,227 @@ public class VFIFE_Modeling_view extends JPanel {
         // draw main line of the force arrow
         LineArray mainLine = new LineArray(2, LineArray.COORDINATES
                 | LineArray.COLOR_3);
-        
+
         // get force volume
         double f = getLength(fx, fy, fz, 0, 0, 0);
-        mainLine.setCoordinate(0, new Point3f((float)px,(float)py,(float)pz));
-        mainLine.setCoordinate(1, new Point3f((float) (px - fx * 2 / f),
-                (float) (py - fy * 2 / f), (float) (pz - fz * 2 / f)));
+        mainLine.setCoordinate(0, new Point3f((float) px, (float) py, (float) pz));
+        mainLine.setCoordinate(1, new Point3f((float) (px - fx*2*scale/f),
+                (float) (py - fy*2*scale/f), (float) (pz - fz*2*scale/f)));
         mainLine.setColor(0, new Color3f(0.0f, 1.0f, 0.0f));
         mainLine.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
 
-
-/*
-
->>>>>>> 948f8b200f6f6a0aedba6a2f0c8d082ef80da03d
-        Shape3D shape1 = new Shape3D();
-        shape1.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
-        shape1.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-        shape1.setGeometry(mainLine);
-        objTrans.addChild(shape1);
-<<<<<<< HEAD
-        */
-        //力的方向
-
+        ///////////////////// draw arrow ////////////////////////////
+        
         double pow = Math.pow(fx, 2) + Math.pow(fy, 2) + Math.pow(fz, 2);
         double Mforce = Math.sqrt(pow);
 
         double directx = Math.acos(fx / Mforce);//与坐标轴的夹角，弧度制
         double directy = Math.acos(fy / Mforce);
         double directz = Math.acos(fz / Mforce);
-        Appearance ap=new Appearance();
-		Material mat=new Material();
-	
-		mat.setDiffuseColor(new Color3f(0,1.0f,0.0f));
-		mat.setShininess(128);
-		ap.setMaterial(mat);
-		Transform3D t=new Transform3D();
-		Transform3D t0=new Transform3D();
-		//7种情况 
-		if(fz!=0&&fx==0&&fy==0){//只受fz上面的力的作用
-			if(fz<0){
-			arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));//因为默认的cone在中心，cone长度是0.5，所以尖头在圆心，需要先平移Y0.25个单位
-			t.rotX(-directx);
-			t.mul(arrow);
-			//t.setTranslation(new Vector3f(0.0f, -(float)pz,(float)pz));
-			}
-			else{
-				arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
-				t.rotX(directx);
-				t.mul(arrow);
-				//t.setTranslation(new Vector3f(0.0f, (float)pz,(float)pz));
-				}
-			Transform3D tmp=new Transform3D();
-			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
-			tmp.mul(t);
-			TransformGroup g1=new TransformGroup(tmp);
-			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
-			g1.addChild(cone2);
-			objTrans.addChild(g1);
-		}
-		else if(fz==0&&fx!=0&&fy==0){//只受fx上面的力的作用
-			if(fx>0){
-			arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
-			t.rotZ(-directy);
-			t.mul(arrow);
-			//t.setTranslation(new Vector3f((float)px, (float)px,0.0f));
-			}
-			else{
-				arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
-				t.rotZ(directy);
-				t.mul(arrow);
-				//t.setTranslation(new Vector3f((float)px, -(float)px,0.0f));
-			}
-			Transform3D tmp=new Transform3D();
-			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
-			tmp.mul(t);
-			TransformGroup g1=new TransformGroup(tmp);
-			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
-			g1.addChild(cone2);
-			objTrans.addChild(g1);
-		}
-		else if(fz==0&&fx==0&&fy!=0){  //因为cone初始视图是尖头朝着Y轴的，因此Y轴上受正方向上的力无需旋转
-			if(fy>0){
-				arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
-				t.mul(arrow);
-			//t.rotY(-directz);
-			//t.setTranslation(new Vector3f((float)py, 0.0f,(float)py));
-			}
-			else{     //因为cone初始视图是尖头朝着Y轴的，因此Y轴上受负方向上的力需要绕x旋转，并平移2倍pz
-				arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
-				t.rotX(directy);
-				t.mul(arrow);
-				//t.setTranslation(new Vector3f(0.0f, 0.0f,2*((float)pz)));				
-			}
-			Transform3D tmp=new Transform3D();
-			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
-			tmp.mul(t);
-			TransformGroup g1=new TransformGroup(tmp);
-			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
-			g1.addChild(cone2);
-			objTrans.addChild(g1);
-		}
-		
-		else if(fz!=0&&fx!=0&&fy==0){ //两个方向受力
-			arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
-			
-			t0.rotX(Math.PI/2);
-			t0.mul(arrow);
-			if(fx>0){
-			t.rotY(directz);
-			}
-			else{
-				t.rotY(-directz);
-			}
-			t.mul(t0);
-			Transform3D tmp=new Transform3D();
-			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
-			tmp.mul(t);
-			TransformGroup g1=new TransformGroup(tmp);
-			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
-			g1.addChild(cone2);
-			objTrans.addChild(g1);
-		}
-		
-		else if(fz!=0&&fx==0&&fy!=0){//两个方向受力
-			arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
-			t0.rotX(Math.PI/2-directz);
-			t0.mul(arrow);
-			if(fy>0){
-		
-				t0.rotX(Math.PI/2-directz);
-			}
-			else{
-				
-				t0.rotX(Math.PI/2+directz);
-				}
-			
-			Transform3D tmp=new Transform3D();
-			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
-			tmp.mul(t0);
-			TransformGroup g1=new TransformGroup(tmp);
-			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
-			g1.addChild(cone2);
-			objTrans.addChild(g1);	
-		}
-		
-		else if(fz==0&&fx!=0&&fy!=0){//两个方向受力
-			arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
-			if(fx>0){
-				t0.rotZ(-directy);	
-				t0.mul(arrow);
-			}
-			else{
-				t0.rotZ(directy);	
-				t0.mul(arrow);
-			}
-			Transform3D tmp=new Transform3D();
-			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
-			tmp.mul(t0);
-			TransformGroup g1=new TransformGroup(tmp);
-			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
-			g1.addChild(cone2);
-			objTrans.addChild(g1);						
-			}	
-		
-		
-		else{   //三个方向受力
-			double pow1=Math.pow(fx,2)+ Math.pow(fy,2);
-			double Mforce1= Math.sqrt(pow1);//fx,fy合成力，在xoy平面上
-			double directy1=Math.acos(fy/Mforce1);
-			double bili=Math.acos(Mforce1/Mforce);//fx,fy合成力除以fx，fy，fz的合成力，为了求旋转角度
-			if(fx>0){
-				arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
-				t0.rotZ(-directy1);
-				t0.mul(arrow);
-				if(fy>0)
-				{
-					if(fz>0){
-						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, bili);//绕经过原点，和1,-（fx/fy）,0,旋转bili弧度
-						ta.setRotation(angle);
-						ta.mul(t0);
-					}//quan dayu 0
-					else{
-						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, -bili);
-						//Transform3D ta = new Transform3D();
-						ta.setRotation(angle);
-						ta.mul(t0);
-					}//(fz<0)
-				}//(fy>0)
-				else{
-					if(fz>0){
-					AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, -bili);
-					ta.setRotation(angle);
-					ta.mul(t0);
-					}
-					else{
-						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, bili);
-						ta.setRotation(angle);
-						ta.mul(t0);
-					}
-				}
-			}//(fx>0)
-			else{
-				arrow.setTranslation(new Vector3f(0.0f,-0.25f,0.0f));
-				t0.rotZ(directy1);	
-				t0.mul(arrow);
-				if(fy>0)
-				{
-					if(fz>0){
-						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, bili);
-						ta.setRotation(angle);
-						ta.mul(t0);
-					}//(fz>0)
-					else{
-						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, -bili);
-						ta.setRotation(angle);
-						ta.mul(t0);
-					}//(fy<0)
-				}//(fy>0)
-				else{
-					if(fz>0){
-					AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, -bili);
-					ta.setRotation(angle);
-					ta.mul(t0);
-					}
-					else{
-						AxisAngle4d angle = new AxisAngle4d(1, -(fx/fy), 0, bili);
-						ta.setRotation(angle);
-						ta.mul(t0);
-					}
-				}
-			}
-			Transform3D tmp=new Transform3D();
-			tmp.setTranslation(new Vector3f((float)px,(float)py,(float)pz));
-			tmp.mul(ta);
-			TransformGroup g1=new TransformGroup(tmp);
-			Cone cone2=new Cone(0.1f,0.5f,Primitive.GENERATE_NORMALS,ap);
-			g1.addChild(cone2);
-			objTrans.addChild(g1);		
-		}		
-		
-         Shape3D shape = new Shape3D();
-         shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
-         shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-         shape.setUserData(force);
-         shape.setGeometry(mainLine);
-         arrowGroup.addChild(shape);
-         arrowGroup.setPickable(true);
-         objTrans.addChild(arrowGroup);
+        Appearance ap = new Appearance();
+        Material mat = new Material();
 
-        // draw other for
-    
+        mat.setDiffuseColor(new Color3f(0, 1.0f, 0.0f));
+        mat.setShininess(128);
+        ap.setMaterial(mat);
+        Transform3D t = new Transform3D();
+        Transform3D t0 = new Transform3D();
+        //7种情况 
+        Transform3D arrow = new Transform3D();
+        if (fz != 0 && fx == 0 && fy == 0) {//只受fz上面的力的作用
+            if (fz < 0) {
+                arrow.setTranslation(new Vector3f(0.0f, -0.25f, 0.0f));//因为默认的cone在中心，cone长度是0.5，所以尖头在圆心，需要先平移Y0.25个单位
+                t.rotX(-directx);
+                t.mul(arrow);
+                //t.setTranslation(new Vector3f(0.0f, -(float)pz,(float)pz));
+            } else {
+                arrow.setTranslation(new Vector3f(0.0f, -0.25f, 0.0f));
+                t.rotX(directx);
+                t.mul(arrow);
+                //t.setTranslation(new Vector3f(0.0f, (float)pz,(float)pz));
+            }
+            Transform3D tmp = new Transform3D();
+            tmp.setTranslation(new Vector3f((float) px, (float) py, (float) pz));
+            tmp.mul(t);
+            TransformGroup g1 = new TransformGroup(tmp);
+            Cone cone2 = new Cone(0.1f, 0.5f, Primitive.GENERATE_NORMALS, ap);
+            g1.addChild(cone2);
+            objTrans.addChild(g1);
+        } else if (fz == 0 && fx != 0 && fy == 0) {//只受fx上面的力的作用
+            if (fx > 0) {
+                arrow.setTranslation(new Vector3f(0.0f, -0.25f, 0.0f));
+                t.rotZ(-directy);
+                t.mul(arrow);
+                //t.setTranslation(new Vector3f((float)px, (float)px,0.0f));
+            } else {
+                arrow.setTranslation(new Vector3f(0.0f, -0.25f, 0.0f));
+                t.rotZ(directy);
+                t.mul(arrow);
+                //t.setTranslation(new Vector3f((float)px, -(float)px,0.0f));
+            }
+            Transform3D tmp = new Transform3D();
+            tmp.setTranslation(new Vector3f((float) px, (float) py, (float) pz));
+            tmp.mul(t);
+            TransformGroup g1 = new TransformGroup(tmp);
+            Cone cone2 = new Cone(0.1f, 0.5f, Primitive.GENERATE_NORMALS, ap);
+            g1.addChild(cone2);
+            objTrans.addChild(g1);
+        } else if (fz == 0 && fx == 0 && fy != 0) {  //因为cone初始视图是尖头朝着Y轴的，因此Y轴上受正方向上的力无需旋转
+            if (fy > 0) {
+                arrow.setTranslation(new Vector3f(0.0f, -0.25f, 0.0f));
+                t.mul(arrow);
+			//t.rotY(-directz);
+                //t.setTranslation(new Vector3f((float)py, 0.0f,(float)py));
+            } else {     //因为cone初始视图是尖头朝着Y轴的，因此Y轴上受负方向上的力需要绕x旋转，并平移2倍pz
+                arrow.setTranslation(new Vector3f(0.0f, -0.25f, 0.0f));
+                t.rotX(directy);
+                t.mul(arrow);
+                //t.setTranslation(new Vector3f(0.0f, 0.0f,2*((float)pz)));				
+            }
+            Transform3D tmp = new Transform3D();
+            tmp.setTranslation(new Vector3f((float) px, (float) py, (float) pz));
+            tmp.mul(t);
+            TransformGroup g1 = new TransformGroup(tmp);
+            Cone cone2 = new Cone(0.1f, 0.5f, Primitive.GENERATE_NORMALS, ap);
+            g1.addChild(cone2);
+            objTrans.addChild(g1);
+        } else if (fz != 0 && fx != 0 && fy == 0) { //两个方向受力
+            arrow.setTranslation(new Vector3f(0.0f, -0.25f, 0.0f));
+
+            t0.rotX(Math.PI / 2);
+            t0.mul(arrow);
+            if (fx > 0) {
+                t.rotY(directz);
+            } else {
+                t.rotY(-directz);
+            }
+            t.mul(t0);
+            Transform3D tmp = new Transform3D();
+            tmp.setTranslation(new Vector3f((float) px, (float) py, (float) pz));
+            tmp.mul(t);
+            TransformGroup g1 = new TransformGroup(tmp);
+            Cone cone2 = new Cone(0.1f, 0.5f, Primitive.GENERATE_NORMALS, ap);
+            g1.addChild(cone2);
+            objTrans.addChild(g1);
+        } else if (fz != 0 && fx == 0 && fy != 0) {//两个方向受力
+            arrow.setTranslation(new Vector3f(0.0f, -0.25f, 0.0f));
+            t0.rotX(Math.PI / 2 - directz);
+            t0.mul(arrow);
+            if (fy > 0) {
+
+                t0.rotX(Math.PI / 2 - directz);
+            } else {
+
+                t0.rotX(Math.PI / 2 + directz);
+            }
+
+            Transform3D tmp = new Transform3D();
+            tmp.setTranslation(new Vector3f((float) px, (float) py, (float) pz));
+            tmp.mul(t0);
+            TransformGroup g1 = new TransformGroup(tmp);
+            Cone cone2 = new Cone(0.1f, 0.5f, Primitive.GENERATE_NORMALS, ap);
+            g1.addChild(cone2);
+            objTrans.addChild(g1);
+        } else if (fz == 0 && fx != 0 && fy != 0) {//两个方向受力
+            arrow.setTranslation(new Vector3f(0.0f, -0.25f, 0.0f));
+            if (fx > 0) {
+                t0.rotZ(-directy);
+                t0.mul(arrow);
+            } else {
+                t0.rotZ(directy);
+                t0.mul(arrow);
+            }
+            Transform3D tmp = new Transform3D();
+            tmp.setTranslation(new Vector3f((float) px, (float) py, (float) pz));
+            tmp.mul(t0);
+            TransformGroup g1 = new TransformGroup(tmp);
+            Cone cone2 = new Cone(0.1f, 0.5f, Primitive.GENERATE_NORMALS, ap);
+            g1.addChild(cone2);
+            objTrans.addChild(g1);
+        } else {   //三个方向受力
+            double pow1 = Math.pow(fx, 2) + Math.pow(fy, 2);
+            double Mforce1 = Math.sqrt(pow1);//fx,fy合成力，在xoy平面上
+            double directy1 = Math.acos(fy / Mforce1);
+            double bili = Math.acos(Mforce1 / Mforce);//fx,fy合成力除以fx，fy，fz的合成力，为了求旋转角度
+            
+            Transform3D ta = new Transform3D();
+            if (fx > 0) {
+                arrow.setTranslation(new Vector3f(0.0f, -0.25f, 0.0f));
+                t0.rotZ(-directy1);
+                t0.mul(arrow);
+                if (fy > 0) {
+                    if (fz > 0) {
+                        AxisAngle4d angle = new AxisAngle4d(1, -(fx / fy), 0, bili);//绕经过原点，和1,-（fx/fy）,0,旋转bili弧度
+                        ta.setRotation(angle);
+                        ta.mul(t0);
+                    }//quan dayu 0
+                    else {
+                        AxisAngle4d angle = new AxisAngle4d(1, -(fx / fy), 0, -bili);
+                        //Transform3D ta = new Transform3D();
+                        ta.setRotation(angle);
+                        ta.mul(t0);
+                    }//(fz<0)
+                }//(fy>0)
+                else {
+                    if (fz > 0) {
+                        AxisAngle4d angle = new AxisAngle4d(1, -(fx / fy), 0, -bili);
+                        ta.setRotation(angle);
+                        ta.mul(t0);
+                    } else {
+                        AxisAngle4d angle = new AxisAngle4d(1, -(fx / fy), 0, bili);
+                        ta.setRotation(angle);
+                        ta.mul(t0);
+                    }
+                }
+            }//(fx>0)
+            else {
+                arrow.setTranslation(new Vector3f(0.0f, -0.25f, 0.0f));
+                t0.rotZ(directy1);
+                t0.mul(arrow);
+                if (fy > 0) {
+                    if (fz > 0) {
+                        AxisAngle4d angle = new AxisAngle4d(1, -(fx / fy), 0, bili);
+                        ta.setRotation(angle);
+                        ta.mul(t0);
+                    }//(fz>0)
+                    else {
+                        AxisAngle4d angle = new AxisAngle4d(1, -(fx / fy), 0, -bili);
+                        ta.setRotation(angle);
+                        ta.mul(t0);
+                    }//(fy<0)
+                }//(fy>0)
+                else {
+                    if (fz > 0) {
+                        AxisAngle4d angle = new AxisAngle4d(1, -(fx / fy), 0, -bili);
+                        ta.setRotation(angle);
+                        ta.mul(t0);
+                    } else {
+                        AxisAngle4d angle = new AxisAngle4d(1, -(fx / fy), 0, bili);
+                        ta.setRotation(angle);
+                        ta.mul(t0);
+                    }
+                }
+            }
+            Transform3D tmp = new Transform3D();
+            tmp.setTranslation(new Vector3f((float) px, (float) py, (float) pz));
+            tmp.mul(ta);
+            TransformGroup g1 = new TransformGroup(tmp);
+            Cone cone2 = new Cone(0.1f, 0.5f, Primitive.GENERATE_NORMALS, ap);
+            g1.addChild(cone2);
+            objTrans.addChild(g1);
+        }
+
+        Shape3D shape = new Shape3D();
+        shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+        shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
+        shape.setUserData(force);
+        shape.setGeometry(mainLine);
+        arrowGroup.addChild(shape);
+        arrowGroup.setPickable(true);
+        objTrans.addChild(arrowGroup);
+
     }
 
-    
     public void cone() {
         TransformGroup lineconeGroup = new TransformGroup();
         Transform3D lineconeTransform3D = new Transform3D();
@@ -795,7 +747,6 @@ public class VFIFE_Modeling_view extends JPanel {
         Cone lineCone = new Cone(0.5f, 1.5f);
 
         Appearance lineconeAppearance = new Appearance();
-
 
         PolygonAttributes lineconepolygonAttributes = new PolygonAttributes();
         lineconepolygonAttributes.setPolygonMode(PolygonAttributes.CULL_BACK);
@@ -816,7 +767,7 @@ public class VFIFE_Modeling_view extends JPanel {
         len = Math.sqrt(len);
         return len;
     }
-    
+
     private float getMidValueF(ArrayList<Float> arr_scale) {
         float min = Collections.min(arr_scale);
         float max = Collections.max(arr_scale);
