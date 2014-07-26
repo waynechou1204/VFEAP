@@ -8,7 +8,6 @@ public class VFIFE_Node {
 	private VFIFE_BoundaryCondition restraint;
 	
 	
-	
 	public VFIFE_Node() {
 		this.node_name=" ";
 	}

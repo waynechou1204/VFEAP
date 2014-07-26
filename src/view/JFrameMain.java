@@ -7,16 +7,21 @@ package view;
 
 import static control.Modeling.exportFile;
 import static control.Modeling.loadCIS;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileNotFoundException;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import control.Modeling;
 import jsdai.lang.SdaiException;
+import model.VFIFE_Load;
 import model.VFIFE_Model;
 
 /**
@@ -78,6 +83,7 @@ public class JFrameMain extends javax.swing.JFrame {
         jMenuItemOpen = new javax.swing.JMenuItem();
         jMenuItemOpenv5m = new javax.swing.JMenuItem();
         jMenuItemExport = new javax.swing.JMenuItem();
+        jMenuItemExportV5 = new javax.swing.JMenuItem();
         jMenuItemExit = new javax.swing.JMenuItem();
         jMenuDefine = new javax.swing.JMenu();
         jMenuItemMaterial = new javax.swing.JMenuItem();
@@ -118,7 +124,14 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         });
         jMenuFile.add(jMenuItemExport);
-
+        
+        jMenuItemExportV5.setText("ExportV5");
+        jMenuItemExportV5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemExportV5ActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuItemExportV5);
         jMenuItemExit.setText("Exit");
         jMenuItemExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -234,7 +247,53 @@ public class JFrameMain extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No model to export", "Warning", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jMenuItemExportActionPerformed
-
+    
+    private void jMenuItemExportV5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExportActionPerformed
+        if (!m_v5model.isEmpty()) {
+            // get file save path
+        	File nodeFile ,elementFile;
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setSelectedFile(new File("node.txt")); // default file name
+            fileChooser.setFileFilter(new FileNameExtensionFilter("TXT", "txt"));
+            int i = fileChooser.showSaveDialog(getContentPane());
+            if (i == JFileChooser.APPROVE_OPTION) {
+                nodeFile = fileChooser.getSelectedFile();
+              /*  try {
+                    if (getfile != null) {
+                        exportFile(m_v5model, getfile.getAbsolutePath());
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (SdaiException e) {
+                    e.printStackTrace();
+                }*/
+            
+            
+            
+            JFileChooser fileChooser2 = new JFileChooser();
+            fileChooser2.setSelectedFile(new File("element.txt")); // default file name
+            fileChooser2.setFileFilter(new FileNameExtensionFilter("TXT", "txt"));
+            int j = fileChooser2.showSaveDialog(getContentPane());
+            if (j == JFileChooser.APPROVE_OPTION) {
+                elementFile = fileChooser2.getSelectedFile();
+                try {
+                	Modeling.exportV5File(m_v5model, nodeFile.getAbsolutePath(),elementFile.getAbsolutePath());
+                } 
+                catch (Exception e)
+                {
+                	e.printStackTrace();
+                }
+                /*catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (SdaiException e) {
+                    e.printStackTrace();
+                }*/
+            }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No model to export", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItemExportV5ActionPerformed
     private void jMenuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItemExitActionPerformed
@@ -252,6 +311,7 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenuItem jMenuItemExit;
     private javax.swing.JMenuItem jMenuItemExport;
+    private javax.swing.JMenuItem jMenuItemExportV5;
     private javax.swing.JMenuItem jMenuItemLoad;
     private javax.swing.JMenuItem jMenuItemMaterial;
     private javax.swing.JMenuItem jMenuItemOpen;
