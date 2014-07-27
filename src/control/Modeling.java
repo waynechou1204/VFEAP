@@ -112,8 +112,11 @@ public class Modeling {
     	double	count=0;//   #用于后面差分方程迭代公式的计数
     	double	Young=0;//   #杨氏模量
     	double	density=0;// #密度
-    	//建一个二维数组表示每个节点的等效力   前三位存力 第四个存node id 第五个mass
     	
+    	
+    	
+    	//建一个二维数组表示每个节点的等效力   前三位存力 第四个存node id 第五个mass
+ 
     	double[][] equivalentForce = new double[v5model.getNodes().size()][];
     	
     	for(int i=0;i<equivalentForce.length;i++)
@@ -140,8 +143,8 @@ public class Modeling {
     	for(VFIFE_Load force:v5model.getForces())
     	{
     		
-    		VFIFE_AppliedLoadStaticForce loadvalue;
-    		VFIFE_CartesianPoint loadPosition;
+    		VFIFE_AppliedLoadStaticForce loadvalue;//力的大小
+    		VFIFE_CartesianPoint loadPosition;//力的作用点
     		if(force instanceof VFIFE_LoadMemberConcentrated)
     		{
     			double[] xForce = new double[3];//将作用于杆件上的力分解，X为与杆件方向平行的力
@@ -179,7 +182,9 @@ public class Modeling {
     			yForce[2]=loadvalue.getApplied_force_fz()-magnitude*cosang*Dz/directMag;
     			
 //    			计算杆件1端点到力作用点的距离，计算力等效到两端节点时需要用到该值
-    			double lentonode1=Math.sqrt(
+    			double lentonode1=loadPosition.getCoordinate_x();
+    			double lentonode2=directMag-loadPosition.getCoordinate_x();
+    			/*double lentonode1=Math.sqrt(
     					Math.pow(vnode1.getCoord().getCoordinate_x()-loadPosition.getCoordinate_x(),2)
     					+Math.pow(vnode1.getCoord().getCoordinate_y()-loadPosition.getCoordinate_y(),2)
     					+Math.pow(vnode1.getCoord().getCoordinate_z()-loadPosition.getCoordinate_z(),2));
@@ -189,6 +194,7 @@ public class Modeling {
     					Math.pow(vnode2.getCoord().getCoordinate_x()-loadPosition.getCoordinate_x(),2)
     					+Math.pow(vnode2.getCoord().getCoordinate_y()-loadPosition.getCoordinate_y(),2)
     					+Math.pow(vnode2.getCoord().getCoordinate_z()-loadPosition.getCoordinate_z(),2));
+    					*/
     			
     			//将力等效到杆件两端
     			//vnode1 未被约束
@@ -425,10 +431,10 @@ public class Modeling {
     							mag=(length-deLength)*bar.getSection_area()*bar.getMaterial().getYoung_modulus()/length;
     							double x=v5model.getNode(nodeId2).getCoord().getCoordinate_x()-
     									v5model.getNode(nodeId1).getCoord().getCoordinate_x();
-    							double y=v5model.getNode(nodeId2).getCoord().getCoordinate_x()-
-    									v5model.getNode(nodeId1).getCoord().getCoordinate_x();
-    							double z=v5model.getNode(nodeId2).getCoord().getCoordinate_x()-
-    									v5model.getNode(nodeId1).getCoord().getCoordinate_x();
+    							double y=v5model.getNode(nodeId2).getCoord().getCoordinate_y()-
+    									v5model.getNode(nodeId1).getCoord().getCoordinate_y();
+    							double z=v5model.getNode(nodeId2).getCoord().getCoordinate_z()-
+    									v5model.getNode(nodeId1).getCoord().getCoordinate_z();
     							
     							if(F!=null)
     							{
@@ -458,10 +464,10 @@ public class Modeling {
     							mag=(length-deLength)*bar.getSection_area()*bar.getMaterial().getYoung_modulus()/length;
     							double x=v5model.getNode(nodeId1).getCoord().getCoordinate_x()-
     									v5model.getNode(nodeId2).getCoord().getCoordinate_x();
-    							double y=v5model.getNode(nodeId1).getCoord().getCoordinate_x()-
-    									v5model.getNode(nodeId2).getCoord().getCoordinate_x();
-    							double z=v5model.getNode(nodeId1).getCoord().getCoordinate_x()-
-    									v5model.getNode(nodeId2).getCoord().getCoordinate_x();
+    							double y=v5model.getNode(nodeId1).getCoord().getCoordinate_y()-
+    									v5model.getNode(nodeId2).getCoord().getCoordinate_y();
+    							double z=v5model.getNode(nodeId1).getCoord().getCoordinate_z()-
+    									v5model.getNode(nodeId2).getCoord().getCoordinate_z();
     							if(F!=null)
     							{
     								F[0]+=x/Math.sqrt(x*x+y*y+z*z)*mag;
