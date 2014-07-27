@@ -460,7 +460,7 @@ public class VFIFE_Modeling_view extends JPanel {
         tf3d.setTranslation(new Vector3f(pointx, pointy - radius, pointz));
 
         PolygonAttributes polygonAttributes = new PolygonAttributes();
-        polygonAttributes.setPolygonMode(PolygonAttributes.POLYGON_FILL);
+        polygonAttributes.setPolygonMode(PolygonAttributes.CULL_BACK);
 
         Appearance ap = new Appearance();
         ap.setPolygonAttributes(polygonAttributes);
@@ -746,13 +746,13 @@ public class VFIFE_Modeling_view extends JPanel {
         arrowGroup.addChild(shape);
         arrowGroup.setPickable(true);
         objTrans.addChild(arrowGroup);
+
       // ------------------------- //////text3d////// ------------------------------------ //                
         
        QuadCurve2D.Double curve=new QuadCurve2D.Double();
        curve.setCurve(0,0,0.1,0.05,0.1,0);
        FontExtrusion extrusion=new  FontExtrusion();
        extrusion.setExtrusionShape(curve);
-       
         String text;
         if(fz == 0 && fx != 0 && fy == 0)
         {
@@ -770,6 +770,7 @@ public class VFIFE_Modeling_view extends JPanel {
         else{
         	  text=String.valueOf((int)Mforce)+" N";
         }
+
         Font3D f3d=new Font3D(new Font("",Font.PLAIN,1),extrusion);
 		Text3D txt=new Text3D(f3d,text,new Point3f(0,0,0));
         Shape3D sh=new Shape3D();
@@ -782,6 +783,7 @@ public class VFIFE_Modeling_view extends JPanel {
 		
 		TransformGroup g6 = new TransformGroup(t3);
         Appearance app=new Appearance();
+
         //Material m=new Material();
         //m.setDiffuseColor(new Color3f(0.0f,0.0f,1.0f));     
         //app.setMaterial(m);
@@ -789,8 +791,7 @@ public class VFIFE_Modeling_view extends JPanel {
         Color3f objColor = new Color3f(0.0f, 1.0f, 0.0f);
         ColoringAttributes ca = new ColoringAttributes();
         ca.setColor(objColor);
-        app.setColoringAttributes(ca);
-        
+        app.setColoringAttributes(ca);       
         sh.setGeometry(txt);
         sh.setAppearance(app);
         g6.addChild(sh);

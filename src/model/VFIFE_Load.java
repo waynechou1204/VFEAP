@@ -11,6 +11,13 @@ public class VFIFE_Load {
 		this.start_time = 0;
 		this.end_time = 0;
 	}
+	public VFIFE_Load(VFIFE_Load load)
+	{
+		this.force_name=load.force_name;
+		this.parent_load_case=load.parent_load_case;
+		this.start_time=load.start_time;
+		this.end_time=load.end_time;
+	}
 	
 	public String getForce_name() {
 		return force_name;

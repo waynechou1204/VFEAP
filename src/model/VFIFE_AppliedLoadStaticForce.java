@@ -17,6 +17,7 @@ public class VFIFE_AppliedLoadStaticForce extends VFIFE_AppliedLoadStatic {
 		this.applied_moment_my=0;
 		this.applied_moment_mz=0;
 	}
+	
 			
 	public double getApplied_force_fx() {
 		return applied_force_fx;
