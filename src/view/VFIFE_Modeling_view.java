@@ -460,7 +460,7 @@ public class VFIFE_Modeling_view extends JPanel {
         tf3d.setTranslation(new Vector3f(pointx, pointy - radius, pointz));
 
         PolygonAttributes polygonAttributes = new PolygonAttributes();
-        polygonAttributes.setPolygonMode(PolygonAttributes.POLYGON_FILL);
+        polygonAttributes.setPolygonMode(PolygonAttributes.CULL_BACK);
 
         Appearance ap = new Appearance();
         ap.setPolygonAttributes(polygonAttributes);
