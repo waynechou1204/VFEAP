@@ -1,6 +1,9 @@
 package view;
 
+import java.awt.Font;
 import java.awt.GraphicsConfiguration;
+import java.awt.geom.Line2D;
+import java.awt.geom.QuadCurve2D;
 import java.util.*;
 
 import javax.media.j3d.Appearance;
@@ -8,6 +11,8 @@ import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
+import javax.media.j3d.Font3D;
+import javax.media.j3d.FontExtrusion;
 import javax.media.j3d.LineArray;
 import javax.media.j3d.LineAttributes;
 import javax.media.j3d.Material;
@@ -15,6 +20,7 @@ import javax.media.j3d.PointArray;
 import javax.media.j3d.PointAttributes;
 import javax.media.j3d.PolygonAttributes;
 import javax.media.j3d.Shape3D;
+import javax.media.j3d.Text3D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.swing.JPanel;
@@ -44,6 +50,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 
 import control.VFIFEMouseOverBehavior;
 import control.VFIFEMousePickBehavior;
+
 import javax.media.j3d.ColoringAttributes;
 
 public class VFIFE_Modeling_view extends JPanel {
@@ -58,7 +65,6 @@ public class VFIFE_Modeling_view extends JPanel {
     private VFIFEMouseOverBehavior mouseOverBehavior = null;
 
     private float m_scale = 1;
-
     private VFIFE_Model v5model = null;
 
     public VFIFE_Modeling_view(VFIFE_Model model) {
@@ -116,9 +122,9 @@ public class VFIFE_Modeling_view extends JPanel {
             offset_y = getMidValueF(arr_y);
             offset_z = getMidValueF(arr_z);
 
-            m_scale = (1 / getMaxOfThreeF(span_x, span_y, span_z));
+            m_scale = (1 / getMaxOfThreeF(span_x, span_y, span_z));   
         }
-
+      
         BranchGroup objRoot = new BranchGroup();
         objRoot.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
         objRoot.setCapability(BranchGroup.ALLOW_DETACH);
@@ -528,6 +534,10 @@ public class VFIFE_Modeling_view extends JPanel {
         mainLine.setColor(1, new Color3f(0.0f, 1.0f, 0.0f));
 
         ///////////////////// draw arrow ////////////////////////////
+       // double length=getLength(px,py,pz,(px - fx*2*scale/f), (py - fy*2*scale/f),(pz - fz*2*scale/f));
+        double px2=((px - fx*2*scale/f)+px)/2;//
+        double py2=((py - fy*2*scale/f)+py)/2;//
+        double pz2=((pz - fz*2*scale/f)+pz)/2;//
         
         double pow = Math.pow(fx, 2) + Math.pow(fy, 2) + Math.pow(fz, 2);
         double Mforce = Math.sqrt(pow);
@@ -736,6 +746,47 @@ public class VFIFE_Modeling_view extends JPanel {
         arrowGroup.addChild(shape);
         arrowGroup.setPickable(true);
         objTrans.addChild(arrowGroup);
+        //////text3d//////                   
+        FontExtrusion extrusion0=new  FontExtrusion();
+       
+        String text;
+        if(fz == 0 && fx != 0 && fy == 0)
+        {
+        	  text=String.valueOf(fx)+"N";
+        	 
+        }
+        else if(fz != 0 && fx == 0 && fy == 0)
+        {
+        	  text=String.valueOf(fz)+"N";
+        }
+        else if(fz == 0 && fx == 0 && fy != 0)
+        {
+        	  text=String.valueOf(fy)+"N";
+        }
+        else{
+        	  text=String.valueOf((int)Mforce)+" N";
+        }
+        Font3D f3d=new Font3D(new Font("",Font.PLAIN,1),extrusion0);
+		Text3D txt=new Text3D(f3d,text,new Point3f(0,0,0));
+        Shape3D sh=new Shape3D();
+        
+		Transform3D t2 = new Transform3D();//...
+		t2.setScale(0.03/m_scale);
+		Transform3D t3 = new Transform3D();
+		t3.setTranslation(new Vector3f((float) px2, (float) py2, (float) pz2));
+		t3.mul(t2);
+		
+		TransformGroup g6 = new TransformGroup(t3);
+        Appearance app=new Appearance();
+        Material m=new Material();
+        m.setDiffuseColor(new Color3f(0.0f,0.0f,1.0f));     
+        app.setMaterial(m);
+        sh.setGeometry(txt);
+        sh.setAppearance(app);
+        g6.addChild(sh);
+        objTrans.addChild(g6);
+      
+     
 
     }
 
