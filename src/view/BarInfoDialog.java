@@ -12,9 +12,9 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
-import model.VFIFE_Bar;
-import model.VFIFE_Material;
-import model.VFIFE_Model;
+import dataStructure.model.VFIFE_Bar;
+import dataStructure.model.VFIFE_Material;
+import dataStructure.VFIFE_Model;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

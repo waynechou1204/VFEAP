@@ -9,8 +9,8 @@ package view;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
-import model.VFIFE_Material;
-import model.VFIFE_Model;
+import dataStructure.model.VFIFE_Material;
+import dataStructure.VFIFE_Model;
 
 /**
  *
