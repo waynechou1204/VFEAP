@@ -20,6 +20,7 @@ public class NodeInfoDialog extends JDialog {
 
     private final JPanel contentPanel = new JPanel();
     private VFIFE_Node m_vnode;
+    private VFIFE_Modeling_view view = null;
     private JCheckBox xdisplacementRestraint;
     private JCheckBox ydisplacementRestraint;
     private JCheckBox zdisplacementRestraint;
@@ -33,8 +34,9 @@ public class NodeInfoDialog extends JDialog {
     /**
      * Create the dialog.
      */
-    public NodeInfoDialog(VFIFE_Node vnode) {
+    public NodeInfoDialog(VFIFE_Modeling_view view, VFIFE_Node vnode) {
         this.m_vnode = vnode;
+        this.view = view;
 
         setBounds(500, 300, 300, 346);
         getContentPane().setLayout(new BorderLayout());
@@ -177,7 +179,7 @@ public class NodeInfoDialog extends JDialog {
                 NodeInfoDialog.this.m_vnode.getRestraint().setBc_x_rotation_free(!NodeInfoDialog.this.xrotationRestraint.isSelected());
                 NodeInfoDialog.this.m_vnode.getRestraint().setBc_y_rotation_free(!NodeInfoDialog.this.yrotationRestraint.isSelected());
                 NodeInfoDialog.this.m_vnode.getRestraint().setBc_z_rotation_free(!NodeInfoDialog.this.zrotationRestraint.isSelected());
-
+                NodeInfoDialog.this.view.updateScene();
                 NodeInfoDialog.this.dispose();
             }
         });

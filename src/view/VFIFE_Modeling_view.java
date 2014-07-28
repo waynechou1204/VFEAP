@@ -60,6 +60,7 @@ public class VFIFE_Modeling_view extends JPanel {
     private SimpleUniverse universe = null;
     private BranchGroup scene = null;
     private TransformGroup objTrans = null;
+    private Canvas3D canvas = null;
 
     private VFIFEMousePickBehavior mousePickBehavior = null;
     private VFIFEMouseOverBehavior mouseOverBehavior = null;
@@ -75,7 +76,7 @@ public class VFIFE_Modeling_view extends JPanel {
         GraphicsConfiguration config = SimpleUniverse
                 .getPreferredConfiguration();
 
-        Canvas3D canvas = new Canvas3D(config);
+        canvas = new Canvas3D(config);
         canvas.setSize(1024, 768);
         canvas.setDoubleBufferEnable(true);
         this.add("Center", canvas);
@@ -168,7 +169,7 @@ public class VFIFE_Modeling_view extends JPanel {
         objRoot.addChild(mouseZoom);
 
         // Mouse pick
-        mousePickBehavior = new VFIFEMousePickBehavior(canvas, objRoot, bounds);
+        mousePickBehavior = new VFIFEMousePickBehavior(this, canvas, objRoot, bounds);
         this.mousePickBehavior.setModel(v5model);
         mousePickBehavior.setPanel(this);// be used to pop up dialogue
 
@@ -382,6 +383,12 @@ public class VFIFE_Modeling_view extends JPanel {
 
             }
         }
+    }
+    
+    public void updateScene(){
+    	scene.detach();
+    	scene = createSceneGraph(canvas);
+        universe.addBranchGraph(scene);
     }
 
     private void drawBalljointCone(float x, float y, float z) {

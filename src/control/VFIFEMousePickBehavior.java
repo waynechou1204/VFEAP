@@ -20,6 +20,7 @@ import model.VFIFE_Node;
 import view.BarInfoDialog;
 import view.JDialogForce;
 import view.NodeInfoDialog;
+import view.VFIFE_Modeling_view;
 
 public class VFIFEMousePickBehavior extends PickMouseBehavior {
 
@@ -27,10 +28,12 @@ public class VFIFEMousePickBehavior extends PickMouseBehavior {
     Material mater = null;
     VFIFE_Model v5model = null;
     JPanel panel = null;
+    VFIFE_Modeling_view view = null;
 
-    public VFIFEMousePickBehavior(Canvas3D canvas, BranchGroup bg, Bounds bounds) {
+    public VFIFEMousePickBehavior(VFIFE_Modeling_view view, Canvas3D canvas, BranchGroup bg, Bounds bounds) {
         super(canvas, bg, bounds);
 
+        this.view = view;
         this.setSchedulingBounds(bounds);
         bg.addChild(this);
         pickCanvas.setMode(PickTool.GEOMETRY);
@@ -57,7 +60,7 @@ public class VFIFEMousePickBehavior extends PickMouseBehavior {
                     ((PointArray) shape.getGeometry()).getCoordinate(0, d);
                     System.out.println(d[0] + "," + d[1] + "," + d[2]);
 
-                    NodeInfoDialog nodeinfodlg = new NodeInfoDialog((VFIFE_Node) shape.getUserData());
+                    NodeInfoDialog nodeinfodlg = new NodeInfoDialog(this.view, (VFIFE_Node) shape.getUserData());
                     nodeinfodlg.setVisible(true);
                 } else if (shape.getUserData().getClass().equals(VFIFE_Bar.class)) {
                     BarInfoDialog barinfodlg = new BarInfoDialog((VFIFE_Bar) shape.getUserData(), this.v5model);
