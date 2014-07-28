@@ -86,7 +86,7 @@ import model.VFIFE_PhysicalActionVariableLongTerm;
 import model.VFIFE_PhysicalActionVariableShortTerm;
 import model.VFIFE_PhysicalActionVariableTransient;
 
-public class Parser_nwV5VFIFE {
+public class Parser_ImportV5M {
 	
 	private ArrayList<ENode> m_enodes;
 	
@@ -121,7 +121,7 @@ public class Parser_nwV5VFIFE {
 		return null;
 	}
 	
-	public Parser_nwV5VFIFE(){
+	public Parser_ImportV5M(){
 		this.m_enodes = new ArrayList<ENode>();
 		this.m_bars = new ArrayList<EBar>();
 		this.m_materials = new ArrayList<EMaterial>();

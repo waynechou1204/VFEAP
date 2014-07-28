@@ -109,13 +109,13 @@ public class JFrameMain extends javax.swing.JFrame {
         });
         jMenuFile.add(jMenuItemOpen);
         
-        jMenuItemOpenv5m.setText("Openv5m");
+       /* jMenuItemOpenv5m.setText("Openv5m");
         jMenuItemOpenv5m.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
             	jMenuItemOpenv5mActionPerformed(evt);
             }
         });
-        jMenuFile.add(jMenuItemOpenv5m);
+        jMenuFile.add(jMenuItemOpenv5m);*/
         
         jMenuItemExport.setText("Export");
         jMenuItemExport.addActionListener(new java.awt.event.ActionListener() {
@@ -180,17 +180,25 @@ public class JFrameMain extends javax.swing.JFrame {
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
         // get file open path
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new FileNameExtensionFilter("CIS2/STP FILE", "stp"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("CIS2/STP FILE/V5M FILE", "stp","v5m"));
         int i = fileChooser.showOpenDialog(getContentPane());
 
         if (i == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             String stpFilePath = selectedFile.getAbsolutePath();
-
+            char type=stpFilePath.charAt(stpFilePath.length()-1);
             try {
                 // load file and parse
                 this.getContentPane().remove(m_view);
-                m_v5model = loadCIS(stpFilePath);
+                if(type=='m')
+                {
+                	m_v5model = control.Modeling.loadV5(stpFilePath);
+                	
+                }
+                else
+                {
+                	m_v5model = loadCIS(stpFilePath);
+                }
                 m_view = new VFIFE_Modeling_view(m_v5model);
                 this.getContentPane().add(m_view, BorderLayout.CENTER);
 
@@ -201,7 +209,7 @@ public class JFrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
 
     
-    private void jMenuItemOpenv5mActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
+    /*private void jMenuItemOpenv5mActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
         // get file open path
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("V5M FILE", "v5m"));
@@ -223,7 +231,7 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         }
     }
-    
+    */
     private void jMenuItemExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExportActionPerformed
         if (!m_v5model.isEmpty()) {
             // get file save path

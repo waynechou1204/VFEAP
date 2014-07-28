@@ -74,7 +74,7 @@ public class Modeling {
         SdaiModel model_v5 = repo_v5.loadFile("MyCisRepo", stpFilePath);
 
         // parse
-        Parser_nwV5VFIFE parser = new Parser_nwV5VFIFE();
+        Parser_ImportV5M parser = new Parser_ImportV5M();
         
         
         v5model.setNodes(parser.parseNodes(model_v5, v5model));
