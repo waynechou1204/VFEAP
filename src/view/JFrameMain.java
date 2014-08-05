@@ -22,6 +22,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import modeling.Controller;
 import jsdai.lang.SdaiException;
 import dataStructure.model.VFIFE_Load;
+import dataStructure.ProgramCalculation;
 import dataStructure.VFIFE_Model;
 
 /**
@@ -31,7 +32,7 @@ import dataStructure.VFIFE_Model;
 public class JFrameMain extends javax.swing.JFrame {
 
     private VFIFE_Model m_v5model = null;
-
+    private ProgramCalculation calcu_model=null;
     // panel
     private VFIFE_Modeling_view m_view = null;
 
@@ -80,8 +81,10 @@ public class JFrameMain extends javax.swing.JFrame {
 
         jMenuBar = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
+        jMenuCalculate = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
         jMenuItemExport = new javax.swing.JMenuItem();
+        jMenuItemExportV5 = new javax.swing.JMenuItem();
         jMenuItemExit = new javax.swing.JMenuItem();
         jMenuDefine = new javax.swing.JMenu();
         jMenuItemMaterial = new javax.swing.JMenuItem();
@@ -99,6 +102,8 @@ public class JFrameMain extends javax.swing.JFrame {
         jMenuFile.setText("File");
         jMenuFile.setPreferredSize(new java.awt.Dimension(35, 19));
 
+        
+        
         jMenuItemOpen.setText("Open");
         jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,6 +120,19 @@ public class JFrameMain extends javax.swing.JFrame {
         });
         jMenuFile.add(jMenuItemExport);
 
+        
+        /*
+        jMenuItemExportV5.setText("ExportV5");
+        jMenuItemExportV5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemExportV5ActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuItemExportV5);
+        
+        */
+        
+        
         jMenuItemExit.setText("Exit");
         jMenuItemExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -126,7 +144,20 @@ public class JFrameMain extends javax.swing.JFrame {
         jMenuBar.add(jMenuFile);
 
         jMenuDefine.setText("Define");
-
+        
+        jMenuCalculate.setText("Calculate");
+        
+        
+        jMenuItemExportV5.setText("ExportV5");
+        jMenuItemExportV5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemExportV5ActionPerformed(evt);
+            }
+        });
+        jMenuCalculate.add(jMenuItemExportV5);
+        
+        
+        
         jMenuItemMaterial.setText("Material");
         jMenuItemMaterial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,7 +174,8 @@ public class JFrameMain extends javax.swing.JFrame {
         jMenuSpecify.add(jMenuItemLoad);
 
         jMenuBar.add(jMenuSpecify);
-
+        
+        jMenuBar.add(jMenuCalculate);
         setJMenuBar(jMenuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -268,7 +300,8 @@ public class JFrameMain extends javax.swing.JFrame {
             if (j == JFileChooser.APPROVE_OPTION) {
                 elementFile = fileChooser2.getSelectedFile();
                 try {
-                	Controller.exportV5File(m_v5model, nodeFile.getAbsolutePath(),elementFile.getAbsolutePath());
+                	calcu_model = new ProgramCalculation(nodeFile.getAbsolutePath(),elementFile.getAbsolutePath());
+                	calcu_model.exportV5File(m_v5model);
                 } 
                 catch (Exception e)
                 {
@@ -300,8 +333,10 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenu jMenuDefine;
     private javax.swing.JMenu jMenuFile;
+    private javax.swing.JMenu jMenuCalculate;
     private javax.swing.JMenuItem jMenuItemExit;
     private javax.swing.JMenuItem jMenuItemExport;
+    private javax.swing.JMenuItem jMenuItemExportV5;
     private javax.swing.JMenuItem jMenuItemLoad;
     private javax.swing.JMenuItem jMenuItemMaterial;
     private javax.swing.JMenuItem jMenuItemOpen;
