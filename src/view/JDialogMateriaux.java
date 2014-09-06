@@ -9,7 +9,7 @@ package view;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
-import dataStructure.model.VFIFE_Material;
+import dataStructure.entity.VFIFE_Material;
 import dataStructure.VFIFE_Model;
 
 /**

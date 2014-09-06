@@ -21,7 +21,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import modeling.Controller;
 import jsdai.lang.SdaiException;
-import dataStructure.model.VFIFE_Load;
+import dataStructure.entity.VFIFE_Load;
 import dataStructure.ProgramCalculation;
 import dataStructure.VFIFE_Model;
 

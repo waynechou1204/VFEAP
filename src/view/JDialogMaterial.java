@@ -5,7 +5,7 @@
  */
 package view;
 
-import dataStructure.model.VFIFE_Material;
+import dataStructure.entity.VFIFE_Material;
 import dataStructure.VFIFE_Model;
 import view.JDialogMateriaux.MateriauxDataModel;
 

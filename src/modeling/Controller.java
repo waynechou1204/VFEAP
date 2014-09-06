@@ -1,13 +1,13 @@
 package modeling;
 
-import dataStructure.model.VFIFE_LoadNode;
-import dataStructure.model.VFIFE_Node;
+import dataStructure.entity.VFIFE_LoadNode;
+import dataStructure.entity.VFIFE_Node;
 import dataStructure.VFIFE_repository;
-import dataStructure.model.VFIFE_LoadMemberConcentrated;
-import dataStructure.model.VFIFE_AppliedLoadStaticForce;
-import dataStructure.model.VFIFE_Load;
-import dataStructure.model.VFIFE_Bar;
-import dataStructure.model.VFIFE_CartesianPoint;
+import dataStructure.entity.VFIFE_LoadMemberConcentrated;
+import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
+import dataStructure.entity.VFIFE_Load;
+import dataStructure.entity.VFIFE_Bar;
+import dataStructure.entity.VFIFE_CartesianPoint;
 import dataStructure.VFIFE_Model;
 import calculation.Parser_ImportV5M;
 import java.io.File;

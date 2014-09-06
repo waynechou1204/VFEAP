@@ -1,20 +1,20 @@
 package calculation;
 
-import dataStructure.model.VFIFE_LoadNode;
-import dataStructure.model.VFIFE_Node;
-import dataStructure.model.VFIFE_PhysicalAction;
-import dataStructure.model.VFIFE_AnalysisMethod;
-import dataStructure.model.TYPE_spatial_variation;
-import dataStructure.model.VFIFE_BoundaryCondition;
-import dataStructure.model.VFIFE_Material;
-import dataStructure.model.VFIFE_CartesianPoint;
-import dataStructure.model.TYPE_static_or_dynamic;
-import dataStructure.model.VFIFE_AppliedLoadStaticForce;
-import dataStructure.model.VFIFE_LoadMemberConcentrated;
-import dataStructure.model.TYPE_direct_or_indirect_action;
-import dataStructure.model.VFIFE_Load;
-import dataStructure.model.VFIFE_Bar;
-import dataStructure.model.VFIFE_LoadCase;
+import dataStructure.entity.VFIFE_LoadNode;
+import dataStructure.entity.VFIFE_Node;
+import dataStructure.entity.VFIFE_PhysicalAction;
+import dataStructure.entity.VFIFE_AnalysisMethod;
+import dataStructure.entity.TYPE_spatial_variation;
+import dataStructure.entity.VFIFE_BoundaryCondition;
+import dataStructure.entity.VFIFE_Material;
+import dataStructure.entity.VFIFE_CartesianPoint;
+import dataStructure.entity.TYPE_static_or_dynamic;
+import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
+import dataStructure.entity.VFIFE_LoadMemberConcentrated;
+import dataStructure.entity.TYPE_direct_or_indirect_action;
+import dataStructure.entity.VFIFE_Load;
+import dataStructure.entity.VFIFE_Bar;
+import dataStructure.entity.VFIFE_LoadCase;
 import java.util.ArrayList;
 
 import jsdai.SGeometry_schema.EPyramid_volume;

@@ -11,8 +11,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import dataStructure.model.VFIFE_BoundaryCondition;
-import dataStructure.model.VFIFE_Node;
+import dataStructure.entity.VFIFE_BoundaryCondition;
+import dataStructure.entity.VFIFE_Node;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 

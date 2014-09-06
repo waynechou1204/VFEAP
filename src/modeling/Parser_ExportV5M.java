@@ -1,19 +1,19 @@
 package modeling;
 
-import dataStructure.model.VFIFE_PhysicalActionPermanent;
-import dataStructure.model.VFIFE_LoadNode;
-import dataStructure.model.VFIFE_Node;
-import dataStructure.model.VFIFE_AppliedLoad;
-import dataStructure.model.VFIFE_PhysicalActionVariableTransient;
-import dataStructure.model.VFIFE_Material;
-import dataStructure.model.VFIFE_PhysicalActionVariableLongTerm;
-import dataStructure.model.VFIFE_PhysicalActionAccidental;
-import dataStructure.model.VFIFE_LoadMemberConcentrated;
-import dataStructure.model.VFIFE_AppliedLoadStaticForce;
-import dataStructure.model.VFIFE_Load;
-import dataStructure.model.VFIFE_Bar;
-import dataStructure.model.VFIFE_PhysicalActionVariableShortTerm;
-import dataStructure.model.VFIFE_LoadCase;
+import dataStructure.entity.VFIFE_PhysicalActionPermanent;
+import dataStructure.entity.VFIFE_LoadNode;
+import dataStructure.entity.VFIFE_Node;
+import dataStructure.entity.VFIFE_AppliedLoad;
+import dataStructure.entity.VFIFE_PhysicalActionVariableTransient;
+import dataStructure.entity.VFIFE_Material;
+import dataStructure.entity.VFIFE_PhysicalActionVariableLongTerm;
+import dataStructure.entity.VFIFE_PhysicalActionAccidental;
+import dataStructure.entity.VFIFE_LoadMemberConcentrated;
+import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
+import dataStructure.entity.VFIFE_Load;
+import dataStructure.entity.VFIFE_Bar;
+import dataStructure.entity.VFIFE_PhysicalActionVariableShortTerm;
+import dataStructure.entity.VFIFE_LoadCase;
 import java.util.ArrayList;
 
 import jsdai.SGeometry_schema.EPyramid_volume;

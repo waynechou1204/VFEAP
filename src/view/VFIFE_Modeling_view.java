@@ -1,12 +1,12 @@
 package view;
 
-import dataStructure.model.VFIFE_LoadNode;
-import dataStructure.model.VFIFE_Node;
-import dataStructure.model.VFIFE_LoadMemberConcentrated;
-import dataStructure.model.VFIFE_AppliedLoadStaticForce;
-import dataStructure.model.VFIFE_Load;
-import dataStructure.model.VFIFE_Bar;
-import dataStructure.model.VFIFE_CartesianPoint;
+import dataStructure.entity.VFIFE_LoadNode;
+import dataStructure.entity.VFIFE_Node;
+import dataStructure.entity.VFIFE_LoadMemberConcentrated;
+import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
+import dataStructure.entity.VFIFE_Load;
+import dataStructure.entity.VFIFE_Bar;
+import dataStructure.entity.VFIFE_CartesianPoint;
 import java.awt.Font;
 import java.awt.GraphicsConfiguration;
 import java.awt.geom.Line2D;

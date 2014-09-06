@@ -1,7 +1,10 @@
 package dataStructure;
 
+import dataStructure.entity.VFIFE_Bar;
+import dataStructure.entity.VFIFE_Material;
+import dataStructure.entity.VFIFE_Node;
+import dataStructure.entity.VFIFE_Load;
 import java.util.ArrayList;
-import dataStructure.model.*;
 
 public class VFIFE_Model {
 

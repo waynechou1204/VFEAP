@@ -12,8 +12,8 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
-import dataStructure.model.VFIFE_Bar;
-import dataStructure.model.VFIFE_Material;
+import dataStructure.entity.VFIFE_Bar;
+import dataStructure.entity.VFIFE_Material;
 import dataStructure.VFIFE_Model;
 
 import java.awt.event.ActionListener;
