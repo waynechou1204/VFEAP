@@ -1,4 +1,4 @@
-VFIFE_Modeling
+VFEAP
 ==============
 VFEAP = Vector form intrinsic Finite Element Analysis Program. 
 This is a finite element tool based on the civil engineering and vector form Structural Mechanics.
