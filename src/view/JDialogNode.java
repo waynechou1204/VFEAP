@@ -16,7 +16,7 @@ import dataStructure.entity.VFIFE_Node;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class NodeInfoDialog extends JDialog {
+public class JDialogNode extends JDialog {
 
     private final JPanel contentPanel = new JPanel();
     private VFIFE_Node m_vnode;
@@ -34,7 +34,7 @@ public class NodeInfoDialog extends JDialog {
     /**
      * Create the dialog.
      */
-    public NodeInfoDialog(VFIFE_Modeling_view view, VFIFE_Node vnode) {
+    public JDialogNode(VFIFE_Modeling_view view, VFIFE_Node vnode) {
         this.m_vnode = vnode;
         this.view = view;
 
@@ -173,14 +173,14 @@ public class NodeInfoDialog extends JDialog {
                 }
 
                 // set restraint values and save
-                NodeInfoDialog.this.m_vnode.getRestraint().setBc_x_displacement_free(!NodeInfoDialog.this.xdisplacementRestraint.isSelected());
-                NodeInfoDialog.this.m_vnode.getRestraint().setBc_y_displacement_free(!NodeInfoDialog.this.ydisplacementRestraint.isSelected());
-                NodeInfoDialog.this.m_vnode.getRestraint().setBc_z_displacement_free(!NodeInfoDialog.this.zdisplacementRestraint.isSelected());
-                NodeInfoDialog.this.m_vnode.getRestraint().setBc_x_rotation_free(!NodeInfoDialog.this.xrotationRestraint.isSelected());
-                NodeInfoDialog.this.m_vnode.getRestraint().setBc_y_rotation_free(!NodeInfoDialog.this.yrotationRestraint.isSelected());
-                NodeInfoDialog.this.m_vnode.getRestraint().setBc_z_rotation_free(!NodeInfoDialog.this.zrotationRestraint.isSelected());
-                NodeInfoDialog.this.view.updateScene();
-                NodeInfoDialog.this.dispose();
+                JDialogNode.this.m_vnode.getRestraint().setBc_x_displacement_free(!JDialogNode.this.xdisplacementRestraint.isSelected());
+                JDialogNode.this.m_vnode.getRestraint().setBc_y_displacement_free(!JDialogNode.this.ydisplacementRestraint.isSelected());
+                JDialogNode.this.m_vnode.getRestraint().setBc_z_displacement_free(!JDialogNode.this.zdisplacementRestraint.isSelected());
+                JDialogNode.this.m_vnode.getRestraint().setBc_x_rotation_free(!JDialogNode.this.xrotationRestraint.isSelected());
+                JDialogNode.this.m_vnode.getRestraint().setBc_y_rotation_free(!JDialogNode.this.yrotationRestraint.isSelected());
+                JDialogNode.this.m_vnode.getRestraint().setBc_z_rotation_free(!JDialogNode.this.zrotationRestraint.isSelected());
+                JDialogNode.this.view.updateScene();
+                JDialogNode.this.dispose();
             }
         });
         okButton.setActionCommand("OK");

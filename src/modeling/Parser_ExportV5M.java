@@ -1,33 +1,16 @@
 package modeling;
 
-import dataStructure.entity.VFIFE_PhysicalActionPermanent;
-import dataStructure.entity.VFIFE_LoadNode;
-import dataStructure.entity.VFIFE_Node;
-import dataStructure.entity.VFIFE_AppliedLoad;
-import dataStructure.entity.VFIFE_PhysicalActionVariableTransient;
-import dataStructure.entity.VFIFE_Material;
-import dataStructure.entity.VFIFE_PhysicalActionVariableLongTerm;
-import dataStructure.entity.VFIFE_PhysicalActionAccidental;
-import dataStructure.entity.VFIFE_LoadMemberConcentrated;
-import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
-import dataStructure.entity.VFIFE_Load;
-import dataStructure.entity.VFIFE_Bar;
-import dataStructure.entity.VFIFE_PhysicalActionVariableShortTerm;
-import dataStructure.entity.VFIFE_LoadCase;
 import java.util.ArrayList;
 
-import jsdai.SGeometry_schema.EPyramid_volume;
 import jsdai.SVfife_schema.ANode;
 import jsdai.SVfife_schema.CApplied_load_static_force;
 import jsdai.SVfife_schema.CBar;
 import jsdai.SVfife_schema.CBoundary_condition_logical;
 import jsdai.SVfife_schema.CCartesian_point;
-import jsdai.SVfife_schema.CLoad_case;
 import jsdai.SVfife_schema.CLoad_member_concentrated;
 import jsdai.SVfife_schema.CLoad_node;
 import jsdai.SVfife_schema.CMaterial;
 import jsdai.SVfife_schema.CNode;
-import jsdai.SVfife_schema.EAnalysis_method;
 import jsdai.SVfife_schema.EApplied_load;
 import jsdai.SVfife_schema.EApplied_load_static_force;
 import jsdai.SVfife_schema.EBar;
@@ -49,6 +32,20 @@ import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiIterator;
 import jsdai.lang.SdaiModel;
 import dataStructure.VFIFE_Model;
+import dataStructure.entity.VFIFE_AppliedLoad;
+import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
+import dataStructure.entity.VFIFE_Bar;
+import dataStructure.entity.VFIFE_Load;
+import dataStructure.entity.VFIFE_LoadCase;
+import dataStructure.entity.VFIFE_LoadMemberConcentrated;
+import dataStructure.entity.VFIFE_LoadNode;
+import dataStructure.entity.VFIFE_Material;
+import dataStructure.entity.VFIFE_Node;
+import dataStructure.entity.VFIFE_PhysicalActionAccidental;
+import dataStructure.entity.VFIFE_PhysicalActionPermanent;
+import dataStructure.entity.VFIFE_PhysicalActionVariableLongTerm;
+import dataStructure.entity.VFIFE_PhysicalActionVariableShortTerm;
+import dataStructure.entity.VFIFE_PhysicalActionVariableTransient;
 
 public class Parser_ExportV5M {
 
@@ -91,6 +88,9 @@ public class Parser_ExportV5M {
         this.m_materials = new ArrayList<EMaterial>();
     }
 
+    /*
+     * Parse elements in v5model to jsdai model
+     */
     public void parseNodes(VFIFE_Model v5model, SdaiModel model) throws SdaiException {
 
         for (VFIFE_Node node : v5model.getNodes()) {

@@ -7,16 +7,17 @@
 package view;
 
 import java.util.ArrayList;
+
 import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
-import dataStructure.entity.VFIFE_Material;
+
 import dataStructure.VFIFE_Model;
+import dataStructure.entity.VFIFE_Material;
 
 /**
  *
  * @author Xiaowei
  */
-public class JDialogMateriaux extends javax.swing.JDialog {
+public class JDialogMaterialList extends javax.swing.JDialog {
 
     /**
 	 * 
@@ -29,7 +30,7 @@ public class JDialogMateriaux extends javax.swing.JDialog {
     MateriauxDataModel m_model =null;
     VFIFE_Model m_v5model = null;
     
-    public JDialogMateriaux(VFIFE_Model v5model) {
+    public JDialogMaterialList(VFIFE_Model v5model) {
         //super(parent, modal);
         initComponents();
         m_model = new MateriauxDataModel();

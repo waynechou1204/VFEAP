@@ -19,9 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import modeling.Controller;
 import jsdai.lang.SdaiException;
-import dataStructure.entity.VFIFE_Load;
+import modeling.Controller;
 import dataStructure.ProgramCalculation;
 import dataStructure.VFIFE_Model;
 
@@ -207,7 +206,7 @@ public class JFrameMain extends javax.swing.JFrame {
                 this.getContentPane().remove(m_view);
                 if(type=='m')
                 {
-                	m_v5model = Controller.loadV5(stpFilePath);
+                	m_v5model = Controller.loadV5M(stpFilePath);
                 	
                 }
                 else
@@ -222,7 +221,6 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
-
     
     /*private void jMenuItemOpenv5mActionPerformed(java.awt.event.ActionEvent evt) {                                              
         // get file open path
@@ -247,6 +245,7 @@ public class JFrameMain extends javax.swing.JFrame {
         }
     }
     */
+    
     private void jMenuItemExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExportActionPerformed
         if (!m_v5model.isEmpty()) {
             // get file save path
@@ -324,7 +323,7 @@ public class JFrameMain extends javax.swing.JFrame {
 
     private void jMenuItemMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMaterialActionPerformed
         if (!m_v5model.isEmpty()) {
-            JDialogMateriaux materiaux = new JDialogMateriaux(m_v5model);
+            JDialogMaterialList materiaux = new JDialogMaterialList(m_v5model);
         }
     }//GEN-LAST:event_jMenuItemMaterialActionPerformed
 

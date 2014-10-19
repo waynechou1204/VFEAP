@@ -21,9 +21,8 @@ public class VFIFE_repository {
     private SdaiRepository m_repo = null;
     private SdaiModel m_model;
 
-    // construct the class
-    public VFIFE_repository(String propKey, String propValuePath)
-            throws SdaiException {
+    // constructor
+    public VFIFE_repository(String propKey, String propValuePath) throws SdaiException {
 
         java.util.Properties prop = new java.util.Properties();
         prop.setProperty(propKey, propValuePath);
@@ -38,8 +37,8 @@ public class VFIFE_repository {
     public SdaiModel loadFile(String repoName, String filepath) throws SdaiException {
         try {
             ASdaiRepository repos = m_session.getKnownServers();
-
             SdaiIterator repoiter = repos.createIterator();
+
             while (repoiter.next()) {
                 m_repo = repos.getCurrentMember(repoiter);
                 if (m_repo.getName().equals(repoName)) {
@@ -49,8 +48,7 @@ public class VFIFE_repository {
 
             // import stp file
             if (!m_repo.getName().equals(repoName)) {
-                m_repo = m_session.importClearTextEncoding(repoName, filepath,
-                        null);
+                m_repo = m_session.importClearTextEncoding(repoName, filepath, null);
             }
 
             if (!m_repo.isActive()) {
@@ -67,7 +65,6 @@ public class VFIFE_repository {
 
                 if (m_model.getMode() == SdaiModel.NO_ACCESS) {
                     m_model.startReadOnlyAccess();
-
                     return m_model;
                 }
             }

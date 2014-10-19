@@ -2,25 +2,24 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-
-import dataStructure.entity.VFIFE_Bar;
-import dataStructure.entity.VFIFE_Material;
-import dataStructure.VFIFE_Model;
-
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
-public class BarInfoDialog extends JDialog {
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import dataStructure.VFIFE_Model;
+import dataStructure.entity.VFIFE_Bar;
+import dataStructure.entity.VFIFE_Material;
+
+public class JDialogBar extends JDialog {
 
     private final JPanel contentPanel = new JPanel();
     private JTextField textField;
@@ -33,7 +32,7 @@ public class BarInfoDialog extends JDialog {
     /**
      * Create the dialog.
      */
-    public BarInfoDialog(VFIFE_Bar vbar, VFIFE_Model v5model) {
+    public JDialogBar(VFIFE_Bar vbar, VFIFE_Model v5model) {
         
         this.m_vbar = vbar;
         this.m_v5model = v5model;
@@ -94,7 +93,7 @@ public class BarInfoDialog extends JDialog {
         okButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 // set section area and material
-                m_vbar.setSection_area(Double.parseDouble(BarInfoDialog.this.textField.getText()));
+                m_vbar.setSection_area(Double.parseDouble(JDialogBar.this.textField.getText()));
                 
                 for (VFIFE_Material vm : m_v5model.getMateriaux()) {
                     if ((String) comboBox.getSelectedItem() == vm.getName()) {
@@ -103,7 +102,7 @@ public class BarInfoDialog extends JDialog {
                     }
                 }
 
-                BarInfoDialog.this.dispose();
+                JDialogBar.this.dispose();
             }
         });
         okButton.setActionCommand("Save");
@@ -113,7 +112,7 @@ public class BarInfoDialog extends JDialog {
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                BarInfoDialog.this.dispose();
+                JDialogBar.this.dispose();
             }
         });
         cancelButton.setActionCommand("Cancel");

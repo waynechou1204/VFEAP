@@ -17,9 +17,9 @@ import dataStructure.entity.VFIFE_Bar;
 import dataStructure.entity.VFIFE_Load;
 import dataStructure.VFIFE_Model;
 import dataStructure.entity.VFIFE_Node;
-import view.BarInfoDialog;
+import view.JDialogBar;
 import view.JDialogForce;
-import view.NodeInfoDialog;
+import view.JDialogNode;
 import view.VFIFE_Modeling_view;
 
 public class VFIFEMousePickBehavior extends PickMouseBehavior {
@@ -60,10 +60,10 @@ public class VFIFEMousePickBehavior extends PickMouseBehavior {
                     ((PointArray) shape.getGeometry()).getCoordinate(0, d);
                     System.out.println(d[0] + "," + d[1] + "," + d[2]);
 
-                    NodeInfoDialog nodeinfodlg = new NodeInfoDialog(this.view, (VFIFE_Node) shape.getUserData());
+                    JDialogNode nodeinfodlg = new JDialogNode(this.view, (VFIFE_Node) shape.getUserData());
                     nodeinfodlg.setVisible(true);
                 } else if (shape.getUserData().getClass().equals(VFIFE_Bar.class)) {
-                    BarInfoDialog barinfodlg = new BarInfoDialog((VFIFE_Bar) shape.getUserData(), this.v5model);
+                    JDialogBar barinfodlg = new JDialogBar((VFIFE_Bar) shape.getUserData(), this.v5model);
                     barinfodlg.setVisible(true);
                 } else if (shape.getUserData().getClass().toString().contains("VFIFE_Load")) {
                     JDialogForce dlg_force = new JDialogForce((VFIFE_Load) shape.getUserData());

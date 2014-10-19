@@ -1,22 +1,16 @@
 package view;
 
-import dataStructure.entity.VFIFE_LoadNode;
-import dataStructure.entity.VFIFE_Node;
-import dataStructure.entity.VFIFE_LoadMemberConcentrated;
-import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
-import dataStructure.entity.VFIFE_Load;
-import dataStructure.entity.VFIFE_Bar;
-import dataStructure.entity.VFIFE_CartesianPoint;
 import java.awt.Font;
 import java.awt.GraphicsConfiguration;
-import java.awt.geom.Line2D;
 import java.awt.geom.QuadCurve2D;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
+import javax.media.j3d.ColoringAttributes;
 import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Font3D;
 import javax.media.j3d.FontExtrusion;
@@ -38,7 +32,8 @@ import javax.vecmath.Point3f;
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
-import dataStructure.VFIFE_Model;
+import modeling.VFIFEMouseOverBehavior;
+import modeling.VFIFEMousePickBehavior;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
@@ -48,10 +43,14 @@ import com.sun.j3d.utils.geometry.Primitive;
 import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
-import modeling.VFIFEMouseOverBehavior;
-import modeling.VFIFEMousePickBehavior;
-
-import javax.media.j3d.ColoringAttributes;
+import dataStructure.VFIFE_Model;
+import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
+import dataStructure.entity.VFIFE_Bar;
+import dataStructure.entity.VFIFE_CartesianPoint;
+import dataStructure.entity.VFIFE_Load;
+import dataStructure.entity.VFIFE_LoadMemberConcentrated;
+import dataStructure.entity.VFIFE_LoadNode;
+import dataStructure.entity.VFIFE_Node;
 
 public class VFIFE_Modeling_view extends JPanel {
 

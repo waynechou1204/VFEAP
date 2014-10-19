@@ -1,28 +1,5 @@
 package modeling;
 
-import dataStructure.entity.VFIFE_LoadNode;
-import dataStructure.entity.TYPE_spatial_variation;
-import dataStructure.entity.VFIFE_Node;
-import dataStructure.entity.VFIFE_LoadCase;
-import dataStructure.entity.VFIFE_CartesianPoint;
-import dataStructure.entity.VFIFE_PhysicalActionAccidental;
-import dataStructure.entity.VFIFE_PhysicalActionPermanent;
-import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
-import dataStructure.entity.VFIFE_LoadMemberConcentrated;
-import dataStructure.entity.TYPE_static_or_dynamic;
-import dataStructure.entity.VFIFE_Material;
-import dataStructure.entity.TYPE_direct_or_indirect_action;
-import dataStructure.entity.VFIFE_Bar;
-import dataStructure.entity.VFIFE_PhysicalActionVariableLongTerm;
-import dataStructure.entity.VFIFE_BoundaryCondition;
-import dataStructure.entity.TYPE_action_source_accidential;
-import dataStructure.entity.TYPE_action_source_variable_transient;
-import dataStructure.entity.TYPE_action_source_variable_long_term;
-import dataStructure.entity.TYPE_action_source_permanent;
-import dataStructure.entity.VFIFE_PhysicalActionVariableTransient;
-import dataStructure.entity.VFIFE_PhysicalAction;
-import dataStructure.entity.TYPE_action_source_variable_short_term;
-import dataStructure.entity.VFIFE_PhysicalActionVariableShortTerm;
 import java.util.ArrayList;
 
 import jsdai.SStructural_frame_schema.AElement_node_connectivity;
@@ -32,7 +9,6 @@ import jsdai.SStructural_frame_schema.AMaterial_isotropic;
 import jsdai.SStructural_frame_schema.ARepresentation_item;
 import jsdai.SStructural_frame_schema.ASection_profile;
 import jsdai.SStructural_frame_schema.CLoad_node;
-import jsdai.SStructural_frame_schema.EAnalysis_model;
 import jsdai.SStructural_frame_schema.EApplied_load_static_force;
 import jsdai.SStructural_frame_schema.EAssembly_design_structural_member_linear;
 import jsdai.SStructural_frame_schema.EBoundary_condition_logical;
@@ -54,13 +30,36 @@ import jsdai.SStructural_frame_schema.EPhysical_action_variable_short_term;
 import jsdai.SStructural_frame_schema.EPhysical_action_variable_transient;
 import jsdai.SStructural_frame_schema.EPositive_length_measure_with_unit;
 import jsdai.SStructural_frame_schema.ERepresentation_item;
+import jsdai.SStructural_frame_schema.ESection_profile;
 import jsdai.SStructural_frame_schema.ESection_profile_circle;
-import jsdai.SStructural_frame_schema.ESi_unit;
 import jsdai.lang.A_double;
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiIterator;
 import jsdai.lang.SdaiModel;
 import dataStructure.VFIFE_Model;
+import dataStructure.entity.TYPE_action_source_accidential;
+import dataStructure.entity.TYPE_action_source_permanent;
+import dataStructure.entity.TYPE_action_source_variable_long_term;
+import dataStructure.entity.TYPE_action_source_variable_short_term;
+import dataStructure.entity.TYPE_action_source_variable_transient;
+import dataStructure.entity.TYPE_direct_or_indirect_action;
+import dataStructure.entity.TYPE_spatial_variation;
+import dataStructure.entity.TYPE_static_or_dynamic;
+import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
+import dataStructure.entity.VFIFE_Bar;
+import dataStructure.entity.VFIFE_BoundaryCondition;
+import dataStructure.entity.VFIFE_CartesianPoint;
+import dataStructure.entity.VFIFE_LoadCase;
+import dataStructure.entity.VFIFE_LoadMemberConcentrated;
+import dataStructure.entity.VFIFE_LoadNode;
+import dataStructure.entity.VFIFE_Material;
+import dataStructure.entity.VFIFE_Node;
+import dataStructure.entity.VFIFE_PhysicalAction;
+import dataStructure.entity.VFIFE_PhysicalActionAccidental;
+import dataStructure.entity.VFIFE_PhysicalActionPermanent;
+import dataStructure.entity.VFIFE_PhysicalActionVariableLongTerm;
+import dataStructure.entity.VFIFE_PhysicalActionVariableShortTerm;
+import dataStructure.entity.VFIFE_PhysicalActionVariableTransient;
 
 public class Parser_ImportSTP {
 
@@ -84,7 +83,7 @@ public class Parser_ImportSTP {
 
                 v5node.setNode_name(enode.getNode_name(null).trim());
 
-				//////////////// coords//////////////////////////
+				//////////////// coordinates//////////////////////////
                 jsdai.SStructural_frame_schema.ECartesian_point epoint = (jsdai.SStructural_frame_schema.ECartesian_point) enode
                         .getNode_coords(null);
                 A_double coords = epoint.getCoordinates(null);
@@ -134,10 +133,7 @@ public class Parser_ImportSTP {
     }
 
     public void parseBars(SdaiModel model_cis, VFIFE_Model v5model) throws SdaiException {
-
-		// v5-bar
-        //ArrayList<VFIFE_Bar> v5bars = new ArrayList<VFIFE_Bar>();
-        // deal with element-node-connectivity
+		// deal with element-node-connectivity
         AElement_node_connectivity connects = (AElement_node_connectivity) model_cis.getInstances(EElement_node_connectivity.class);
         SdaiIterator connectIter = connects.createIterator();
         while (connectIter.next()) {
@@ -164,19 +160,27 @@ public class Parser_ImportSTP {
 
 					// space dimension
                     //EAnalysis_model anamodel = element.getParent_model(null);
+                    
                     // deal with section circle hollow
                     ASection_profile sections = element.getCross_sections(null);
                     SdaiIterator sectionIter = sections.createIterator();
                     while (sectionIter.next()) {
-                        ESection_profile_circle section = (ESection_profile_circle) sections.getCurrentMember(sectionIter);
-
-						// external radius
-                        // bar's section area
-                        EPositive_length_measure_with_unit radius = section.getExternal_radius(null);
-                        double r = radius.get_double(radius.getAttributeDefinition("value_component"));
+                        ESection_profile section = (ESection_profile) sections.getCurrentMember(sectionIter);
+                        
+                        // external radius -> bar's section area
+                        double area=0;
+                        if(section.getClass().toString().contains("ESection_profile_circle")){
+                        	EPositive_length_measure_with_unit radius = ((ESection_profile_circle) section).getExternal_radius(null);
+                        	double r = radius.get_double(radius.getAttributeDefinition("value_component"));
+                        	area = Math.PI * r * r;
+                        }
+                        else {
+                        	// other section, like 'I' type
+                        }
+						
 
                         // set bar section area
-                        v5bar.setSection_area(Math.PI * r * r);
+                        v5bar.setSection_area(area);
 
 						// unit
                         //ESi_unit unit = (ESi_unit) radius.getUnit_component(null);
