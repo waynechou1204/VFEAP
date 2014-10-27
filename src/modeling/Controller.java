@@ -21,8 +21,8 @@ public class Controller {
 
     public Controller() throws SdaiException {
 
-    	//	FIXME, the second line is for test, to delete
-        // VFIFE_Model m_v5model = new VFIFE_Model();
+    	// FIXME, the second line is for test, to delete
+        //VFIFE_Model m_v5model = new VFIFE_Model();
         VFIFE_Model m_v5model = loadCIS("model_resources/building.stp");
 
         // main window of the model

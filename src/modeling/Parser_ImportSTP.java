@@ -31,7 +31,9 @@ import jsdai.SStructural_frame_schema.EPhysical_action_variable_transient;
 import jsdai.SStructural_frame_schema.EPositive_length_measure_with_unit;
 import jsdai.SStructural_frame_schema.ERepresentation_item;
 import jsdai.SStructural_frame_schema.ESection_profile;
+import jsdai.SStructural_frame_schema.ESection_profile_angle;
 import jsdai.SStructural_frame_schema.ESection_profile_circle;
+import jsdai.SStructural_frame_schema.ESection_profile_i_type;
 import jsdai.lang.A_double;
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiIterator;
@@ -67,7 +69,7 @@ public class Parser_ImportSTP {
 
         ArrayList<VFIFE_Node> v5nodes = new ArrayList<VFIFE_Node>();
 
-        // deal with nodes in step
+        // deal with nodes of STEP
         jsdai.SStructural_frame_schema.ANode nodes = (jsdai.SStructural_frame_schema.ANode) model_cis.getInstances(ENode.class);
         SdaiIterator nodeIt = nodes.createIterator();
         while (nodeIt.next()) {
@@ -158,10 +160,7 @@ public class Parser_ImportSTP {
                     // set bar id
                     v5bar.setBar_id(Integer.parseInt(element.getElement_name(null).trim()));
 
-					// space dimension
-                    //EAnalysis_model anamodel = element.getParent_model(null);
-                    
-                    // deal with section circle hollow
+                    // deal with bar area
                     ASection_profile sections = element.getCross_sections(null);
                     SdaiIterator sectionIter = sections.createIterator();
                     while (sectionIter.next()) {
@@ -169,16 +168,42 @@ public class Parser_ImportSTP {
                         
                         // external radius -> bar's section area
                         double area=0;
-                        if(section.getClass().toString().contains("ESection_profile_circle")){
+                        
+                        // section-circle-hollow bar
+                        if(section.getClass().toString().contains("CSection_profile_circle")){
                         	EPositive_length_measure_with_unit radius = ((ESection_profile_circle) section).getExternal_radius(null);
                         	double r = radius.get_double(radius.getAttributeDefinition("value_component"));
                         	area = Math.PI * r * r;
                         }
-                        else {
-                        	// other section, like 'I' type
+                        // other section type, like 'I' type
+                        else if(section.getClass().toString().contains("CSection_profile_i_type")){
+                        	EPositive_length_measure_with_unit temp = ((ESection_profile_i_type) section).getOverall_depth(null);
+                        	double dep = temp.get_double(temp.getAttributeDefinition("value_component"));
+                        	
+                        	temp = ((ESection_profile_i_type) section).getOverall_width(null);
+                        	double width = temp.get_double(temp.getAttributeDefinition("value_component"));
+                        	
+                        	temp = ((ESection_profile_i_type) section).getWeb_thickness(null);
+                        	double web_thick = temp.get_double(temp.getAttributeDefinition("value_component"));
+                        	
+                        	temp = ((ESection_profile_i_type) section).getFlange_thickness(null);
+                        	double flange_thick = temp.get_double(temp.getAttributeDefinition("value_component"));
+                        	
+                        	area = 2*dep*web_thick + width*flange_thick;
                         }
-						
-
+						// 'L' type
+                        else if(section.getClass().toString().contains("CSection_profile_angle")){
+                        	EPositive_length_measure_with_unit temp = ((ESection_profile_angle) section).getDepth(null);
+                        	double dep = temp.get_double(temp.getAttributeDefinition("value_component"));
+                        	
+                        	temp =((ESection_profile_angle) section).getWidth(null);
+                        	double wid = temp.get_double(temp.getAttributeDefinition("value_component"));
+                        	
+                        	temp =((ESection_profile_angle) section).getThickness(null);
+                        	double thick = temp.get_double(temp.getAttributeDefinition("value_component"));
+                        	area = (dep+wid)*thick;
+                        }
+                        
                         // set bar section area
                         v5bar.setSection_area(area);
 
