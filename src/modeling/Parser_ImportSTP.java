@@ -399,11 +399,7 @@ public class Parser_ImportSTP {
         // set load case name and factor(unknown FIXME)
         v5loadcase.setLoad_case_name(eloadcase.getLoad_case_name(null));
         v5loadcase.setLoad_case_factor(0);
-
-		// FIXME not set in eg5-1, maybe useful
-        // set load case default governing analysis(analysis method: dynamic or static)
-        v5loadcase.setGoverning_analyses(null);
-
+		
         // set load case time variation (physical action nature)
         VFIFE_PhysicalAction v5physicAction = this.parsePhysicalAction(eloadcase.getTime_variation(null));
         v5loadcase.setTime_variation(v5physicAction);

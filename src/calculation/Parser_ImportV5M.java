@@ -1,71 +1,33 @@
 package calculation;
 
-import dataStructure.entity.VFIFE_LoadNode;
-import dataStructure.entity.VFIFE_Node;
-import dataStructure.entity.VFIFE_PhysicalAction;
-import dataStructure.entity.VFIFE_AnalysisMethod;
-import dataStructure.entity.TYPE_spatial_variation;
-import dataStructure.entity.VFIFE_BoundaryCondition;
-import dataStructure.entity.VFIFE_Material;
-import dataStructure.entity.VFIFE_CartesianPoint;
-import dataStructure.entity.TYPE_static_or_dynamic;
-import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
-import dataStructure.entity.VFIFE_LoadMemberConcentrated;
-import dataStructure.entity.TYPE_direct_or_indirect_action;
-import dataStructure.entity.VFIFE_Load;
-import dataStructure.entity.VFIFE_Bar;
-import dataStructure.entity.VFIFE_LoadCase;
 import java.util.ArrayList;
 
-import jsdai.SGeometry_schema.EPyramid_volume;
-import jsdai.SStructural_frame_schema.AElement_node_connectivity;
-import jsdai.SStructural_frame_schema.AMaterial_isotropic;
-import jsdai.SStructural_frame_schema.ARepresentation_item;
-import jsdai.SStructural_frame_schema.ASection_profile;
-import jsdai.SStructural_frame_schema.EElement_curve_complex;
-import jsdai.SStructural_frame_schema.EElement_node_connectivity;
-import jsdai.SStructural_frame_schema.EMaterial_elasticity;
-import jsdai.SStructural_frame_schema.EMaterial_isotropic;
-import jsdai.SStructural_frame_schema.EMaterial_representation;
-import jsdai.SStructural_frame_schema.EPositive_length_measure_with_unit;
-import jsdai.SStructural_frame_schema.ERepresentation_item;
-import jsdai.SStructural_frame_schema.ESection_profile_circle;
-import jsdai.SVfife_schema.AAnalysis_method;
-import jsdai.SVfife_schema.ANode;
-import jsdai.SVfife_schema.CApplied_load_static_force;
-import jsdai.SVfife_schema.CBar;
-import jsdai.SVfife_schema.CBoundary_condition_logical;
-import jsdai.SVfife_schema.CCartesian_point;
-import jsdai.SVfife_schema.CLoad_case;
-import jsdai.SVfife_schema.CLoad_member_concentrated;
-import jsdai.SVfife_schema.CLoad_node;
-import jsdai.SVfife_schema.CMaterial;
-import jsdai.SVfife_schema.CNode;
-import jsdai.SVfife_schema.EAnalysis_method;
 import jsdai.SVfife_schema.EApplied_load;
 import jsdai.SVfife_schema.EApplied_load_static_force;
 import jsdai.SVfife_schema.EBar;
-import jsdai.SVfife_schema.EBoundary_condition_logical;
 import jsdai.SVfife_schema.ECartesian_point;
-import jsdai.SVfife_schema.ELoad;
-import jsdai.SVfife_schema.ELoad_case;
-import jsdai.SVfife_schema.ELoad_member_concentrated;
-import jsdai.SVfife_schema.ELoad_node;
 import jsdai.SVfife_schema.EMaterial;
 import jsdai.SVfife_schema.ENode;
-import jsdai.SVfife_schema.EPhysical_action;
-import jsdai.SVfife_schema.EPhysical_action_accidental;
-import jsdai.SVfife_schema.EPhysical_action_permanent;
-import jsdai.SVfife_schema.EPhysical_action_seismic;
-import jsdai.SVfife_schema.EPhysical_action_variable_long_term;
-import jsdai.SVfife_schema.EPhysical_action_variable_short_term;
-import jsdai.SVfife_schema.EPhysical_action_variable_transient;
 import jsdai.lang.A_double;
 import jsdai.lang.A_string;
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiIterator;
 import jsdai.lang.SdaiModel;
 import dataStructure.VFIFE_Model;
+import dataStructure.entity.TYPE_direct_or_indirect_action;
+import dataStructure.entity.TYPE_spatial_variation;
+import dataStructure.entity.TYPE_static_or_dynamic;
+import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
+import dataStructure.entity.VFIFE_Bar;
+import dataStructure.entity.VFIFE_BoundaryCondition;
+import dataStructure.entity.VFIFE_CartesianPoint;
+import dataStructure.entity.VFIFE_Load;
+import dataStructure.entity.VFIFE_LoadCase;
+import dataStructure.entity.VFIFE_LoadMemberConcentrated;
+import dataStructure.entity.VFIFE_LoadNode;
+import dataStructure.entity.VFIFE_Material;
+import dataStructure.entity.VFIFE_Node;
+import dataStructure.entity.VFIFE_PhysicalAction;
 
 public class Parser_ImportV5M {
 	
@@ -333,33 +295,6 @@ public class Parser_ImportV5M {
 					throw e;
 					}
 				}
-				//---------analysis method
-				try
-				{
-						ArrayList<VFIFE_AnalysisMethod> v5analysisMethods = new ArrayList<VFIFE_AnalysisMethod>();
-						AAnalysis_method analysisMethods=loadcase.getGoverning_analyses(null);
-						SdaiIterator analysisMethodIt = analysisMethods.createIterator();
-						while(analysisMethodIt.next())
-						{
-							VFIFE_AnalysisMethod v5analysisMethod= new VFIFE_AnalysisMethod();
-							EAnalysis_method analysisMethod = analysisMethods.getCurrentMember(analysisMethodIt);
-							v5analysisMethod.setAnalysis_assumptions(analysisMethod.getAnalysis_assumptions(null));
-							v5analysisMethod.setAnalysis_name(analysisMethod.getAnalysis_name(null));
-							v5analysisMethods.add(v5analysisMethod);
-						}
-						v5loadcase.setGoverning_analyses(v5analysisMethods);	
-						v5load.setParent_load_case(v5loadcase);
-				}
-				catch (SdaiException e)
-				{
-					if(e.getErrorId()==e.VA_NSET)
-					{}
-					else
-					{
-					throw e;
-					}
-				}
-			
 			}
 			catch (SdaiException e)
 			{
