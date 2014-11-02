@@ -31,7 +31,7 @@ public class Controller {
 
     // FIXME, The repository path should be specified in the project! 
     
-    /*
+    /**
      * Load stp file with cis/2 standard (exported by SAP2000)
      * parses the file components to v5model  
      * 

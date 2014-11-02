@@ -14,8 +14,6 @@ import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiIterator;
 import jsdai.lang.SdaiModel;
 import dataStructure.VFIFE_Model;
-import dataStructure.entity.TYPE_direct_or_indirect_action;
-import dataStructure.entity.TYPE_spatial_variation;
 import dataStructure.entity.TYPE_static_or_dynamic;
 import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
 import dataStructure.entity.VFIFE_Bar;
@@ -238,53 +236,7 @@ public class Parser_ImportV5M {
 				jsdai.SVfife_schema.EPhysical_action physical_action = loadcase.getTime_variation(null);
 				VFIFE_PhysicalAction v5physicalAction = new VFIFE_PhysicalAction();
 				v5physicalAction.setAction_nature(TYPE_static_or_dynamic.valueOf(physical_action.getAction_nature(null)));
-				v5physicalAction.setAction_spatial_variation(TYPE_spatial_variation.valueOf(physical_action.getAction_spatial_variation(null)));
-				v5physicalAction.setAction_type(TYPE_direct_or_indirect_action.valueOf(physical_action.getAction_type(null)));
-				//-----------------------derivation_factors
-				try
-				{
-						A_double Derivation_factors =physical_action.getDerivation_factors(null);
-						SdaiIterator DfactorIt = Derivation_factors.createIterator();
-						ArrayList<Double> v5Derivation_factors = new ArrayList<Double>();
-						while(DfactorIt.next())
-						{
-							v5Derivation_factors.add(Derivation_factors.getCurrentMember(DfactorIt));
-						}
-						v5physicalAction.setDerivation_factors(v5Derivation_factors);
-				}
-				catch (SdaiException e)
-				{
-					if(e.getErrorId()==e.VA_NSET)
-					{}
-					else
-					{
-					throw e;
-					}
-				}
-			
-				//-----------------------derivation_factor_labels
-				try
-				{
-						A_string Derivation_factor_labels =physical_action.getDerivation_factor_labels(null);
-						SdaiIterator DFLabelIt = Derivation_factor_labels.createIterator();
-						ArrayList<String> v5Derivation_factor_labels = new ArrayList<String>();
-						while(DFLabelIt.next())
-						{
-							v5Derivation_factor_labels.add(Derivation_factor_labels.getCurrentMember(DFLabelIt));
-						}
-						v5physicalAction.setDerivation_factor_labels(v5Derivation_factor_labels);
-			
-						v5loadcase.setTime_variation(v5physicalAction);
-				}
-				catch (SdaiException e)
-				{
-					if(e.getErrorId()==e.VA_NSET)
-					{}
-					else
-					{
-					throw e;
-					}
-				}
+				
 				}
 				catch (SdaiException e)
 				{

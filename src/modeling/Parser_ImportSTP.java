@@ -25,9 +25,6 @@ import jsdai.SStructural_frame_schema.ENode;
 import jsdai.SStructural_frame_schema.EPhysical_action;
 import jsdai.SStructural_frame_schema.EPhysical_action_accidental;
 import jsdai.SStructural_frame_schema.EPhysical_action_permanent;
-import jsdai.SStructural_frame_schema.EPhysical_action_variable_long_term;
-import jsdai.SStructural_frame_schema.EPhysical_action_variable_short_term;
-import jsdai.SStructural_frame_schema.EPhysical_action_variable_transient;
 import jsdai.SStructural_frame_schema.EPositive_length_measure_with_unit;
 import jsdai.SStructural_frame_schema.ERepresentation_item;
 import jsdai.SStructural_frame_schema.ESection_profile;
@@ -41,11 +38,6 @@ import jsdai.lang.SdaiModel;
 import dataStructure.VFIFE_Model;
 import dataStructure.entity.TYPE_action_source_accidential;
 import dataStructure.entity.TYPE_action_source_permanent;
-import dataStructure.entity.TYPE_action_source_variable_long_term;
-import dataStructure.entity.TYPE_action_source_variable_short_term;
-import dataStructure.entity.TYPE_action_source_variable_transient;
-import dataStructure.entity.TYPE_direct_or_indirect_action;
-import dataStructure.entity.TYPE_spatial_variation;
 import dataStructure.entity.TYPE_static_or_dynamic;
 import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
 import dataStructure.entity.VFIFE_Bar;
@@ -59,9 +51,6 @@ import dataStructure.entity.VFIFE_Node;
 import dataStructure.entity.VFIFE_PhysicalAction;
 import dataStructure.entity.VFIFE_PhysicalActionAccidental;
 import dataStructure.entity.VFIFE_PhysicalActionPermanent;
-import dataStructure.entity.VFIFE_PhysicalActionVariableLongTerm;
-import dataStructure.entity.VFIFE_PhysicalActionVariableShortTerm;
-import dataStructure.entity.VFIFE_PhysicalActionVariableTransient;
 
 public class Parser_ImportSTP {
 
@@ -424,33 +413,13 @@ public class Parser_ImportSTP {
             VFIFE_PhysicalActionAccidental v5phyActionA = new VFIFE_PhysicalActionAccidental();
             v5phyActionA.setAction_source(TYPE_action_source_accidential.values()[src]);
             v5phyAction = v5phyActionA;
-        } else if (derivedClass.contains("PHYSICAL_ACTION_VARIABLE_LONG_TERM")) {
-            int src = ((EPhysical_action_variable_long_term) ephysicAction).getAction_source(null) - 1;
-            VFIFE_PhysicalActionVariableLongTerm v5phyActionL = new VFIFE_PhysicalActionVariableLongTerm();
-            v5phyActionL.setAction_source(TYPE_action_source_variable_long_term.values()[src]);
-            v5phyAction = v5phyActionL;
-        } else if (derivedClass.contains("PHYSICAL_ACTION_VARIABLE_SHORT_TERM")) {
-            int src = ((EPhysical_action_variable_short_term) ephysicAction).getAction_source(null) - 1;
-            VFIFE_PhysicalActionVariableShortTerm v5phyActionS = new VFIFE_PhysicalActionVariableShortTerm();
-            v5phyActionS.setAction_source(TYPE_action_source_variable_short_term.values()[src]);
-            v5phyAction = v5phyActionS;
-        } else if (derivedClass.contains("PHYSICAL_ACTION_TRANSIENT")) {
-            int src = ((EPhysical_action_variable_transient) ephysicAction).getAction_source(null) - 1;
-            VFIFE_PhysicalActionVariableTransient v5phyActionT = new VFIFE_PhysicalActionVariableTransient();
-            v5phyActionT.setAction_source(TYPE_action_source_variable_transient.values()[src]);
-            v5phyAction = v5phyActionT;
         } else if (derivedClass.contains("PHYSICAL_ACTION")) {
             v5phyAction = new VFIFE_PhysicalAction();
         }
 
         // set action nature - static or dynamic
         v5phyAction.setAction_nature(TYPE_static_or_dynamic.values()[ephysicAction.getAction_nature(null) - 1]);
-        // set action spatial variation - free or fixed action
-        v5phyAction.setAction_spatial_variation(TYPE_spatial_variation.values()[ephysicAction.getAction_spatial_variation(null) - 1]);
-        // set action type - direct or indirect
-        v5phyAction.setAction_type(TYPE_direct_or_indirect_action.values()[ephysicAction.getAction_type(null) - 1]);
-
-		// FIXME
+        
         // basic_magnitude, derived_magnitude, derivation_factors,  derivation_factor_labels are not useful for now
         return v5phyAction;
     }

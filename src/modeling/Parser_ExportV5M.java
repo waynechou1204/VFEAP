@@ -24,9 +24,6 @@ import jsdai.SVfife_schema.EPhysical_action;
 import jsdai.SVfife_schema.EPhysical_action_accidental;
 import jsdai.SVfife_schema.EPhysical_action_permanent;
 import jsdai.SVfife_schema.EPhysical_action_seismic;
-import jsdai.SVfife_schema.EPhysical_action_variable_long_term;
-import jsdai.SVfife_schema.EPhysical_action_variable_short_term;
-import jsdai.SVfife_schema.EPhysical_action_variable_transient;
 import jsdai.lang.A_double;
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiIterator;
@@ -43,9 +40,6 @@ import dataStructure.entity.VFIFE_Material;
 import dataStructure.entity.VFIFE_Node;
 import dataStructure.entity.VFIFE_PhysicalActionAccidental;
 import dataStructure.entity.VFIFE_PhysicalActionPermanent;
-import dataStructure.entity.VFIFE_PhysicalActionVariableLongTerm;
-import dataStructure.entity.VFIFE_PhysicalActionVariableShortTerm;
-import dataStructure.entity.VFIFE_PhysicalActionVariableTransient;
 
 public class Parser_ExportV5M {
 
@@ -309,26 +303,12 @@ public class Parser_ExportV5M {
         } else if (v5loadcase.getTime_variation().getClass().toString().contains("Seismic")) {
             EPhysical_action_seismic ephysicActionS = (EPhysical_action_seismic) model.createEntityInstance(EPhysical_action_seismic.class);
             ephysicAction = ephysicActionS;
-        } else if (v5loadcase.getTime_variation().getClass().toString().contains("LongTerm")) {
-            EPhysical_action_variable_long_term ephysicActionL = (EPhysical_action_variable_long_term) model.createEntityInstance(EPhysical_action_variable_long_term.class);
-            ephysicActionL.setAction_source(null, ((VFIFE_PhysicalActionVariableLongTerm) v5loadcase.getTime_variation()).getAction_source().ordinal() + 1);
-            ephysicAction = ephysicActionL;
-        } else if (v5loadcase.getTime_variation().getClass().toString().contains("ShortTerm")) {
-            EPhysical_action_variable_short_term ephysicActionS = (EPhysical_action_variable_short_term) model.createEntityInstance(EPhysical_action_variable_short_term.class);
-            ephysicActionS.setAction_source(null, ((VFIFE_PhysicalActionVariableShortTerm) v5loadcase.getTime_variation()).getAction_source().ordinal() + 1);
-            ephysicAction = ephysicActionS;
-        } else if (v5loadcase.getTime_variation().getClass().toString().contains("Transient")) {
-            EPhysical_action_variable_transient ephysicActionT = (EPhysical_action_variable_transient) model.createEntityInstance(EPhysical_action_variable_transient.class);
-            ephysicActionT.setAction_source(null, ((VFIFE_PhysicalActionVariableTransient) v5loadcase.getTime_variation()).getAction_source().ordinal() + 1);
-            ephysicAction = ephysicActionT;
         } else {
             ephysicAction = (EPhysical_action) model.createEntityInstance(EPhysical_action.class);
         }
 
         ephysicAction.setAction_nature(null, v5loadcase.getTime_variation().getAction_nature().ordinal() + 1);
-        ephysicAction.setAction_spatial_variation(null, v5loadcase.getTime_variation().getAction_spatial_variation().ordinal() + 1);
-        ephysicAction.setAction_type(null, v5loadcase.getTime_variation().getAction_type().ordinal() + 1);
-
+       
 		// derivations are null in the 5-1
         // leave it empty
         eloadcase.setTime_variation(null, ephysicAction);
