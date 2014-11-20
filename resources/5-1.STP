@@ -1,0 +1,157 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION(/* description */ ('{cimsteel logical product model version (6) object (1) structural-frame-schema (1)}',
+'CC504'),/* implementation_level */ '2;1');
+FILE_NAME('5-1', /* name */
+'16-2014-7T22:24:25+8:00', /* time_stamp */
+(''), /* author */
+(''), /* organization */
+'14.1.0', /* preprocessor_version */
+'SAP2000', /* originating_system */
+'' /* authorisation */);
+FILE_SCHEMA (('STRUCTURAL_FRAME_SCHEMA'));
+ENDSEC;
+DATA;
+#1=REPRESENTATION('REPRESENTATION FOR ALL GEOMETRY',(#2,#3,#4,#5,#6,#7,
+#8,#9,#10,#11,#12,#13,#14,#15,#16,
+#17,#18,#19,#20,#21,#22,#23,#24,#25,
+#26,#27,#28,#29,#30,#31,#32,#33,#34,
+#35,#36,#37,#38,#39,#40,#41,#42,#43,
+#44,#45,#46,#47),#48);
+#2=CARTESIAN_POINT('ORIGIN',(0.0000000000000,0.0000000000000,0.0000000000000));
+#3=DIRECTION('X_AXIS',(1.0000000,0.0000000,0.0000000));
+#4=DIRECTION('Z_AXIS',(0.0000000,0.0000000,1.0000000));
+#5=AXIS2_PLACEMENT_3D('IDENTITY',#2,#4,#3);
+#6=CARTESIAN_POINT('GRID_A_PLANE_ORIGIN',(0.0000000000000,0.0000000000000,0.0000000000000));
+#7=DIRECTION('GRID_A_PLANE_REF_DIR',(0.0000000,0.0000000,-1.0000000));
+#8=DIRECTION('GRID_A_PLANE_NORMAL',(-1.0000000,0.0000000,0.0000000));
+#9=GRIDLINE('A',#10,#49,$);
+#10=AXIS2_PLACEMENT_3D('POSITION_OF_A',#6,#8,#7);
+#11=CARTESIAN_POINT('GRID_B_PLANE_ORIGIN',(10.0000000000000,0.0000000000000,0.0000000000000));
+#12=DIRECTION('GRID_B_PLANE_REF_DIR',(0.0000000,0.0000000,-1.0000000));
+#13=DIRECTION('GRID_B_PLANE_NORMAL',(-1.0000000,0.0000000,0.0000000));
+#14=GRIDLINE('B',#15,#49,#9);
+#15=AXIS2_PLACEMENT_3D('POSITION_OF_B',#11,#13,#12);
+#16=CARTESIAN_POINT('GRID_1_PLANE_ORIGIN',(0.0000000000000,0.0000000000000,0.0000000000000));
+#17=DIRECTION('GRID_1_PLANE_REF_DIR',(0.0000000,0.0000000,-1.0000000));
+#18=DIRECTION('GRID_1_PLANE_NORMAL',(-0.0000000,1.0000000,0.0000000));
+#19=GRIDLINE('1',#20,#49,$);
+#20=AXIS2_PLACEMENT_3D('POSITION_OF_1',#16,#18,#17);
+#21=CARTESIAN_POINT('GRID_2_PLANE_ORIGIN',(0.0000000000000,5.0000000000000,0.0000000000000));
+#22=DIRECTION('GRID_2_PLANE_REF_DIR',(0.0000000,0.0000000,-1.0000000));
+#23=DIRECTION('GRID_2_PLANE_NORMAL',(-0.0000000,1.0000000,0.0000000));
+#24=GRIDLINE('2',#25,#49,#19);
+#25=AXIS2_PLACEMENT_3D('POSITION_OF_2',#21,#23,#22);
+#26=CARTESIAN_POINT('LEVEL_S-1_PLANE_ORIGIN',(0.0000000000000,0.0000000000000,0.0000000000000));
+#27=GRID_LEVEL('S-1',#28,#49);
+#28=AXIS2_PLACEMENT_3D('POSITION_OF_S-1',#26,#4,#3);
+#29=CARTESIAN_POINT('1',(0.0000000000000,0.0000000000000,0.0000000000000));
+#30=CARTESIAN_POINT('2',(10.0000000000000,0.0000000000000,0.0000000000000));
+#31=CARTESIAN_POINT('3',(10.0000000000000,5.0000000000000,0.0000000000000));
+#32=DIRECTION('1                                                                                                                                                                                                                                                              _LINE_DIRECTION',(1.0000000,0.0000000,0.0000000));
+#33=VECTOR('1                                                                                                                                                                                                                                                              _LINE_VECTOR',#32,1.0000000);
+#34=LINE('1                                                                                                                                                                                                                                                              _LINE',#29,#33);
+#35=POINT_ON_CURVE('1',#34,PARAMETER_VALUE(0.0000000));
+#36=POINT_ON_CURVE('1',#34,PARAMETER_VALUE(10.0000000));
+#37=DIRECTION('1                                                                                                                                                                                                                                                              _Z_AXIS_I',(0.0000000,0.0000000,1.0000000));
+#38=DIRECTION('1                                                                                                                                                                                                                                                              _Z_AXIS_J',(0.0000000,0.0000000,0.0000000));
+#39=DIRECTION('2                                                                                                                                                                                                                                                              _LINE_DIRECTION',(0.0000000,1.0000000,0.0000000));
+#40=VECTOR('2                                                                                                                                                                                                                                                              _LINE_VECTOR',#39,1.0000000);
+#41=LINE('2                                                                                                                                                                                                                                                              _LINE',#30,#40);
+#42=POINT_ON_CURVE('2',#41,PARAMETER_VALUE(0.0000000));
+#43=POINT_ON_CURVE('2',#41,PARAMETER_VALUE(5.0000000));
+#44=DIRECTION('2                                                                                                                                                                                                                                                              _Z_AXIS_I',(0.0000000,0.0000000,1.0000000));
+#45=DIRECTION('2                                                                                                                                                                                                                                                              _Z_AXIS_J',(0.0000000,0.0000000,0.0000000));
+#46=CARTESIAN_POINT('2',(2.5000000000000,0.0000000000000,0.0000000000000));
+#47=CARTESIAN_POINT('1',(5.0000000000000,0.0000000000000,0.0000000000000));
+#48=(GEOMETRIC_REPRESENTATION_CONTEXT(3)
+GLOBAL_UNIT_ASSIGNED_CONTEXT((#50))
+REPRESENTATION_CONTEXT('Geometric_representation_context','')
+);
+#49=GRID_ORTHOGONAL('GLOBAL','','',(#51),(#52));
+#50=(LENGTH_UNIT()
+NAMED_UNIT(*)
+SI_UNIT($,.METRE.)
+);
+#51=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(10.0000000),#50);
+#52=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(5.0000000),#50);
+#53=NODE('1',#29,#56,#57);
+#54=NODE('2',#30,$,#57);
+#55=NODE('3',#31,#58,#57);
+#56=BOUNDARY_CONDITION_LOGICAL('ball joint',$,.F.,.F.,.F.,.T.,.T.,
+.T.);
+#57=ANALYSIS_MODEL_3D('','',.SPACE_FRAME.,$,3);
+#58=BOUNDARY_CONDITION_LOGICAL('fixed_xyzrz',$,.F.,.F.,.F.,.T.,.T.,
+.F.);
+#59=MATERIAL_ISOTROPIC(1,'A992Fy50',$,#62);
+#60=MATERIAL_ISOTROPIC(2,'4000Psi',$,#63);
+#61=MATERIAL_ISOTROPIC(3,'5-1',$,#64);
+#62=MATERIAL_REPRESENTATION('A992Fy50',(#65,#66,#67,#68),#69);
+#63=MATERIAL_REPRESENTATION('4000Psi',(#70,#71,#72,#73),#69);
+#64=MATERIAL_REPRESENTATION('5-1',(#74,#75,#76,#77),#69);
+#65=MATERIAL_ELASTICITY('A992Fy50',0.3000000,199947978795.9576100,$,$);
+#66=MATERIAL_STRENGTH('yield strength',344737894.4757890);
+#67=MATERIAL_STRENGTH('ultimate strength',448159262.8185257);
+#68=MATERIAL_THERMAL_EXPANSION('thermal expansion',0.0000117);
+#69=(GLOBAL_UNIT_ASSIGNED_CONTEXT((#78))
+MATERIAL_PROPERTY_CONTEXT()
+MATERIAL_PROPERTY_CONTEXT_DIMENSIONAL(0.,9999999.)
+REPRESENTATION_CONTEXT('material property context','')
+);
+#70=MATERIAL_ELASTICITY('4000Psi',0.2000000,24855578284.7653960,$,$);
+#71=MATERIAL_STRENGTH('yield strength',0.0000000);
+#72=MATERIAL_STRENGTH('ultimate strength',0.0000000);
+#73=MATERIAL_THERMAL_EXPANSION('thermal expansion',0.0000099);
+#74=MATERIAL_ELASTICITY('5-1',0.3000000,199947978795.9576100,$,$);
+#75=MATERIAL_STRENGTH('yield strength',248211284.0225681);
+#76=MATERIAL_STRENGTH('ultimate strength',399895957.5919153);
+#77=MATERIAL_THERMAL_EXPANSION('thermal expansion',0.0000117);
+#78=(NAMED_UNIT(*)
+PRESSURE_UNIT()
+SI_UNIT($,.PASCAL.)
+);
+#79=SECTION_PROFILE_CIRCLE_HOLLOW(4,'5-1',$,$,10,.F.,#80,
+#81);
+#80=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(0.0762000),#50);
+#81=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(0.0063500),#50);
+#82=(ELEMENT('1                                                                                                                                                                                                                                                              ','',#57,1)
+ELEMENT_CURVE($)
+ELEMENT_CURVE_COMPLEX((#79,#84),(#35,#36),(#37,#38))
+ELEMENT_WITH_MATERIAL(#61)
+);
+#83=(ELEMENT('2                                                                                                                                                                                                                                                              ','',#57,1)
+ELEMENT_CURVE($)
+ELEMENT_CURVE_COMPLEX((#79,#84),(#42,#43),(#44,#45))
+ELEMENT_WITH_MATERIAL(#61)
+);
+#84=SECTION_PROFILE_CIRCLE_HOLLOW(5,'5-1',$,$,10,.F.,#85,
+#86);
+#85=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(0.0762000),#50);
+#86=POSITIVE_LENGTH_MEASURE_WITH_UNIT(POSITIVE_LENGTH_MEASURE(0.0063500),#50);
+#87=ELEMENT_NODE_CONNECTIVITY(1,'Start Node',#53,#82,$,$);
+#88=ELEMENT_NODE_CONNECTIVITY(1,'Start Node',#54,#83,$,$);
+#89=ELEMENT_NODE_CONNECTIVITY(2,'End Node',#54,#82,$,$);
+#90=ELEMENT_NODE_CONNECTIVITY(2,'End Node',#55,#83,$,$);
+#91=ASSEMBLY_DESIGN_STRUCTURAL_MEMBER_LINEAR(6,'1',$,'',$,$,.F.,
+.F.,(),(),$,.BENDING_MEMBER.,.PRIMARY_MEMBER.,.BEAM.);
+#92=ASSEMBLY_DESIGN_STRUCTURAL_MEMBER_LINEAR(7,'2',$,'',$,$,.F.,
+.F.,(),(),$,.BENDING_MEMBER.,.PRIMARY_MEMBER.,.BEAM.);
+#93=ASSEMBLY_MAP(#91,(#82));
+#94=ASSEMBLY_MAP(#92,(#83));
+#95=LOAD_MEMBER_CONCENTRATED(#97,'2','DEAD',#92,'','',$,
+.GLOBAL_LOAD.,#46,#98);
+#96=LOAD_MEMBER_CONCENTRATED(#97,'1','DEAD',#91,'','',$,
+.GLOBAL_LOAD.,#47,#99);
+#97=LOAD_CASE('DEAD',$,(),#100);
+#98=APPLIED_LOAD_STATIC_FORCE('2',#101,$,$,$,$,$);
+#99=APPLIED_LOAD_STATIC_FORCE('1',$,#102,$,$,$,$);
+#100=PHYSICAL_ACTION_PERMANENT(.STATIC.,.FIXED_ACTION.,.INDIRECT_ACTION.,$,$,(),(),
+.DEAD.);
+#101=FORCE_MEASURE_WITH_UNIT(FORCE_MEASURE(40.0000000),#103);
+#102=FORCE_MEASURE_WITH_UNIT(FORCE_MEASURE(-40.0000000),#103);
+#103=(FORCE_UNIT()
+NAMED_UNIT(*)
+SI_UNIT($,.NEWTON.)
+);
+ENDSEC;
+END-ISO-10303-21;

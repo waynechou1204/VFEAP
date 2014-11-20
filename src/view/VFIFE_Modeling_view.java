@@ -138,9 +138,9 @@ public class VFIFE_Modeling_view extends JPanel {
         TransformGroup objScale = new TransformGroup(t3d);
         objRoot.addChild(objScale);
 
-        // NO NEED TO Rotate the object to XY orientation
         Transform3D rotate3d = new Transform3D();
-
+        //rotate3d.rotX(-0.5*Math.PI); 		// NO NEED TO Rotate the object to XY orientation
+        
         // set object to the center of window by offsets
         rotate3d.setTranslation(new Vector3f(-offset_x, -offset_y, -offset_z));
 
@@ -211,7 +211,7 @@ public class VFIFE_Modeling_view extends JPanel {
             point.setColors(0, color);
 
             PointAttributes pa = new PointAttributes();
-            pa.setPointSize(10.0f);
+          //  pa.setPointSize(10.0f);
             pa.setPointAntialiasingEnable(true);
 
             Appearance ap = new Appearance();
@@ -294,7 +294,7 @@ public class VFIFE_Modeling_view extends JPanel {
             line.setColors(0, color);
 
             LineAttributes la = new LineAttributes();
-            la.setLineWidth(1.0f);
+           // la.setLineWidth(1.0f);
             la.setLineAntialiasingEnable(true);
 
             Appearance ap = new Appearance();

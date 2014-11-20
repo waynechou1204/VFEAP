@@ -1,0 +1,3 @@
+[submodule "lib/VfifeSchema"]
+	path = lib/VfifeSchema
+	url = git@github.com:waynechou1204/VFIFE_Schema.git

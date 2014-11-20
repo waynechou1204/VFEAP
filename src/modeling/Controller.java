@@ -23,7 +23,7 @@ public class Controller {
 
     	// FIXME, the second line is for test, to delete
         //VFIFE_Model m_v5model = new VFIFE_Model();
-        VFIFE_Model m_v5model = loadCIS("model_resources/building.stp");
+        VFIFE_Model m_v5model = loadCIS("resources/bridge.stp");
 
         // main window of the model
         m_frameMain = new JFrameMain(m_v5model);
@@ -40,15 +40,25 @@ public class Controller {
      */
     public static VFIFE_Model loadCIS(String stpFilePath) throws SdaiException 
     {
+    	
     	// set model as return value
         VFIFE_Model v5model = new VFIFE_Model();
 
         VFIFE_repository repo_cis = new VFIFE_repository("repositories", "D:\\Repositories");
 
         try {
+            System.out.println("Loading cis file: "+stpFilePath);
+            System.out.println("Waiting...");
+            long loadstarttime = System.currentTimeMillis();
+            
             SdaiModel model_cis = repo_cis.loadFile("MyCisRepo", stpFilePath);
-
+           
+            long loadendtime = System.currentTimeMillis();
+            System.out.println("After "+(loadendtime-loadstarttime)/1000+" seconds");
+            
             // parse
+            System.out.println("Parsing file");
+            System.out.println("Waiting...");
             Parser_ImportSTP parser = new Parser_ImportSTP();
 
             v5model.setNodes(parser.parseNodes(model_cis, v5model));
@@ -57,6 +67,9 @@ public class Controller {
             v5model.getForces().addAll(parser.parseLoadMemberCon(model_cis, v5model));
             v5model.getForces().addAll(parser.parseLoadNode(model_cis, v5model));
 
+            long parseendtime = System.currentTimeMillis();
+            System.out.println("After "+(parseendtime-loadendtime)/1000+" seconds");
+            
         } catch (SdaiException e) {
             e.printStackTrace();
         } finally {// end
