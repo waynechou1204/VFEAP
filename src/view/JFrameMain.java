@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -150,7 +151,12 @@ public class JFrameMain extends javax.swing.JFrame {
         jMenuItemExportV5.setText("ExportV5");
         jMenuItemExportV5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemExportV5ActionPerformed(evt);
+                try {
+					jMenuItemExportV5ActionPerformed(evt);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         jMenuCalculate.add(jMenuItemExportV5);
@@ -206,8 +212,7 @@ public class JFrameMain extends javax.swing.JFrame {
                 this.getContentPane().remove(m_view);
                 if(type=='m')
                 {
-                	m_v5model = Controller.loadV5M(stpFilePath);
-                	
+                	m_v5model = Controller.loadV5M(stpFilePath);                	
                 }
                 else
                 {
@@ -270,53 +275,29 @@ public class JFrameMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItemExportActionPerformed
     
-    private void jMenuItemExportV5ActionPerformed(java.awt.event.ActionEvent evt) {                                                
+    private void jMenuItemExportV5ActionPerformed(java.awt.event.ActionEvent evt) throws IOException {                                                
         if (!m_v5model.isEmpty()) {
             // get file save path
-        	File nodeFile ,elementFile;
+        	File inputFile;
             JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setSelectedFile(new File("node.txt")); // default file name
+            fileChooser.setSelectedFile(new File("inputzxw.txt")); // default file name
             fileChooser.setFileFilter(new FileNameExtensionFilter("TXT", "txt"));
             int i = fileChooser.showSaveDialog(getContentPane());
             if (i == JFileChooser.APPROVE_OPTION) {
-                nodeFile = fileChooser.getSelectedFile();
-              /*  try {
-                    if (getfile != null) {
-                        exportFile(m_v5model, getfile.getAbsolutePath());
+                inputFile = fileChooser.getSelectedFile();
+                try {
+                    if (inputFile != null) {
+                    	Controller.exportFileAsInput(m_v5model, inputFile);
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                } catch (SdaiException e) {
-                    e.printStackTrace();
-                }*/
-            
-            
-            
-            JFileChooser fileChooser2 = new JFileChooser();
-            fileChooser2.setSelectedFile(new File("element.txt")); // default file name
-            fileChooser2.setFileFilter(new FileNameExtensionFilter("TXT", "txt"));
-            int j = fileChooser2.showSaveDialog(getContentPane());
-            if (j == JFileChooser.APPROVE_OPTION) {
-                elementFile = fileChooser2.getSelectedFile();
-                try {
-                	calcu_model = new ProgramCalculation(nodeFile.getAbsolutePath(),elementFile.getAbsolutePath());
-                	calcu_model.exportV5File(m_v5model);
-                } 
-                catch (Exception e)
-                {
-                	e.printStackTrace();
-                }
-                /*catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (SdaiException e) {
-                    e.printStackTrace();
-                }*/
-            }
+                }        
             }
         } else {
             JOptionPane.showMessageDialog(null, "No model to export", "Warning", JOptionPane.WARNING_MESSAGE);
         }
-    }                                                 
+    }     
+
     private void jMenuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItemExitActionPerformed

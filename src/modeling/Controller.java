@@ -1,7 +1,11 @@
 package modeling;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiModel;
@@ -9,6 +13,12 @@ import view.JFrameMain;
 import calculation.Parser_ImportV5M;
 import dataStructure.VFIFE_Model;
 import dataStructure.VFIFE_repository;
+import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
+import dataStructure.entity.VFIFE_Bar;
+import dataStructure.entity.VFIFE_Load;
+import dataStructure.entity.VFIFE_LoadMemberConcentrated;
+import dataStructure.entity.VFIFE_LoadNode;
+import dataStructure.entity.VFIFE_Node;
 
 public class Controller {
 
@@ -23,7 +33,7 @@ public class Controller {
 
     	// FIXME, the second line is for test, to delete
         //VFIFE_Model m_v5model = new VFIFE_Model();
-        VFIFE_Model m_v5model = loadCIS("resources/bridge.stp");
+        VFIFE_Model m_v5model = loadCIS("resources/5-1.stp");
 
         // main window of the model
         m_frameMain = new JFrameMain(m_v5model);
@@ -141,5 +151,120 @@ public class Controller {
         }
     }
 
-   
+    public static void exportFileAsInput(VFIFE_Model v5model, File file) throws IOException 
+    {
+       if (!file.exists()) {
+	    file.createNewFile();
+	   }
+
+	   FileWriter fw = new FileWriter(file.getAbsoluteFile());
+	   BufferedWriter bw = new BufferedWriter(fw);
+	   bw.write("force "
+	   		+ "#id "
+	   		+ "type "
+	   		+ "x_posit "
+	   		+ "y_posit "
+	   		+ "z_posit "
+	   		+ "x_direc "
+	   		+ "y_direc "
+	   		+ "z_direc "
+	   		+ "directMag "
+	   		+ "barid "
+	   		+ "startTime "
+	   		+ "endTime "
+	   		+ "caculation_endTime "
+	   		+ "ramp_time "
+	   		+ "loadway\n");
+	   
+	   for(VFIFE_Load force : v5model.getForces()){
+		   if(force.getClass().toString().contains("Node")){
+			   VFIFE_LoadNode fnd = (VFIFE_LoadNode) force;
+			   double fx=((VFIFE_AppliedLoadStaticForce)fnd.getLoad_values()).getApplied_force_fx();
+			   double fy=((VFIFE_AppliedLoadStaticForce)fnd.getLoad_values()).getApplied_force_fy();
+			   double fz=((VFIFE_AppliedLoadStaticForce)fnd.getLoad_values()).getApplied_force_fz();
+			   bw.append(
+					   fnd.getForce_name()+" "
+					   +"1 "
+					   +fnd.getSupporting_node().getCoord().getCoordinate_x()+" "
+					   +fnd.getSupporting_node().getCoord().getCoordinate_y()+" "
+					   +fnd.getSupporting_node().getCoord().getCoordinate_z()+" "
+					   +fx/(Math.sqrt(fx*fx+fy*fy+fz*fz))+" "
+					   +fy/(Math.sqrt(fx*fx+fy*fy+fz*fz))+" "
+					   +fz/(Math.sqrt(fx*fx+fy*fy+fz*fz))+" "
+					   +Math.sqrt(fx*fx+fy*fy+fz*fz)+" "
+					   +"barid??? "
+					   +"0 "  //start time
+					   +"50 " //end time
+					   +"50 " //calculation duration
+					   +"50 " //ramp time
+					   +"Vertical\n" // loadway
+					   );
+		   }
+		   else if(force.getClass().toString().contains("Member")){
+			   VFIFE_LoadMemberConcentrated fmem = (VFIFE_LoadMemberConcentrated) force;
+			   double fx=((VFIFE_AppliedLoadStaticForce)fmem.getLoad_value()).getApplied_force_fx();
+			   double fy=((VFIFE_AppliedLoadStaticForce)fmem.getLoad_value()).getApplied_force_fy();
+			   double fz=((VFIFE_AppliedLoadStaticForce)fmem.getLoad_value()).getApplied_force_fz();
+			   bw.append(
+					   fmem.getForce_name()+" "
+					   +"1 "
+					   +fmem.getLoad_position().getCoordinate_x()+" "
+					   +fmem.getLoad_position().getCoordinate_y()+" "
+					   +fmem.getLoad_position().getCoordinate_z()+" "
+					   +fx/(Math.sqrt(fx*fx+fy*fy+fz*fz))+" "
+					   +fy/(Math.sqrt(fx*fx+fy*fy+fz*fz))+" "
+					   +fz/(Math.sqrt(fx*fx+fy*fy+fz*fz))+" "
+					   +Math.sqrt(fx*fx+fy*fy+fz*fz)+" "
+					   +fmem.getSupporting_member().getBar_id()+" "
+					   +"0 "  //start time
+					   +"50 " //end time
+					   +"50 " //calculation duration
+					   +"50 " //ramp time
+					   +"Vertical\n" // load way
+					   );
+		   }
+	   }
+	   
+	   bw.append("node "
+		   		+ "#id "
+		   		+ "type "
+		   		+ "posit.x "
+		   		+ "posit.y "
+		   		+ "posit.z "
+		   		+ "mass\n");
+	   for(VFIFE_Node nd : v5model.getNodes()){
+		   bw.append(nd.getNode_name()+" ");
+		   if(nd.getRestraint()!=null)
+			   bw.append(nd.getRestraint().getBoundary_condition_name()+" ");
+		   else
+			   bw.append("1 "); //suppose no restrain?
+		   bw.append(nd.getCoord().getCoordinate_x()+" "
+				   +nd.getCoord().getCoordinate_y()+" "
+				   +nd.getCoord().getCoordinate_z()+" "
+				   +"10mass\n" //mass
+				   );
+	   }
+	   
+	   bw.append("bar "
+	   		+ "#id "
+	   		+ "node1id "
+	   		+ "node2id "
+	   		+ "Young_modulus "
+	   		+ "area "
+	   		+ "density\n");
+	   for(VFIFE_Bar ba : v5model.getBars()){
+		   bw.append(Integer.toString(ba.getBar_id())+" "
+				   +ba.getNodes().get(0).getNode_name()+" "
+				   +ba.getNodes().get(1).getNode_name()+" "
+				   +ba.getMaterial().getYoung_modulus()+" "
+				   +ba.getSection_area()+" "
+				   +ba.getMaterial().getDensity()+" "
+				   +"\n");
+	   }
+	   
+	   
+	   bw.close();
+  
+	   System.out.println("out over");       
+    }
 }

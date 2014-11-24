@@ -1,6 +1,5 @@
 package dataStructure.entity;
 
-import java.util.ArrayList;
 
 public class VFIFE_LoadCase {
 	private String load_case_name;
