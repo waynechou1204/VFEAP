@@ -11,8 +11,10 @@ import static modeling.Controller.loadCIS;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -23,6 +25,8 @@ import jsdai.lang.SdaiException;
 import modeling.Controller;
 import dataStructure.ProgramCalculation;
 import dataStructure.VFIFE_Model;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 /**
  *
@@ -176,6 +180,29 @@ public class JFrameMain extends javax.swing.JFrame {
         
         jMenuBar.add(jMenuCalculate);
         setJMenuBar(jMenuBar);
+        
+        JMenuAnimation = new JMenu("Animation");
+        jMenuBar.add(JMenuAnimation);
+        
+        JMenuItemStart = new JMenuItem("Start");
+        JMenuAnimation.add(JMenuItemStart);
+        
+        JMenuItemStart.addActionListener(new java.awt.event.ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				// TODO Auto-generated method stub
+				Runtime rt = Runtime.getRuntime();
+				try {
+					Process p = rt.exec("C:/Users/Administrator/Desktop/putty.exe");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("animation start failed");
+				}
+			}
+        	
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -340,5 +367,7 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemMaterial;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenu jMenuSpecify;
+    private JMenu JMenuAnimation;
+    private JMenuItem JMenuItemStart;
     // End of variables declaration//GEN-END:variables
 }
