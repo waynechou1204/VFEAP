@@ -194,7 +194,9 @@ public class JFrameMain extends javax.swing.JFrame {
 				// TODO Auto-generated method stub
 				Runtime rt = Runtime.getRuntime();
 				try {
-					Process p = rt.exec("C:/Users/Administrator/Desktop/putty.exe");
+					String path = MyPath.getProjectPath();
+					//System.out.println(path);
+					Process p = rt.exec(path+"\\HOUCHULI.exe");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -203,7 +205,7 @@ public class JFrameMain extends javax.swing.JFrame {
 			}
         	
         });
-
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -370,4 +372,21 @@ public class JFrameMain extends javax.swing.JFrame {
     private JMenu JMenuAnimation;
     private JMenuItem JMenuItemStart;
     // End of variables declaration//GEN-END:variables
+    
+    public static class MyPath {
+    	 public static String getProjectPath() {
+	    	 java.net.URL url = MyPath.class.getProtectionDomain().getCodeSource().getLocation();
+	    	 String filePath = null;
+	    	 try {
+	    		 filePath = java.net.URLDecoder.decode(url.getPath(), "utf-8");
+	    	 } catch (Exception e) {
+	    		 e.printStackTrace();
+	    	 }
+	    	 if (filePath.endsWith(".jar"))
+	    		 filePath = filePath.substring(0, filePath.lastIndexOf("/") + 1);
+	    	 java.io.File file = new java.io.File(filePath);
+	    	 filePath = file.getAbsolutePath();
+	    	 return filePath;
+    	 }
+    }
 }
