@@ -19,11 +19,10 @@ import dataStructure.VFIFE_Model;
 import dataStructure.entity.VFIFE_Bar;
 import dataStructure.entity.VFIFE_Material;
 
-public class JDialogBar extends javax.swing.JDialog {
+public class JDialogAll extends javax.swing.JDialog {
 
     private final JPanel contentPanel = new JPanel();
     private JTextField textField;
-    private JLabel baridLabel;
     private JComboBox comboBox;
     
     private VFIFE_Bar m_vbar;
@@ -32,9 +31,9 @@ public class JDialogBar extends javax.swing.JDialog {
     /**
      * Create the dialog.
      */
-    public JDialogBar(VFIFE_Bar vbar, VFIFE_Model v5model) {
-        
-        this.m_vbar = vbar;
+  //  public JDialogAll(VFIFE_Bar vbar, VFIFE_Model v5model) {
+    public JDialogAll(VFIFE_Model v5model) {    
+       // this.m_vbar = vbar;
         this.m_v5model = v5model;
         
         setBounds(400, 400, 280, 200);
@@ -45,15 +44,9 @@ public class JDialogBar extends javax.swing.JDialog {
         contentPanel.setLayout(null);
 
         // bar ID info
-        JLabel lblNewLabel = new JLabel("Bar ID");
-        lblNewLabel.setBounds(20, 20, 50, 15);
+        JLabel lblNewLabel = new JLabel("All Bars");
+        lblNewLabel.setBounds(94, 22, 50, 15);
         contentPanel.add(lblNewLabel);
-
-        baridLabel = new JLabel();
-        this.baridLabel.setText(m_vbar.getBar_id() + "");
-        baridLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        baridLabel.setBounds(100, 20, 50, 15);
-        contentPanel.add(baridLabel);
 
         // Material name info
         JLabel lblMaterial = new JLabel("Material Name");
@@ -65,12 +58,13 @@ public class JDialogBar extends javax.swing.JDialog {
             materials.add(vm.getName());
         }
         comboBox = new JComboBox(materials);
-        if (vbar.getMaterial()!=null) {
-            comboBox.setSelectedItem(vbar.getMaterial().getName());
-        }
-        else{
-            comboBox.setSelectedIndex(0);
-        }
+        
+//        if (vbar.getMaterial()!=null) {
+//            comboBox.setSelectedItem(vbar.getMaterial().getName());
+//        }
+//        else{
+//            comboBox.setSelectedIndex(0);
+//        }
         comboBox.setBounds(120, 60, 140, 21);
         contentPanel.add(comboBox);
 
@@ -80,7 +74,7 @@ public class JDialogBar extends javax.swing.JDialog {
         contentPanel.add(lblSectionarea);
 
         textField = new JTextField();
-        this.textField.setText(m_vbar.getSection_area() + "");
+//        this.textField.setText(m_vbar.getSection_area() + "");
         textField.setBounds(120, 100, 140, 21);
         contentPanel.add(textField);
         textField.setColumns(10);
@@ -92,17 +86,24 @@ public class JDialogBar extends javax.swing.JDialog {
         JButton okButton = new JButton("Save");
         okButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                // set section area and material
-                m_vbar.setSection_area(Double.parseDouble(JDialogBar.this.textField.getText()));
+                // set All elements' section area
+            	for(VFIFE_Bar bar:m_v5model.getBars()){
+            		bar.setSection_area(Double.parseDouble(JDialogAll.this.textField.getText()));
+            	}
+            
                 
                 for (VFIFE_Material vm : m_v5model.getMateriaux()) {
                     if ((String) comboBox.getSelectedItem() == vm.getName()) {
-                        m_vbar.setMaterial(vm);
-                        break;
+        //Define All elements' material               
+                    	for(VFIFE_Bar bar:m_v5model.getBars()){
+//                    		bar.setSection_area(Double.parseDouble(JDialogAll.this.textField.getText()));
+                    		bar.setMaterial(vm);
+                    	}
+                    	break;
                     }
                 }
 
-                JDialogBar.this.dispose();
+                JDialogAll.this.dispose();
             }
         });
         okButton.setActionCommand("Save");
@@ -112,7 +113,7 @@ public class JDialogBar extends javax.swing.JDialog {
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                JDialogBar.this.dispose();
+                JDialogAll.this.dispose();
             }
         });
         cancelButton.setActionCommand("Cancel");

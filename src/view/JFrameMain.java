@@ -25,6 +25,7 @@ import jsdai.lang.SdaiException;
 import modeling.Controller;
 import dataStructure.ProgramCalculation;
 import dataStructure.VFIFE_Model;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
@@ -91,8 +92,15 @@ public class JFrameMain extends javax.swing.JFrame {
         jMenuItemExit = new javax.swing.JMenuItem();
         jMenuDefine = new javax.swing.JMenu();
         jMenuItemMaterial = new javax.swing.JMenuItem();
+        jMenuItemAllElements = new javax.swing.JMenuItem();
         jMenuSpecify = new javax.swing.JMenu();
         jMenuItemLoad = new javax.swing.JMenuItem();
+        jMenuXY = new javax.swing.JMenu();
+        jMenuYZ = new javax.swing.JMenu();
+        jMenuZX = new javax.swing.JMenu();
+        jMenuMagnify = new javax.swing.JMenu();
+        jMenuShrink = new javax.swing.JMenu();
+        
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("VFIFE Modeling Tool");
@@ -150,6 +158,10 @@ public class JFrameMain extends javax.swing.JFrame {
         
         jMenuCalculate.setText("Calculate");
         
+        jMenuXY.setText("XY");
+        jMenuYZ.setText("YZ");
+        jMenuZX.setText("ZX");
+        
         
         jMenuItemExportV5.setText("ExportV5");
         jMenuItemExportV5.addActionListener(new java.awt.event.ActionListener() {
@@ -168,6 +180,14 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         });
         jMenuDefine.add(jMenuItemMaterial);
+        
+        jMenuItemAllElements.setText("AllElements");
+        jMenuItemAllElements.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAllElemntsActionPerformed(evt);
+            }
+        });
+        jMenuDefine.add(jMenuItemAllElements);
 
         jMenuBar.add(jMenuDefine);
 
@@ -186,6 +206,18 @@ public class JFrameMain extends javax.swing.JFrame {
         
         JMenuItemStart = new JMenuItem("Start");
         JMenuAnimation.add(JMenuItemStart);
+        
+        jMenuXY.setText("XY");
+        jMenuYZ.setText("YZ");
+        jMenuZX.setText("ZX");
+        jMenuMagnify.setText("+");
+        jMenuShrink.setText("-");
+        
+        jMenuBar.add(jMenuXY);
+        jMenuBar.add(jMenuYZ);
+        jMenuBar.add(jMenuZX);
+        jMenuBar.add(jMenuMagnify);
+        jMenuBar.add(jMenuShrink);
         
         JMenuItemStart.addActionListener(new java.awt.event.ActionListener(){
 
@@ -355,8 +387,16 @@ public class JFrameMain extends javax.swing.JFrame {
             JDialogMaterialList materiaux = new JDialogMaterialList(m_v5model);
         }
     }//GEN-LAST:event_jMenuItemMaterialActionPerformed
-
-
+    
+    private void jMenuItemAllElemntsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAllElemntsActionPerformed
+        if (!m_v5model.isEmpty()) {
+        	//System.out.println("xyz");
+        	 JDialogAll materiaux = new JDialogAll(m_v5model);
+        	 materiaux.setVisible(true);
+        }
+    }
+ 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenu jMenuDefine;
@@ -367,9 +407,15 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemExportV5;
     private javax.swing.JMenuItem jMenuItemLoad;
     private javax.swing.JMenuItem jMenuItemMaterial;
+    private javax.swing.JMenuItem jMenuItemAllElements;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenu jMenuSpecify;
     private JMenu JMenuAnimation;
+    private javax.swing.JMenu jMenuXY;
+    private javax.swing.JMenu jMenuYZ;
+    private javax.swing.JMenu jMenuZX;
+    private javax.swing.JMenu jMenuMagnify;
+    private javax.swing.JMenu jMenuShrink;
     private JMenuItem JMenuItemStart;
     // End of variables declaration//GEN-END:variables
     
