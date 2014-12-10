@@ -8,7 +8,6 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -24,7 +23,7 @@ public class JDialogBar extends javax.swing.JDialog {
     private final JPanel contentPanel = new JPanel();
     private JTextField textField;
     private JLabel baridLabel;
-    private JComboBox comboBox;
+    private JComboBox<String> comboBox;
     
     private VFIFE_Bar m_vbar;
     private VFIFE_Model m_v5model;
@@ -61,10 +60,11 @@ public class JDialogBar extends javax.swing.JDialog {
         contentPanel.add(lblMaterial);
 
         Vector<String> materials = new Vector<String>();
+        materials.add("NULL");
         for (VFIFE_Material vm : m_v5model.getMateriaux()) {
             materials.add(vm.getName());
         }
-        comboBox = new JComboBox(materials);
+        comboBox = new JComboBox<String>(materials);
         if (vbar.getMaterial()!=null) {
             comboBox.setSelectedItem(vbar.getMaterial().getName());
         }
@@ -95,10 +95,16 @@ public class JDialogBar extends javax.swing.JDialog {
                 // set section area and material
                 m_vbar.setSection_area(Double.parseDouble(JDialogBar.this.textField.getText()));
                 
-                for (VFIFE_Material vm : m_v5model.getMateriaux()) {
-                    if ((String) comboBox.getSelectedItem() == vm.getName()) {
-                        m_vbar.setMaterial(vm);
-                        break;
+                // bind material to bar
+                if ((String) comboBox.getSelectedItem()=="NULL") { 	// set null material
+                	m_vbar.setMaterial(null);
+                }
+                else{												// set non-null material
+                	for (VFIFE_Material vm : m_v5model.getMateriaux()) {
+                        if ((String) comboBox.getSelectedItem() == vm.getName()) {
+                            m_vbar.setMaterial(vm);
+                            break;
+                        }
                     }
                 }
 

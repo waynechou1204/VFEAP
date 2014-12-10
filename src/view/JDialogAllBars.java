@@ -8,11 +8,9 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import dataStructure.VFIFE_Model;
@@ -23,17 +21,15 @@ public class JDialogAllBars extends javax.swing.JDialog {
 
     private final JPanel contentPanel = new JPanel();
     private JTextField textField;
-    private JComboBox comboBox;
+    private JComboBox<String> comboBox;
     
     private VFIFE_Model m_v5model;
 
     /**
      * Create the dialog.
      */
-  //  public JDialogAll(VFIFE_Bar vbar, VFIFE_Model v5model) {
     public JDialogAllBars(VFIFE_Model v5model) {    
-       // this.m_vbar = vbar;
-        this.m_v5model = v5model;
+    	this.m_v5model = v5model;
         
         setBounds(400, 400, 280, 200);
         this.setResizable(false);
@@ -53,10 +49,11 @@ public class JDialogAllBars extends javax.swing.JDialog {
         contentPanel.add(lblMaterial);
 
         Vector<String> materials = new Vector<String>();
+        materials.add("No Change");
         for (VFIFE_Material vm : m_v5model.getMateriaux()) {
             materials.add(vm.getName());
         }
-        comboBox = new JComboBox(materials);
+        comboBox = new JComboBox<String>(materials);
         
         comboBox.setBounds(120, 60, 140, 21);
         contentPanel.add(comboBox);
@@ -67,7 +64,6 @@ public class JDialogAllBars extends javax.swing.JDialog {
         contentPanel.add(lblSectionarea);
 
         textField = new JTextField();
-//        this.textField.setText(m_vbar.getSection_area() + "");
         textField.setBounds(120, 100, 140, 21);
         contentPanel.add(textField);
         textField.setColumns(10);
@@ -80,21 +76,25 @@ public class JDialogAllBars extends javax.swing.JDialog {
         okButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 // set All elements' section area
-            	for(VFIFE_Bar bar:m_v5model.getBars()){
-            		bar.setSection_area(Double.parseDouble(JDialogAllBars.this.textField.getText()));
+            	double section_area_value = 0;
+            	if(!JDialogAllBars.this.textField.getText().isEmpty()){	// not empty value, then set to bar
+            		section_area_value = Double.parseDouble(JDialogAllBars.this.textField.getText());
+            		for(VFIFE_Bar bar:m_v5model.getBars()){
+                		bar.setSection_area(section_area_value);
+                	}
             	}
-            
-                
-                for (VFIFE_Material vm : m_v5model.getMateriaux()) {
-                    if ((String) comboBox.getSelectedItem() == vm.getName()) {
-                    	//Define All elements' material               
-                    	for(VFIFE_Bar bar:m_v5model.getBars()){
-                    		bar.setMaterial(vm);
-                    	}
-                    	break;
-                    }
+            	
+            	//Define All elements' material               
+	            if ((String) comboBox.getSelectedItem()!="No Change") { 	// set non-null material
+            	    for (VFIFE_Material vm : m_v5model.getMateriaux()) {
+	                    if ((String) comboBox.getSelectedItem() == vm.getName()) {
+	                    	for(VFIFE_Bar bar:m_v5model.getBars()){
+	                    		bar.setMaterial(vm);
+	                    	}
+	                    	break;
+	                    }
+	                }
                 }
-
                 JDialogAllBars.this.dispose();
             }
         });
