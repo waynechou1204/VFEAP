@@ -11,17 +11,23 @@ import static modeling.Controller.loadCIS;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import jsdai.lang.SdaiException;
 import modeling.Controller;
+import view.JDialogAllBars;
+import view.JDialogMaterialList;
+import view.VFIFE_Modeling_view;
 import dataStructure.ProgramCalculation;
 import dataStructure.VFIFE_Model;
 
@@ -88,8 +94,15 @@ public class JFrameMain extends javax.swing.JFrame {
         jMenuItemExit = new javax.swing.JMenuItem();
         jMenuDefine = new javax.swing.JMenu();
         jMenuItemMaterial = new javax.swing.JMenuItem();
+        jMenuItemAllElements = new javax.swing.JMenuItem();
         jMenuSpecify = new javax.swing.JMenu();
         jMenuItemLoad = new javax.swing.JMenuItem();
+        jMenuXY = new javax.swing.JMenu();
+        jMenuYZ = new javax.swing.JMenu();
+        jMenuZX = new javax.swing.JMenu();
+        jMenuMagnify = new javax.swing.JMenu();
+        jMenuShrink = new javax.swing.JMenu();
+        
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("VFIFE Modeling Tool");
@@ -147,16 +160,15 @@ public class JFrameMain extends javax.swing.JFrame {
         
         jMenuCalculate.setText("Calculate");
         
+        jMenuXY.setText("XY");
+        jMenuYZ.setText("YZ");
+        jMenuZX.setText("ZX");
+        
         
         jMenuItemExportV5.setText("ExportV5");
         jMenuItemExportV5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-					jMenuItemExportV5ActionPerformed(evt);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+                jMenuItemExportV5ActionPerformed(evt);
             }
         });
         jMenuCalculate.add(jMenuItemExportV5);
@@ -170,6 +182,14 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         });
         jMenuDefine.add(jMenuItemMaterial);
+        
+        jMenuItemAllElements.setText("All Elements");
+        jMenuItemAllElements.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAllElemntsActionPerformed(evt);
+            }
+        });
+        jMenuDefine.add(jMenuItemAllElements);
 
         jMenuBar.add(jMenuDefine);
 
@@ -182,7 +202,44 @@ public class JFrameMain extends javax.swing.JFrame {
         
         jMenuBar.add(jMenuCalculate);
         setJMenuBar(jMenuBar);
+        
+        JMenuAnimation = new JMenu("Animation");
+        jMenuBar.add(JMenuAnimation);
+        
+        JMenuItemStart = new JMenuItem("Start");
+        JMenuAnimation.add(JMenuItemStart);
+        
+        jMenuXY.setText("XY");
+        jMenuYZ.setText("YZ");
+        jMenuZX.setText("ZX");
+        jMenuMagnify.setText("+");
+        jMenuShrink.setText("-");
+        
+        jMenuBar.add(jMenuXY);
+        jMenuBar.add(jMenuYZ);
+        jMenuBar.add(jMenuZX);
+        jMenuBar.add(jMenuMagnify);
+        jMenuBar.add(jMenuShrink);
+        
+        JMenuItemStart.addActionListener(new java.awt.event.ActionListener(){
 
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				// TODO Auto-generated method stub
+				Runtime rt = Runtime.getRuntime();
+				try {
+					String path = MyPath.getProjectPath();
+					//System.out.println(path);
+					Process p = rt.exec(path+"\\HOUCHULI.exe");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("animation start failed");
+				}
+			}
+        	
+        });
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -212,7 +269,8 @@ public class JFrameMain extends javax.swing.JFrame {
                 this.getContentPane().remove(m_view);
                 if(type=='m')
                 {
-                	m_v5model = Controller.loadV5M(stpFilePath);                	
+                	m_v5model = Controller.loadV5M(stpFilePath);
+                	
                 }
                 else
                 {
@@ -275,29 +333,53 @@ public class JFrameMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItemExportActionPerformed
     
-    private void jMenuItemExportV5ActionPerformed(java.awt.event.ActionEvent evt) throws IOException {                                                
+    private void jMenuItemExportV5ActionPerformed(java.awt.event.ActionEvent evt) {                                                
         if (!m_v5model.isEmpty()) {
             // get file save path
-        	File inputFile;
+        	File nodeFile ,elementFile;
             JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setSelectedFile(new File("inputzxw.txt")); // default file name
+            fileChooser.setSelectedFile(new File("node.txt")); // default file name
             fileChooser.setFileFilter(new FileNameExtensionFilter("TXT", "txt"));
             int i = fileChooser.showSaveDialog(getContentPane());
             if (i == JFileChooser.APPROVE_OPTION) {
-                inputFile = fileChooser.getSelectedFile();
-                try {
-                    if (inputFile != null) {
-                    	Controller.exportFileAsInput(m_v5model, inputFile);
+                nodeFile = fileChooser.getSelectedFile();
+              /*  try {
+                    if (getfile != null) {
+                        exportFile(m_v5model, getfile.getAbsolutePath());
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                }        
+                } catch (SdaiException e) {
+                    e.printStackTrace();
+                }*/
+            
+            
+            
+            JFileChooser fileChooser2 = new JFileChooser();
+            fileChooser2.setSelectedFile(new File("element.txt")); // default file name
+            fileChooser2.setFileFilter(new FileNameExtensionFilter("TXT", "txt"));
+            int j = fileChooser2.showSaveDialog(getContentPane());
+            if (j == JFileChooser.APPROVE_OPTION) {
+                elementFile = fileChooser2.getSelectedFile();
+                try {
+                	calcu_model = new ProgramCalculation(nodeFile.getAbsolutePath(),elementFile.getAbsolutePath());
+                	calcu_model.exportV5File(m_v5model);
+                } 
+                catch (Exception e)
+                {
+                	e.printStackTrace();
+                }
+                /*catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (SdaiException e) {
+                    e.printStackTrace();
+                }*/
+            }
             }
         } else {
             JOptionPane.showMessageDialog(null, "No model to export", "Warning", JOptionPane.WARNING_MESSAGE);
         }
-    }     
-
+    }                                                 
     private void jMenuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItemExitActionPerformed
@@ -307,8 +389,16 @@ public class JFrameMain extends javax.swing.JFrame {
             JDialogMaterialList materiaux = new JDialogMaterialList(m_v5model);
         }
     }//GEN-LAST:event_jMenuItemMaterialActionPerformed
-
-
+    
+    private void jMenuItemAllElemntsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAllElemntsActionPerformed
+        if (!m_v5model.isEmpty()) {
+        	//System.out.println("xyz");
+        	JDialogAllBars materiaux = new JDialogAllBars(m_v5model);
+        	 materiaux.setVisible(true);
+        }
+    }
+ 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenu jMenuDefine;
@@ -319,7 +409,33 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemExportV5;
     private javax.swing.JMenuItem jMenuItemLoad;
     private javax.swing.JMenuItem jMenuItemMaterial;
+    private javax.swing.JMenuItem jMenuItemAllElements;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenu jMenuSpecify;
+    private JMenu JMenuAnimation;
+    private javax.swing.JMenu jMenuXY;
+    private javax.swing.JMenu jMenuYZ;
+    private javax.swing.JMenu jMenuZX;
+    private javax.swing.JMenu jMenuMagnify;
+    private javax.swing.JMenu jMenuShrink;
+    private JMenuItem JMenuItemStart;
     // End of variables declaration//GEN-END:variables
+    
+    public static class MyPath {
+    	 public static String getProjectPath() {
+	    	 java.net.URL url = MyPath.class.getProtectionDomain().getCodeSource().getLocation();
+	    	 String filePath = null;
+	    	 try {
+	    		 filePath = java.net.URLDecoder.decode(url.getPath(), "utf-8");
+	    	 } catch (Exception e) {
+	    		 e.printStackTrace();
+	    	 }
+	    	 if (filePath.endsWith(".jar"))
+	    		 filePath = filePath.substring(0, filePath.lastIndexOf("/") + 1);
+	    	 java.io.File file = new java.io.File(filePath);
+	    	 filePath = file.getAbsolutePath();
+	    	 return filePath;
+    	 }
+    }
 }
+
