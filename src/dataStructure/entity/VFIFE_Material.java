@@ -1,6 +1,7 @@
 package dataStructure.entity;
 
 public class VFIFE_Material {
+	private int id;
 	private String material_name;
 	private double young_modulus;
 	private double density;
@@ -13,6 +14,14 @@ public class VFIFE_Material {
 		this.extreme_force = 0;
 	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return material_name;
 	}

@@ -222,7 +222,9 @@ public class Parser_ImportSTP {
             EMaterial_isotropic mat = mats.getCurrentMember(matIter);
 
             VFIFE_Material v5material = new VFIFE_Material();
-
+            
+            //set id
+            v5material.setId(mat.getItem_number(null));
             // set name
             v5material.setName(mat.getMaterial_name(null));
 

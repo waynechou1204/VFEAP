@@ -5,17 +5,15 @@
  */
 package view;
 
-import static modeling.Controller.exportFile;
+import static modeling.Controller.exportV5M;
 import static modeling.Controller.loadCIS;
 import static modeling.Controller.loadV5M;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
@@ -25,13 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import com.sun.xml.internal.ws.api.server.Container;
-
 import jsdai.lang.SdaiException;
-import modeling.Controller;
-import view.JDialogAllBars;
-import view.JDialogMaterialList;
-import view.VFIFE_Modeling_view;
 import dataStructure.ProgramCalculation;
 import dataStructure.VFIFE_Model;
 
@@ -129,7 +121,12 @@ public class JFrameMain extends javax.swing.JFrame {
         jMenuItemExport.setText("Export");
         jMenuItemExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemExportActionPerformed(evt);
+                try {
+					jMenuItemExportActionPerformed(evt);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
         jMenuFile.add(jMenuItemExport);
@@ -304,23 +301,18 @@ public class JFrameMain extends javax.swing.JFrame {
     }
     */
     
-    private void jMenuItemExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExportActionPerformed
+    private void jMenuItemExportActionPerformed(java.awt.event.ActionEvent evt) throws IOException {
+    	//GEN-FIRST:event_jMenuItemExportActionPerformed
         if (!m_v5model.isEmpty()) {
             // get file save path
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setSelectedFile(new File("model.v5m")); // default file name
-            fileChooser.setFileFilter(new FileNameExtensionFilter("V5M & XML FILE", "v5m", "xml"));
+            fileChooser.setFileFilter(new FileNameExtensionFilter("VFIFE Model File", "v5m"));
             int i = fileChooser.showSaveDialog(getContentPane());
             if (i == JFileChooser.APPROVE_OPTION) {
                 File getfile = fileChooser.getSelectedFile();
-                try {
-                    if (getfile != null) {
-                        exportFile(m_v5model, getfile.getAbsolutePath());
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (SdaiException e) {
-                    e.printStackTrace();
+                if (getfile != null) {
+                    exportV5M(m_v5model, getfile);
                 }
             }
         } else {

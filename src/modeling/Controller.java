@@ -112,43 +112,25 @@ public class Controller {
       }
 
     
-    public static void exportFile(VFIFE_Model v5model, String outFilePath)
-            throws SdaiException, FileNotFoundException 
+    public static void exportV5M(VFIFE_Model v5model, File file) throws IOException
     {
-        // set repository
-        VFIFE_repository repo_vfife = new VFIFE_repository("repositories",
-                "D:\\Repositories");
+    	if (!file.exists()) {
+    	    file.createNewFile();
+	   }
 
-        try {
-/*            // create new model -- bind with vfife schema
-            SdaiModel model = repo_vfife.setVfifeOutModel("MyV5Repo", "MyV5Model");
-
-            // parse
-            Parser_ExportV5M parser = new Parser_ExportV5M();
-
-            parser.parseNodes(v5model, model);
-            parser.parseMaterials(v5model, model);
-            parser.parseBars(v5model, model);
-            parser.parseLoads(v5model, model);
-*/
-            // output to v5m file (xml or txt file)
-            if (outFilePath.endsWith("xml") || outFilePath.endsWith("XML")) {
-                FileOutputStream out = new FileOutputStream(outFilePath); // out stream to xml
-                repo_vfife.outputFile(out);
-            } 
-            else {
-                repo_vfife.outputFile(outFilePath);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (SdaiException e) {
-            e.printStackTrace();
-        } finally {
-            // end
-            System.out.println("out over");
-
-            repo_vfife.close();
-        }
+	   FileWriter fw = new FileWriter(file.getAbsoluteFile());
+	   BufferedWriter bw = new BufferedWriter(fw);
+	   
+	   Parser_ExportV5M parser = new Parser_ExportV5M(v5model, bw);
+	   // order is important
+	   parser.writeHeader();
+	   parser.writeMaterial();
+	   parser.writeNode();
+	   parser.writeBar();
+	   parser.writeLoad();
+	   bw.close();
+  
+	   System.out.println("out over");  
     }
 
     public static void exportFileAsInput(VFIFE_Model v5model, File file) throws IOException 
