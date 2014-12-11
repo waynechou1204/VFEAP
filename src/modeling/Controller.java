@@ -25,8 +25,9 @@ public class Controller {
     public JFrameMain m_frameMain;
 
     public static void main(String[] args) throws SdaiException {
+    	
+        new Controller(); //Controller mainClass
         
-        Controller mainClass = new Controller();
     }
 
     public Controller() throws SdaiException {

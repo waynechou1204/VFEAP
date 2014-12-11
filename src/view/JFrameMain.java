@@ -10,6 +10,7 @@ import static modeling.Controller.loadCIS;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -22,6 +23,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.sun.xml.internal.ws.api.server.Container;
 
 import jsdai.lang.SdaiException;
 import modeling.Controller;
@@ -75,7 +78,7 @@ public class JFrameMain extends javax.swing.JFrame {
         //m_view=new VFIFE_Modeling_view();
         this.getContentPane().add(m_view, BorderLayout.CENTER);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -100,10 +103,9 @@ public class JFrameMain extends javax.swing.JFrame {
         jMenuXY = new javax.swing.JMenu();
         jMenuYZ = new javax.swing.JMenu();
         jMenuZX = new javax.swing.JMenu();
-        jMenuMagnify = new javax.swing.JMenu();
-        jMenuShrink = new javax.swing.JMenu();
+        jMenuZoomIn = new javax.swing.JMenu();
+        jMenuZoomOut = new javax.swing.JMenu();
         
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("VFIFE Modeling Tool");
         setName("mainframe"); // NOI18N
@@ -114,8 +116,6 @@ public class JFrameMain extends javax.swing.JFrame {
 
         jMenuFile.setText("File");
         jMenuFile.setPreferredSize(new java.awt.Dimension(35, 19));
-
-        
         
         jMenuItemOpen.setText("Open");
         jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
@@ -164,7 +164,6 @@ public class JFrameMain extends javax.swing.JFrame {
         jMenuYZ.setText("YZ");
         jMenuZX.setText("ZX");
         
-        
         jMenuItemExportV5.setText("ExportV5");
         jMenuItemExportV5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,8 +171,6 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         });
         jMenuCalculate.add(jMenuItemExportV5);
-        
-        
         
         jMenuItemMaterial.setText("Material");
         jMenuItemMaterial.addActionListener(new java.awt.event.ActionListener() {
@@ -212,17 +209,16 @@ public class JFrameMain extends javax.swing.JFrame {
         jMenuXY.setText("XY");
         jMenuYZ.setText("YZ");
         jMenuZX.setText("ZX");
-        jMenuMagnify.setText("+");
-        jMenuShrink.setText("-");
+        jMenuZoomIn.setText("+");
+        jMenuZoomOut.setText("-");
         
         jMenuBar.add(jMenuXY);
         jMenuBar.add(jMenuYZ);
         jMenuBar.add(jMenuZX);
-        jMenuBar.add(jMenuMagnify);
-        jMenuBar.add(jMenuShrink);
+        jMenuBar.add(jMenuZoomIn);
+        jMenuBar.add(jMenuZoomOut);
         
         JMenuItemStart.addActionListener(new java.awt.event.ActionListener(){
-
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				// TODO Auto-generated method stub
@@ -237,7 +233,6 @@ public class JFrameMain extends javax.swing.JFrame {
 					System.out.println("animation start failed");
 				}
 			}
-        	
         });
         
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -267,12 +262,11 @@ public class JFrameMain extends javax.swing.JFrame {
             try {
                 // load file and parse
                 this.getContentPane().remove(m_view);
-                if(type=='m')
+                if(type=='m')//v5m file
                 {
                 	m_v5model = Controller.loadV5M(stpFilePath);
-                	
                 }
-                else
+                else	//Step file
                 {
                 	m_v5model = loadCIS(stpFilePath);
                 }
@@ -353,8 +347,6 @@ public class JFrameMain extends javax.swing.JFrame {
                     e.printStackTrace();
                 }*/
             
-            
-            
             JFileChooser fileChooser2 = new JFileChooser();
             fileChooser2.setSelectedFile(new File("element.txt")); // default file name
             fileChooser2.setFileFilter(new FileNameExtensionFilter("TXT", "txt"));
@@ -379,22 +371,23 @@ public class JFrameMain extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "No model to export", "Warning", JOptionPane.WARNING_MESSAGE);
         }
-    }                                                 
+    }    
+    
     private void jMenuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExitActionPerformed
-        System.exit(0);
+    	System.exit(0);
     }//GEN-LAST:event_jMenuItemExitActionPerformed
 
     private void jMenuItemMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMaterialActionPerformed
         if (!m_v5model.isEmpty()) {
-            JDialogMaterialList materiaux = new JDialogMaterialList(m_v5model);
+            //JDialogMaterialList of material list = 
+            new JDialogMaterialList(m_v5model);
         }
     }//GEN-LAST:event_jMenuItemMaterialActionPerformed
     
     private void jMenuItemAllElemntsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAllElemntsActionPerformed
         if (!m_v5model.isEmpty()) {
-        	//System.out.println("xyz");
         	JDialogAllBars materiaux = new JDialogAllBars(m_v5model);
-        	 materiaux.setVisible(true);
+        	materiaux.setVisible(true);
         }
     }
  
@@ -416,8 +409,8 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuXY;
     private javax.swing.JMenu jMenuYZ;
     private javax.swing.JMenu jMenuZX;
-    private javax.swing.JMenu jMenuMagnify;
-    private javax.swing.JMenu jMenuShrink;
+    private javax.swing.JMenu jMenuZoomIn;
+    private javax.swing.JMenu jMenuZoomOut;
     private JMenuItem JMenuItemStart;
     // End of variables declaration//GEN-END:variables
     

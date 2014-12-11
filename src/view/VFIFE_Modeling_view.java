@@ -29,7 +29,6 @@ import javax.vecmath.AxisAngle4d;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
-import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
 import modeling.VFIFEMouseOverBehavior;
@@ -193,7 +192,8 @@ public class VFIFE_Modeling_view extends JPanel {
 
         return objRoot;
     }
-
+    
+    
     // draw node
     public void drawNodes() {
         for (VFIFE_Node node : this.v5model.getNodes()) {
@@ -234,7 +234,7 @@ public class VFIFE_Modeling_view extends JPanel {
             objTrans.addChild(pointGroup);
 
             if (node.getRestraint() != null) {
-                // TODO USE DIFFERENT SHAPE TO ILLUSTRATE Restraints
+                // USE DIFFERENT SHAPE TO ILLUSTRATE Restraints
                 boolean xdis = node.getRestraint().getBc_x_displacement_free();
                 boolean ydis = node.getRestraint().getBc_y_displacement_free();
                 boolean zdis = node.getRestraint().getBc_z_displacement_free();
@@ -389,7 +389,7 @@ public class VFIFE_Modeling_view extends JPanel {
         scene = createSceneGraph(canvas);
         universe.addBranchGraph(scene);
     }
-
+   
     private void drawBalljointCone(float x, float y, float z) {
 
         float scale = 0.1f / m_scale;
@@ -515,7 +515,6 @@ public class VFIFE_Modeling_view extends JPanel {
         objTrans.addChild(xtg);
     }
 
-    // TODO Arrow is not finished yet
     private void drawArrow(double px, double py, double pz, double fx,
             double fy, double fz, VFIFE_Load force) {
 
@@ -797,10 +796,10 @@ public class VFIFE_Modeling_view extends JPanel {
 
     }
 
-    public void cone() {
+ /*   public void cone() {
         TransformGroup lineconeGroup = new TransformGroup();
         Transform3D lineconeTransform3D = new Transform3D();
-        lineconeTransform3D.setTranslation(new Vector3d(0, 0, 0));
+        lineconeTransform3D.setTranslation(new Vector3f(0, 0, 0));
         lineconeGroup.setTransform(lineconeTransform3D);
         Cone lineCone = new Cone(0.5f, 1.5f);
 
@@ -814,7 +813,7 @@ public class VFIFE_Modeling_view extends JPanel {
 
         lineconeGroup.addChild(lineCone);
         objTrans.addChild(lineconeGroup);
-    }
+    }*/
 
     public double getLength(double p1x, double p1y, double p1z, double p2x,
             double p2y, double p2z) {
