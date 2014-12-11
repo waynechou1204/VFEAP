@@ -1,8 +1,6 @@
 package dataStructure.entity;
 
-public class VFIFE_BoundaryCondition {
-	private String boundary_condition_name;
-	private String boundary_condition_description;
+public class VFIFE_BoundaryConditionLogical {
 	private Boolean bc_x_displacement_free;
 	private Boolean bc_y_displacement_free;
 	private Boolean bc_z_displacement_free;
@@ -10,19 +8,7 @@ public class VFIFE_BoundaryCondition {
 	private Boolean bc_y_rotation_free;
 	private Boolean bc_z_rotation_free;
 	
-	public String getBoundary_condition_name() {
-		return boundary_condition_name;
-	}
-	public void setBoundary_condition_name(String boundary_condition_name) {
-		this.boundary_condition_name = boundary_condition_name;
-	}
-	public String getBoundary_condition_description() {
-		return boundary_condition_description;
-	}
-	public void setBoundary_condition_description(
-			String boundary_condition_description) {
-		this.boundary_condition_description = boundary_condition_description;
-	}
+	
 	public Boolean getBc_x_displacement_free() {
 		return bc_x_displacement_free;
 	}

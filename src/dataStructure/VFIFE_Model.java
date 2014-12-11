@@ -8,12 +8,19 @@ import java.util.ArrayList;
 
 public class VFIFE_Model {
 
+	private boolean hasGravity;
+	private double calculate_duration;
+	private double calculate_time_interval;
+	
     private ArrayList<VFIFE_Bar> bars;
     private ArrayList<VFIFE_Load> forces;
     private ArrayList<VFIFE_Material> materiaux;
     private ArrayList<VFIFE_Node> nodes;
 
     public VFIFE_Model() {
+    	this.hasGravity = false;
+    	this.calculate_duration = 0;
+    	this.calculate_time_interval = 0;
         this.bars = new ArrayList<VFIFE_Bar>();
         this.forces = new ArrayList<VFIFE_Load>();
         this.materiaux = new ArrayList<VFIFE_Material>();
@@ -47,10 +54,13 @@ public class VFIFE_Model {
     }
 
     public void clear() {
-        bars.clear();
-        forces.clear();
-        materiaux.clear();
-        nodes.clear();
+    	this.hasGravity = false;
+    	this.calculate_duration = 0;
+    	this.calculate_time_interval = 0;
+        this.bars.clear();
+        this.forces.clear();
+        this.materiaux.clear();
+        this.nodes.clear();
     }
 
     public boolean isEmpty() {
@@ -116,5 +126,29 @@ public class VFIFE_Model {
     public void setNodes(ArrayList<VFIFE_Node> nodes) {
         this.nodes = nodes;
     }
+
+	public boolean isHasGravity() {
+		return hasGravity;
+	}
+
+	public void setHasGravity(boolean hasGravity) {
+		this.hasGravity = hasGravity;
+	}
+
+	public double getCalculate_duration() {
+		return calculate_duration;
+	}
+
+	public void setCalculate_duration(double calculate_duration) {
+		this.calculate_duration = calculate_duration;
+	}
+
+	public double getCalculate_time_interval() {
+		return calculate_time_interval;
+	}
+
+	public void setCalculate_time_interval(double calculate_time_interval) {
+		this.calculate_time_interval = calculate_time_interval;
+	}
 
 }

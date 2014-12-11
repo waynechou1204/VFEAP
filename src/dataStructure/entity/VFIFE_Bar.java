@@ -3,31 +3,39 @@ package dataStructure.entity;
 import java.util.ArrayList;
 
 public class VFIFE_Bar {
-	private int bar_id;
-	private ArrayList<VFIFE_Node> nodes;
-	private VFIFE_Material material;
+	private int id;
 	private double section_area;
+	private VFIFE_Node start_node;
+	private VFIFE_Node end_node;
+	private VFIFE_Material bar_material;
 	
 	public VFIFE_Bar(){
-		nodes = new ArrayList<VFIFE_Node>();
+		
 	}
 	public int getBar_id() {
-		return bar_id;
+		return id;
 	}
 	public void setBar_id(int bar_id) {
-		this.bar_id = bar_id;
+		this.id = bar_id;
 	}
-	public ArrayList<VFIFE_Node> getNodes() {
-		return nodes;
+	
+	public VFIFE_Node getStart_node() {
+		return start_node;
 	}
-	public void setNodes(ArrayList<VFIFE_Node> nodes) {
-		this.nodes = nodes;
+	public void setStart_node(VFIFE_Node start_node) {
+		this.start_node = start_node;
+	}
+	public VFIFE_Node getEnd_node() {
+		return end_node;
+	}
+	public void setEnd_node(VFIFE_Node end_node) {
+		this.end_node = end_node;
 	}
 	public VFIFE_Material getMaterial() {
-		return material;
+		return bar_material;
 	}
 	public void setMaterial(VFIFE_Material material) {
-		this.material = material;
+		this.bar_material = material;
 	}
 	public double getSection_area() {
 		return section_area;

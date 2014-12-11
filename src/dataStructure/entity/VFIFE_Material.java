@@ -1,22 +1,24 @@
 package dataStructure.entity;
 
 public class VFIFE_Material {
+	private String material_name;
 	private double young_modulus;
 	private double density;
-	private String name;
+	private double extreme_force;
 	
 	public VFIFE_Material(){
+		this.material_name="";
 		this.young_modulus = 0;
 		this.density = 0;
-		this.name="";
+		this.extreme_force = 0;
 	}
 	
 	public String getName() {
-		return name;
+		return material_name;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.material_name = name;
 	}
 
 	public double getYoung_modulus() {
@@ -31,6 +33,14 @@ public class VFIFE_Material {
 	}
 	public void setDensity(double density) {
 		this.density = density;
+	}
+
+	public double getExtreme_force() {
+		return extreme_force;
+	}
+
+	public void setExtreme_force(double extreme_force) {
+		this.extreme_force = extreme_force;
 	}
 	
 }

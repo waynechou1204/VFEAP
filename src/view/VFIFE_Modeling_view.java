@@ -43,11 +43,11 @@ import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
 import dataStructure.VFIFE_Model;
-import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
+import dataStructure.entity.VFIFE_AppliedLoad;
 import dataStructure.entity.VFIFE_Bar;
 import dataStructure.entity.VFIFE_CartesianPoint;
 import dataStructure.entity.VFIFE_Load;
-import dataStructure.entity.VFIFE_LoadMemberConcentrated;
+import dataStructure.entity.VFIFE_LoadBar;
 import dataStructure.entity.VFIFE_LoadNode;
 import dataStructure.entity.VFIFE_Node;
 
@@ -267,11 +267,14 @@ public class VFIFE_Modeling_view extends JPanel {
 
         for (VFIFE_Bar bar : this.v5model.getBars()) {
             ArrayList<Float> arr = new ArrayList<Float>();
-            for (VFIFE_Node node : bar.getNodes()) {
-                arr.add((float) (node.getCoord().getCoordinate_x()));
-                arr.add((float) (node.getCoord().getCoordinate_y()));
-                arr.add((float) (node.getCoord().getCoordinate_z()));
-            }
+            arr.add((float) (bar.getStart_node().getCoord().getCoordinate_x()));
+            arr.add((float) (bar.getStart_node().getCoord().getCoordinate_y()));
+            arr.add((float) (bar.getStart_node().getCoord().getCoordinate_z()));
+            
+            arr.add((float) (bar.getEnd_node().getCoord().getCoordinate_x()));
+            arr.add((float) (bar.getEnd_node().getCoord().getCoordinate_y()));
+            arr.add((float) (bar.getEnd_node().getCoord().getCoordinate_z()));
+            
 
             // copy nodes coords into vertex[]
             int size = arr.size();
@@ -329,8 +332,8 @@ public class VFIFE_Modeling_view extends JPanel {
                 double pz = point.getCoordinate_z();
 
                 // force vector
-                VFIFE_AppliedLoadStaticForce staticforce = (VFIFE_AppliedLoadStaticForce) v5nodeforce
-                        .getLoad_values();
+                VFIFE_AppliedLoad staticforce = (VFIFE_AppliedLoad) v5nodeforce
+                        .getLoad_value();
                 double fx = staticforce.getApplied_force_fx();
                 double fy = staticforce.getApplied_force_fy();
                 double fz = staticforce.getApplied_force_fz();
@@ -341,18 +344,18 @@ public class VFIFE_Modeling_view extends JPanel {
                 continue;
             }
 
-            if (force.getClass().toString().contains("VFIFE_LoadMemberConcentrated")) {
+            if (force.getClass().toString().contains("VFIFE_LoadBar")) {
 
-                VFIFE_LoadMemberConcentrated v5force = (VFIFE_LoadMemberConcentrated) force;
+                VFIFE_LoadBar v5force = (VFIFE_LoadBar) force;
 
                 // load postion - distance from start end
                 VFIFE_CartesianPoint point = v5force.getLoad_position();
                 double distance = point.getCoordinate_x();
 
-                VFIFE_Bar supportBar = v5force.getSupporting_member();
-                VFIFE_CartesianPoint startPos = supportBar.getNodes().get(0)
+                VFIFE_Bar supportBar = v5force.getSupporting_bar();
+                VFIFE_CartesianPoint startPos = supportBar.getStart_node()
                         .getCoord();
-                VFIFE_CartesianPoint endPos = supportBar.getNodes().get(1)
+                VFIFE_CartesianPoint endPos = supportBar.getEnd_node()
                         .getCoord();
 
                 double barLength = this.getLength(startPos.getCoordinate_x(),
@@ -371,7 +374,7 @@ public class VFIFE_Modeling_view extends JPanel {
                         .getCoordinate_z()) * radio;
 
                 // force vector
-                VFIFE_AppliedLoadStaticForce staticforce = (VFIFE_AppliedLoadStaticForce) v5force
+                VFIFE_AppliedLoad staticforce = (VFIFE_AppliedLoad) v5force
                         .getLoad_value();
                 double fx = staticforce.getApplied_force_fx();
                 double fy = staticforce.getApplied_force_fy();

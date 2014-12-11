@@ -7,6 +7,7 @@ package view;
 
 import static modeling.Controller.exportFile;
 import static modeling.Controller.loadCIS;
+import static modeling.Controller.loadV5M;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -264,7 +265,7 @@ public class JFrameMain extends javax.swing.JFrame {
                 this.getContentPane().remove(m_view);
                 if(type=='m')//v5m file
                 {
-                	m_v5model = Controller.loadV5M(stpFilePath);
+                	m_v5model = loadV5M(stpFilePath);
                 }
                 else	//Step file
                 {
@@ -354,8 +355,8 @@ public class JFrameMain extends javax.swing.JFrame {
             if (j == JFileChooser.APPROVE_OPTION) {
                 elementFile = fileChooser2.getSelectedFile();
                 try {
-                	calcu_model = new ProgramCalculation(nodeFile.getAbsolutePath(),elementFile.getAbsolutePath());
-                	calcu_model.exportV5File(m_v5model);
+//                	calcu_model = new ProgramCalculation(nodeFile.getAbsolutePath(),elementFile.getAbsolutePath());
+//                	calcu_model.exportV5File(m_v5model);
                 } 
                 catch (Exception e)
                 {

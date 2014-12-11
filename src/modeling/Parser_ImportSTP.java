@@ -23,8 +23,6 @@ import jsdai.SStructural_frame_schema.EMaterial_isotropic;
 import jsdai.SStructural_frame_schema.EMaterial_representation;
 import jsdai.SStructural_frame_schema.ENode;
 import jsdai.SStructural_frame_schema.EPhysical_action;
-import jsdai.SStructural_frame_schema.EPhysical_action_accidental;
-import jsdai.SStructural_frame_schema.EPhysical_action_permanent;
 import jsdai.SStructural_frame_schema.EPositive_length_measure_with_unit;
 import jsdai.SStructural_frame_schema.ERepresentation_item;
 import jsdai.SStructural_frame_schema.ESection_profile;
@@ -36,21 +34,19 @@ import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiIterator;
 import jsdai.lang.SdaiModel;
 import dataStructure.VFIFE_Model;
-import dataStructure.entity.TYPE_action_source_accidential;
-import dataStructure.entity.TYPE_action_source_permanent;
-import dataStructure.entity.TYPE_static_or_dynamic;
-import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
+import dataStructure.entity.VFIFE_AppliedLoad;
 import dataStructure.entity.VFIFE_Bar;
-import dataStructure.entity.VFIFE_BoundaryCondition;
+import dataStructure.entity.VFIFE_BoundaryConditionLogical;
 import dataStructure.entity.VFIFE_CartesianPoint;
+import dataStructure.entity.VFIFE_LoadBar;
 import dataStructure.entity.VFIFE_LoadCase;
-import dataStructure.entity.VFIFE_LoadMemberConcentrated;
+import dataStructure.entity.VFIFE_LoadCaseAccidental;
+import dataStructure.entity.VFIFE_LoadCasePermanent;
+import dataStructure.entity.VFIFE_LoadCaseRamp;
+import dataStructure.entity.VFIFE_LoadCaseVariable;
 import dataStructure.entity.VFIFE_LoadNode;
 import dataStructure.entity.VFIFE_Material;
 import dataStructure.entity.VFIFE_Node;
-import dataStructure.entity.VFIFE_PhysicalAction;
-import dataStructure.entity.VFIFE_PhysicalActionAccidental;
-import dataStructure.entity.VFIFE_PhysicalActionPermanent;
 
 public class Parser_ImportSTP {
 
@@ -69,10 +65,7 @@ public class Parser_ImportSTP {
 
             try {
 				/////////////// v5node's id, name////////////////////////////
-
                 v5node.setNode_id(Integer.parseInt(enode.getNode_name(null).trim()));
-
-                v5node.setNode_name(enode.getNode_name(null).trim());
 
 				//////////////// coordinates//////////////////////////
                 jsdai.SStructural_frame_schema.ECartesian_point epoint = (jsdai.SStructural_frame_schema.ECartesian_point) enode
@@ -95,7 +88,7 @@ public class Parser_ImportSTP {
                 v5node.setCoord(v5point);
 
 				////////////////////// constraints///////////////////////
-                VFIFE_BoundaryCondition v5boundary = new VFIFE_BoundaryCondition();
+                VFIFE_BoundaryConditionLogical v5boundary = new VFIFE_BoundaryConditionLogical();
 
                 EBoundary_condition_logical eboundary = (EBoundary_condition_logical) enode.getRestraints(enode);
 
@@ -107,9 +100,6 @@ public class Parser_ImportSTP {
                     v5boundary.setBc_y_rotation_free(eboundary.getBc_y_rotation_free(null) == 2);
                     v5boundary.setBc_z_displacement_free(eboundary.getBc_z_displacement_free(null) == 2);
                     v5boundary.setBc_z_rotation_free(eboundary.getBc_z_rotation_free(null) == 2);
-
-                    v5boundary.setBoundary_condition_name(eboundary.getBoundary_condition_name(null));
-                    // v5boundary.setBoundary_condition_description(boundary.getBoundary_condition_description(null));
 
                     v5node.setRestraint(v5boundary);
                 }
@@ -207,7 +197,11 @@ public class Parser_ImportSTP {
                 }
 
                 // add node into bar
-                v5bar.getNodes().add(v5node);
+                if(v5bar.getStart_node()==null){
+                	v5bar.setStart_node(v5node);
+                }else{
+                	v5bar.setEnd_node(v5node);
+                }
 
             } catch (SdaiException e) {
 
@@ -251,9 +245,9 @@ public class Parser_ImportSTP {
     }
 
     // parse load of member concentrated to v5model
-    public ArrayList<VFIFE_LoadMemberConcentrated> parseLoadMemberCon(SdaiModel model_cis, VFIFE_Model v5model) throws SdaiException {
+    public ArrayList<VFIFE_LoadBar> parseLoadMemberCon(SdaiModel model_cis, VFIFE_Model v5model) throws SdaiException {
 
-        ArrayList<VFIFE_LoadMemberConcentrated> v5forces_member = new ArrayList<VFIFE_LoadMemberConcentrated>();
+        ArrayList<VFIFE_LoadBar> v5forces_member = new ArrayList<VFIFE_LoadBar>();
 
 		// deal with concentrated forces
         // load_member(or element)_concentrated
@@ -263,13 +257,13 @@ public class Parser_ImportSTP {
             ELoad_member_concentrated concen = concens.getCurrentMember(concenIter);
 
             //////////////// set force name - identity
-            VFIFE_LoadMemberConcentrated v5forcemember = new VFIFE_LoadMemberConcentrated();
-            v5forcemember.setForce_name((concen.getLoad_name(null).trim()));
+            VFIFE_LoadBar v5forcemember = new VFIFE_LoadBar();
+            v5forcemember.setId(Integer.parseInt(concen.getLoad_name(null).trim()));
 
 			//////////////// start time and end time are empty
             /////////////// set supporting member - bar // deal with assembly_design_structural_member_linear
             EAssembly_design_structural_member_linear supmember = (EAssembly_design_structural_member_linear) concen.getSupporting_member(null);
-            v5forcemember.setSupporting_member(v5model.getBar(Integer.parseInt(supmember.getItem_name(null).trim())));
+            v5forcemember.setSupporting_bar(v5model.getBar(Integer.parseInt(supmember.getItem_name(null).trim())));
 
             //////////////// deal with load position coords
             jsdai.SStructural_frame_schema.ECartesian_point loadpos = (jsdai.SStructural_frame_schema.ECartesian_point) concen.getLoad_position(null);
@@ -290,8 +284,7 @@ public class Parser_ImportSTP {
             ///////////////// set load value
             EApplied_load_static_force appforce = (EApplied_load_static_force) concen.getLoad_value(null);
             // v5 applied force name
-            VFIFE_AppliedLoadStaticForce v5appliedforce = new VFIFE_AppliedLoadStaticForce();
-            v5appliedforce.setAppliedload_name(appforce.getApplied_load_name(null));
+            VFIFE_AppliedLoad v5appliedforce = new VFIFE_AppliedLoad();
             try {
                 // directions and force values
                 EForce_measure_with_unit forcemes = appforce.getApplied_force_fx(null);
@@ -337,8 +330,9 @@ public class Parser_ImportSTP {
 
             // force id
             VFIFE_LoadNode v5force = new VFIFE_LoadNode();
-            v5force.setForce_name((nodeforce.getLoad_name(null).trim()));
-
+            //v5force.setForce_name((nodeforce.getLoad_name(null).trim()));
+            v5force.setId(Integer.parseInt(nodeforce.getLoad_name(null).trim()));
+            
             ///////////////// deal with load case - load type
             ELoad_case eloadcase = nodeforce.getParent_load_case(null);
             v5force.setParent_load_case(this.parseLoadCase(eloadcase));
@@ -352,9 +346,8 @@ public class Parser_ImportSTP {
             EApplied_load_static_force appforce = (EApplied_load_static_force) nodeforce.getLoad_values(null);
 
             // v5 applied force name
-            VFIFE_AppliedLoadStaticForce v5appliedforce = new VFIFE_AppliedLoadStaticForce();
-            v5appliedforce.setAppliedload_name(appforce.getApplied_load_name(null));
-
+            VFIFE_AppliedLoad v5appliedforce = new VFIFE_AppliedLoad();
+            
             try {
                 // directions and force values
                 EForce_measure_with_unit forcemes = appforce.getApplied_force_fx(null);
@@ -372,7 +365,7 @@ public class Parser_ImportSTP {
             } catch (SdaiException e) {
             }
 
-            v5force.setLoad_values(v5appliedforce);
+            v5force.setLoad_value(v5appliedforce);
 
             v5forces_node.add(v5force);
         }
@@ -383,45 +376,25 @@ public class Parser_ImportSTP {
     // deal with load case
     private VFIFE_LoadCase parseLoadCase(ELoad_case eloadcase) throws SdaiException {
 
-        VFIFE_LoadCase v5loadcase = new VFIFE_LoadCase();
+        VFIFE_LoadCase v5loadcase = null;
 
-        // set load case name and factor(unknown FIXME)
-        v5loadcase.setLoad_case_name(eloadcase.getLoad_case_name(null));
-        v5loadcase.setLoad_case_factor(0);
-		
         // set load case time variation (physical action nature)
-        VFIFE_PhysicalAction v5physicAction = this.parsePhysicalAction(eloadcase.getTime_variation(null));
-        v5loadcase.setTime_variation(v5physicAction);
+        EPhysical_action ephysicAction = eloadcase.getTime_variation(null);
+        
+        // set action source - see follow
+        String derivedClass = ephysicAction.toString();
+        if (derivedClass.contains("PHYSICAL_ACTION_PERMANENT")) {
+            v5loadcase = new VFIFE_LoadCasePermanent();
+        } else if (derivedClass.contains("PHYSICAL_ACTION_ACCIDENTAL")) {
+            v5loadcase = new VFIFE_LoadCaseAccidental();
+        } else if (derivedClass.contains("PHYSICAL_ACTION_VARIABLE")) {
+        	v5loadcase = new VFIFE_LoadCaseVariable();
+        } else {
+        	v5loadcase = new VFIFE_LoadCaseRamp();
+        }
 
         return v5loadcase;
     }
 
-    // deal with physical action
-    private VFIFE_PhysicalAction parsePhysicalAction(EPhysical_action ephysicAction) throws SdaiException {
-
-        VFIFE_PhysicalAction v5phyAction = null;
-
-        // set action source - see follow
-        String derivedClass = ephysicAction.toString();
-        if (derivedClass.contains("PHYSICAL_ACTION_PERMANENT")) {
-            int src = ((EPhysical_action_permanent) ephysicAction).getAction_source(null) - 1;
-            VFIFE_PhysicalActionPermanent v5phyActionP = new VFIFE_PhysicalActionPermanent();
-            v5phyActionP.setAction_source(TYPE_action_source_permanent.values()[src]);
-            v5phyAction = v5phyActionP;
-        } else if (derivedClass.contains("PHYSICAL_ACTION_ACCIDENTAL")) {
-            int src = ((EPhysical_action_accidental) ephysicAction).getAction_source(null) - 1;
-            VFIFE_PhysicalActionAccidental v5phyActionA = new VFIFE_PhysicalActionAccidental();
-            v5phyActionA.setAction_source(TYPE_action_source_accidential.values()[src]);
-            v5phyAction = v5phyActionA;
-        } else if (derivedClass.contains("PHYSICAL_ACTION")) {
-            v5phyAction = new VFIFE_PhysicalAction();
-        }
-
-        // set action nature - static or dynamic
-        v5phyAction.setAction_nature(TYPE_static_or_dynamic.values()[ephysicAction.getAction_nature(null) - 1]);
-        
-        // basic_magnitude, derived_magnitude, derivation_factors,  derivation_factor_labels are not useful for now
-        return v5phyAction;
-    }
 
 }

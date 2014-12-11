@@ -5,14 +5,11 @@
  */
 package view;
 
-import modeling.Controller;
-import java.awt.BorderLayout;
-import javax.swing.border.EmptyBorder;
-import dataStructure.entity.VFIFE_AppliedLoadStaticForce;
+import dataStructure.entity.VFIFE_AppliedLoad;
 import dataStructure.entity.VFIFE_Bar;
 import dataStructure.entity.VFIFE_CartesianPoint;
 import dataStructure.entity.VFIFE_Load;
-import dataStructure.entity.VFIFE_LoadMemberConcentrated;
+import dataStructure.entity.VFIFE_LoadBar;
 import dataStructure.entity.VFIFE_LoadNode;
 import dataStructure.entity.VFIFE_Node;
 
@@ -39,24 +36,24 @@ public class JDialogForce extends javax.swing.JDialog {
         // set position and size
         setBounds(500, 300, 320, 320);
 
-        jLabel_id.setText(force.getForce_name());
+        jLabel_id.setText(String.valueOf(force.getId()));
         jTextField_start.setText(String.valueOf(force.getStart_time()));
         jTextField_end.setText(String.valueOf(force.getEnd_time()));
 
-        jLabel_type.setText(force.getParent_load_case().getLoad_case_name());
+        jLabel_type.setText(force.getParent_load_case().toString());
         
         if (force.getClass().toString().contains("LoadMemberConcentrated")) {
-            VFIFE_LoadMemberConcentrated v5force = (VFIFE_LoadMemberConcentrated) force;
+            VFIFE_LoadBar v5force = (VFIFE_LoadBar) force;
             // load postion - distance from start end
             VFIFE_CartesianPoint point = v5force.getLoad_position();
             double distance = point.getCoordinate_x();
 
-            VFIFE_Bar supportBar = v5force.getSupporting_member();
+            VFIFE_Bar supportBar = v5force.getSupporting_bar();
             
             jLabel_element.setText("Bar "+supportBar.getBar_id());
             
-            VFIFE_CartesianPoint startPos = supportBar.getNodes().get(0).getCoord();
-            VFIFE_CartesianPoint endPos = supportBar.getNodes().get(1).getCoord();
+            VFIFE_CartesianPoint startPos = supportBar.getStart_node().getCoord();
+            VFIFE_CartesianPoint endPos = supportBar.getEnd_node().getCoord();
 
             double barLength = this.getLength(startPos.getCoordinate_x(),
                     startPos.getCoordinate_y(), startPos.getCoordinate_z(),
@@ -73,7 +70,7 @@ public class JDialogForce extends javax.swing.JDialog {
             jLabel_pos.setText("("+String.valueOf(px)+", "+String.valueOf(py)+", "+String.valueOf(pz)+")");
             
             // force vector
-            VFIFE_AppliedLoadStaticForce staticforce = (VFIFE_AppliedLoadStaticForce) v5force
+            VFIFE_AppliedLoad staticforce = (VFIFE_AppliedLoad) v5force
                     .getLoad_value();
             double fx = staticforce.getApplied_force_fx();
             double fy = staticforce.getApplied_force_fy();
@@ -88,7 +85,7 @@ public class JDialogForce extends javax.swing.JDialog {
             // load postion
             VFIFE_Node supportNode = v5nodeforce.getSupporting_node();
             
-            jLabel_element.setText("Node "+supportNode.getNode_name());
+            jLabel_element.setText("Node "+supportNode.getNode_id());
             
             VFIFE_CartesianPoint point = supportNode.getCoord();
             double px = point.getCoordinate_x();
@@ -98,8 +95,8 @@ public class JDialogForce extends javax.swing.JDialog {
             jLabel_pos.setText("("+String.valueOf(px)+", "+String.valueOf(py)+", "+String.valueOf(pz)+")");
             
             // force vector
-            VFIFE_AppliedLoadStaticForce staticforce = (VFIFE_AppliedLoadStaticForce) v5nodeforce
-                    .getLoad_values();
+            VFIFE_AppliedLoad staticforce = (VFIFE_AppliedLoad) v5nodeforce
+                    .getLoad_value();
             double fx = staticforce.getApplied_force_fx();
             double fy = staticforce.getApplied_force_fy();
             double fz = staticforce.getApplied_force_fz();

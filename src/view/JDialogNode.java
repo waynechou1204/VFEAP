@@ -11,7 +11,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import dataStructure.entity.VFIFE_BoundaryCondition;
+import dataStructure.entity.VFIFE_BoundaryConditionLogical;
 import dataStructure.entity.VFIFE_Node;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -49,7 +49,7 @@ public class JDialogNode extends JDialog {
         contentPanel.add(lblNewLabel);
 
         JLabel nodeidLabel = new JLabel();
-        nodeidLabel.setText(m_vnode.getNode_name() + "");
+        nodeidLabel.setText(m_vnode.getNode_id() + "");
         nodeidLabel.setHorizontalAlignment(SwingConstants.CENTER);
         nodeidLabel.setBounds(98, 10, 64, 15);
         contentPanel.add(nodeidLabel);
@@ -90,7 +90,7 @@ public class JDialogNode extends JDialog {
 
         JLabel boundConNamelbl = new JLabel("");
         if (m_vnode.getRestraint() != null) {
-            boundConNamelbl.setText(m_vnode.getRestraint().getBoundary_condition_name());
+            boundConNamelbl.setText("Non-free node");
         } else {
             boundConNamelbl.setText("Free node");
         }
@@ -106,7 +106,7 @@ public class JDialogNode extends JDialog {
         boundConDesclbl.setHorizontalAlignment(SwingConstants.CENTER);
         boundConDesclbl.setBounds(108, 146, 100, 15);
         if (m_vnode.getRestraint() != null) {
-            boundConDesclbl.setText(m_vnode.getRestraint().getBoundary_condition_description());
+            boundConDesclbl.setText(" "); // description not stored
         }
         contentPanel.add(boundConDesclbl);
 
@@ -169,7 +169,7 @@ public class JDialogNode extends JDialog {
                 
                 // if there is no boundary condition, create one
                 if (m_vnode.getRestraint() == null) {
-                    m_vnode.setRestraint(new VFIFE_BoundaryCondition());
+                    m_vnode.setRestraint(new VFIFE_BoundaryConditionLogical());
                 }
 
                 // set restraint values and save

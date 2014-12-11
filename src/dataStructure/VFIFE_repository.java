@@ -74,7 +74,7 @@ public class VFIFE_repository {
         return m_model;
     }
 
-    // set schema type to the model
+    /* set schema type to the model
     public SdaiModel setVfifeOutModel(String repoName, String modelname)
             throws SdaiException {
         ASdaiRepository repos = m_session.getKnownServers();
@@ -120,7 +120,7 @@ public class VFIFE_repository {
                 jsdai.SVfife_schema.SVfife_schema.class);
         m_model.startReadWriteAccess();
         return m_model;
-    }
+    }*/
 
     // write out the repo to a stp
     public void outputFile(String filepath) throws SdaiException {
