@@ -128,6 +128,7 @@ public class Controller {
 	   parser.writeNode();
 	   parser.writeBar();
 	   parser.writeLoad();
+	   parser.writeModel();
 	   bw.close();
   
 	   System.out.println("out over");  

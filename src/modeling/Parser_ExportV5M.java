@@ -123,4 +123,14 @@ public class Parser_ExportV5M {
 					+ld.getLoad_value().getApplied_force_fz()+"\n");
 		}
 	}
+	
+	/**
+	 * hasGravity calculateDuration timeInterval  
+	 * @throws IOException
+	 */
+	public void writeModel() throws IOException{
+		m_bw.append("Model\n");
+		m_bw.append(m_model.isHasGravity() ? "T " : "F ");
+		m_bw.append(m_model.getCalculate_duration()+" "+m_model.getCalculate_time_interval()+"\n");
+	}
 }
