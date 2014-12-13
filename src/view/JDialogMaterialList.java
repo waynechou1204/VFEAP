@@ -57,7 +57,7 @@ public class JDialogMaterialList extends javax.swing.JDialog {
 		 */
 		private static final long serialVersionUID = -7257357201744602267L;
 
-	public void addMaterial(String matname){
+		public void addMaterial(String matname){
             addElement(matname);
         }
         

@@ -1,6 +1,5 @@
 package dataStructure.entity;
 
-import java.util.ArrayList;
 
 public class VFIFE_Bar {
 	private int id;
@@ -8,16 +7,22 @@ public class VFIFE_Bar {
 	private VFIFE_Node start_node;
 	private VFIFE_Node end_node;
 	private VFIFE_Material bar_material;
+	private static int max_id=0;
 	
 	public VFIFE_Bar(){
-		
+		id = max_id++;
 	}
+	
+	public VFIFE_Bar(int id){
+		this.id = id;
+	}
+	
 	public int getBar_id() {
 		return id;
 	}
-	public void setBar_id(int bar_id) {
-		this.id = bar_id;
-	}
+//	public void setBar_id(int bar_id) {
+//		this.id = bar_id;
+//	}
 	
 	public VFIFE_Node getStart_node() {
 		return start_node;

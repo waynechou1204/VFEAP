@@ -16,8 +16,10 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
+import javax.media.j3d.Transform3D;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -26,6 +28,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import jsdai.lang.SdaiException;
 import dataStructure.ProgramCalculation;
 import dataStructure.VFIFE_Model;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -81,23 +90,84 @@ public class JFrameMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuBar = new javax.swing.JMenuBar();
-        jMenuFile = new javax.swing.JMenu();
-        jMenuCalculate = new javax.swing.JMenu();
-        jMenuItemOpen = new javax.swing.JMenuItem();
-        jMenuItemExport = new javax.swing.JMenuItem();
-        jMenuItemExportV5 = new javax.swing.JMenuItem();
-        jMenuItemExit = new javax.swing.JMenuItem();
-        jMenuDefine = new javax.swing.JMenu();
-        jMenuItemMaterial = new javax.swing.JMenuItem();
-        jMenuItemAllElements = new javax.swing.JMenuItem();
-        jMenuSpecify = new javax.swing.JMenu();
-        jMenuItemLoad = new javax.swing.JMenuItem();
-        jMenuXY = new javax.swing.JMenu();
-        jMenuYZ = new javax.swing.JMenu();
-        jMenuZX = new javax.swing.JMenu();
-        jMenuZoomIn = new javax.swing.JMenu();
-        jMenuZoomOut = new javax.swing.JMenu();
+        jMenuBar = new JMenuBar();
+        
+        jMenuFile = new JMenu("File");
+        jMenuItemOpen = new JMenuItem("Open File...");
+        jMenuItemOpen.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		try {
+					jMenuItemOpenActionPerformed();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        	}
+        });
+        jMenuItemSave = new JMenuItem("Save As...");
+        jMenuItemSave.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		try {
+					jMenuItemSaveAsClicked();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+        	}
+        });
+        jmenuItemImportSTP = new JMenuItem("Import STEP File...");
+        jmenuItemImportSTP.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		try {
+					jMenuItemImportStepClick();
+				} catch (SdaiException e1) {
+					e1.printStackTrace();
+				}
+        	}
+        });
+        
+        jMenuItemDoCalculate = new JMenuItem();
+        jMenuItemExit = new JMenuItem("Exit");
+        jMenuItemExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemExitActionPerformed(evt);
+            }
+        });
+        
+        jMenuCalculate = new javax.swing.JMenu("Calculate");
+        
+        jMenuDefine = new javax.swing.JMenu("Define");
+    	jMenuItemMaterial = new javax.swing.JMenuItem("Material...");
+    	jMenuItemAllElements = new javax.swing.JMenuItem("All Bars...");
+    
+        jMenuSpecify = new javax.swing.JMenu("Specify");
+    	jMenuItemLoad = new javax.swing.JMenuItem("Load");
+        
+        jMenuXY = new javax.swing.JMenu("XY");
+        jMenuXY.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent arg0) {
+        		m_view.updateScene(new Transform3D());
+        	}
+        });
+        jMenuYZ = new javax.swing.JMenu("YZ");
+        jMenuYZ.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent arg0) {
+        		Transform3D rotate3d = new Transform3D();
+        		rotate3d.rotY(-0.5*Math.PI);
+        		m_view.updateScene(rotate3d);
+        	}
+        });
+        jMenuZX = new javax.swing.JMenu("ZX");
+        jMenuZX.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent arg0) {
+        		Transform3D rotate3d = new Transform3D();
+        		rotate3d.rotX(-0.5*Math.PI);
+        		m_view.updateScene(rotate3d);
+        	}
+        });
+        jMenuZoomIn = new javax.swing.JMenu("+");
+        jMenuZoomOut = new javax.swing.JMenu("-");
         
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("VFIFE Modeling Tool");
@@ -107,68 +177,22 @@ public class JFrameMain extends javax.swing.JFrame {
 
         jMenuBar.setPreferredSize(new java.awt.Dimension(81, 28));
 
-        jMenuFile.setText("File");
-        jMenuFile.setPreferredSize(new java.awt.Dimension(35, 19));
-        
-        jMenuItemOpen.setText("Open");
-        jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemOpenActionPerformed(evt);
-            }
-        });
-        jMenuFile.add(jMenuItemOpen);
-
-        jMenuItemExport.setText("Export");
-        jMenuItemExport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-					jMenuItemExportActionPerformed(evt);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-        });
-        jMenuFile.add(jMenuItemExport);
-
-        
-        /*
-        jMenuItemExportV5.setText("ExportV5");
-        jMenuItemExportV5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemExportV5ActionPerformed(evt);
-            }
-        });
-        jMenuFile.add(jMenuItemExportV5);
-        
-        */
-        
-        
-        jMenuItemExit.setText("Exit");
-        jMenuItemExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemExitActionPerformed(evt);
-            }
-        });
-        jMenuFile.add(jMenuItemExit);
-
         jMenuBar.add(jMenuFile);
 
-        jMenuDefine.setText("Define");
+        jMenuFile.add(jMenuItemOpen);
+        jMenuFile.add(jMenuItemSave);
+        jMenuFile.add(jmenuItemImportSTP);
+        jMenuFile.add(jMenuItemExit);
+
         
-        jMenuCalculate.setText("Calculate");
-        
-        jMenuXY.setText("XY");
-        jMenuYZ.setText("YZ");
-        jMenuZX.setText("ZX");
-        
-        jMenuItemExportV5.setText("ExportV5");
-        jMenuItemExportV5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemExportV5ActionPerformed(evt);
-            }
+        jMenuItemDoCalculate.setText("TODO");
+        jMenuItemDoCalculate.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent arg0) {
+        		// TODO DO CALCULATE
+        	}
         });
-        jMenuCalculate.add(jMenuItemExportV5);
+        jMenuCalculate.add(jMenuItemDoCalculate);
         
         jMenuItemMaterial.setText("Material");
         jMenuItemMaterial.addActionListener(new java.awt.event.ActionListener() {
@@ -188,9 +212,6 @@ public class JFrameMain extends javax.swing.JFrame {
 
         jMenuBar.add(jMenuDefine);
 
-        jMenuSpecify.setText("Specify");
-
-        jMenuItemLoad.setText("Load");
         jMenuSpecify.add(jMenuItemLoad);
 
         jMenuBar.add(jMenuSpecify);
@@ -204,11 +225,6 @@ public class JFrameMain extends javax.swing.JFrame {
         JMenuItemStart = new JMenuItem("Start");
         JMenuAnimation.add(JMenuItemStart);
         
-        jMenuXY.setText("XY");
-        jMenuYZ.setText("YZ");
-        jMenuZX.setText("ZX");
-        jMenuZoomIn.setText("+");
-        jMenuZoomOut.setText("-");
         
         jMenuBar.add(jMenuXY);
         jMenuBar.add(jMenuYZ);
@@ -247,37 +263,8 @@ public class JFrameMain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
-        // get file open path
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new FileNameExtensionFilter("CIS2/STP FILE/V5M FILE", "stp","v5m"));
-        int i = fileChooser.showOpenDialog(getContentPane());
-
-        if (i == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            String stpFilePath = selectedFile.getAbsolutePath();
-            char type=stpFilePath.charAt(stpFilePath.length()-1);
-            try {
-                // load file and parse
-                this.getContentPane().remove(m_view);
-                if(type=='m')//v5m file
-                {
-                	m_v5model = loadV5M(stpFilePath);
-                }
-                else	//Step file
-                {
-                	m_v5model = loadCIS(stpFilePath);
-                }
-                m_view = new VFIFE_Modeling_view(m_v5model);
-                this.getContentPane().add(m_view, BorderLayout.CENTER);
-
-            } catch (SdaiException e) {
-                e.printStackTrace();
-            }
-        }
-    }//GEN-LAST:event_jMenuItemOpenActionPerformed
     
-    /*private void jMenuItemOpenv5mActionPerformed(java.awt.event.ActionEvent evt) {                                              
+    private void jMenuItemOpenActionPerformed() throws IOException {
         // get file open path
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("V5M FILE", "v5m"));
@@ -285,25 +272,18 @@ public class JFrameMain extends javax.swing.JFrame {
 
         if (i == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            String stpFilePath = selectedFile.getAbsolutePath();
-
-            try {
-                // load file and parse
-                this.getContentPane().remove(m_view);
-                m_v5model = control.Modeling.loadV5(stpFilePath);
-                m_view = new VFIFE_Modeling_view(m_v5model);
-                this.getContentPane().add(m_view, BorderLayout.CENTER);
-
-            } catch (SdaiException e) {
-                e.printStackTrace();
-            }
+            // load file and parse
+			this.getContentPane().remove(m_view);
+			
+			m_v5model = loadV5M(selectedFile);
+			
+			m_view = new VFIFE_Modeling_view(m_v5model);
+			this.getContentPane().add(m_view, BorderLayout.CENTER);
         }
     }
-    */
     
-    private void jMenuItemExportActionPerformed(java.awt.event.ActionEvent evt) throws IOException {
-    	//GEN-FIRST:event_jMenuItemExportActionPerformed
-        if (!m_v5model.isEmpty()) {
+    private void jMenuItemSaveAsClicked() throws IOException {
+    	if (!m_v5model.isEmpty()) {
             // get file save path
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setSelectedFile(new File("model.v5m")); // default file name
@@ -318,66 +298,38 @@ public class JFrameMain extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "No model to export", "Warning", JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_jMenuItemExportActionPerformed
+    }     
     
-    private void jMenuItemExportV5ActionPerformed(java.awt.event.ActionEvent evt) {                                                
-        if (!m_v5model.isEmpty()) {
-            // get file save path
-        	File nodeFile ,elementFile;
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setSelectedFile(new File("node.txt")); // default file name
-            fileChooser.setFileFilter(new FileNameExtensionFilter("TXT", "txt"));
-            int i = fileChooser.showSaveDialog(getContentPane());
-            if (i == JFileChooser.APPROVE_OPTION) {
-                nodeFile = fileChooser.getSelectedFile();
-              /*  try {
-                    if (getfile != null) {
-                        exportFile(m_v5model, getfile.getAbsolutePath());
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (SdaiException e) {
-                    e.printStackTrace();
-                }*/
-            
-            JFileChooser fileChooser2 = new JFileChooser();
-            fileChooser2.setSelectedFile(new File("element.txt")); // default file name
-            fileChooser2.setFileFilter(new FileNameExtensionFilter("TXT", "txt"));
-            int j = fileChooser2.showSaveDialog(getContentPane());
-            if (j == JFileChooser.APPROVE_OPTION) {
-                elementFile = fileChooser2.getSelectedFile();
-                try {
-//                	calcu_model = new ProgramCalculation(nodeFile.getAbsolutePath(),elementFile.getAbsolutePath());
-//                	calcu_model.exportV5File(m_v5model);
-                } 
-                catch (Exception e)
-                {
-                	e.printStackTrace();
-                }
-                /*catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (SdaiException e) {
-                    e.printStackTrace();
-                }*/
-            }
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "No model to export", "Warning", JOptionPane.WARNING_MESSAGE);
-        }
-    }    
-    
-    private void jMenuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemExitActionPerformed
-    	System.exit(0);
-    }//GEN-LAST:event_jMenuItemExitActionPerformed
+    private void jMenuItemImportStepClick() throws SdaiException {
+        // get file open path
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("CIS2/STP FILE", "stp"));
+        int i = fileChooser.showOpenDialog(getContentPane());
 
-    private void jMenuItemMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemMaterialActionPerformed
-        if (!m_v5model.isEmpty()) {
-            //JDialogMaterialList of material list = 
-            new JDialogMaterialList(m_v5model);
+        if (i == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            String stpFilePath = selectedFile.getAbsolutePath();
+            // load file and parse
+            this.getContentPane().remove(m_view);
+            
+            m_v5model = loadCIS(stpFilePath);
+            
+            m_view = new VFIFE_Modeling_view(m_v5model);
+            this.getContentPane().add(m_view, BorderLayout.CENTER);
         }
-    }//GEN-LAST:event_jMenuItemMaterialActionPerformed
+    }
+     
+    private void jMenuItemExitActionPerformed(java.awt.event.ActionEvent evt) {
+    	System.exit(0);
+    }
+
+    private void jMenuItemMaterialActionPerformed(java.awt.event.ActionEvent evt) {
+        if (!m_v5model.isEmpty()) {
+        	new JDialogMaterialList(m_v5model); //JDialogMaterialList of material list
+        }
+    }
     
-    private void jMenuItemAllElemntsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAllElemntsActionPerformed
+    private void jMenuItemAllElemntsActionPerformed(java.awt.event.ActionEvent evt) {
         if (!m_v5model.isEmpty()) {
         	JDialogAllBars materiaux = new JDialogAllBars(m_v5model);
         	materiaux.setVisible(true);
@@ -390,13 +342,14 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuDefine;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenu jMenuCalculate;
+    private javax.swing.JMenuItem jMenuItemOpen;
+    private javax.swing.JMenuItem jMenuItemSave;
+    private JMenuItem jmenuItemImportSTP;
     private javax.swing.JMenuItem jMenuItemExit;
-    private javax.swing.JMenuItem jMenuItemExport;
-    private javax.swing.JMenuItem jMenuItemExportV5;
+    private javax.swing.JMenuItem jMenuItemDoCalculate;
     private javax.swing.JMenuItem jMenuItemLoad;
     private javax.swing.JMenuItem jMenuItemMaterial;
     private javax.swing.JMenuItem jMenuItemAllElements;
-    private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenu jMenuSpecify;
     private JMenu JMenuAnimation;
     private javax.swing.JMenu jMenuXY;

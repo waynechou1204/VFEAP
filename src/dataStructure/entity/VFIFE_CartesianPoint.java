@@ -4,6 +4,14 @@ public class VFIFE_CartesianPoint {
 	private double coordinate_x;
 	private double coordinate_y;
 	private double coordinate_z;
+	
+	public VFIFE_CartesianPoint(double coordinate_x, double coordinate_y,
+			double coordinate_z) {
+		super();
+		this.coordinate_x = coordinate_x;
+		this.coordinate_y = coordinate_y;
+		this.coordinate_z = coordinate_z;
+	}
 	public double getCoordinate_x() {
 		return coordinate_x;
 	}

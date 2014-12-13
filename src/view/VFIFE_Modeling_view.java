@@ -86,7 +86,7 @@ public class VFIFE_Modeling_view extends JPanel {
         // set viewer anti aliasing
         universe.getViewer().getView().setSceneAntialiasingEnable(true);
 
-        scene = createSceneGraph(canvas);
+        scene = createSceneGraph(canvas, new Transform3D());
         universe.addBranchGraph(scene);
 
     }
@@ -95,7 +95,7 @@ public class VFIFE_Modeling_view extends JPanel {
         universe.cleanup();
     }
 
-    public BranchGroup createSceneGraph(Canvas3D canvas) {
+    public BranchGroup createSceneGraph(Canvas3D canvas, Transform3D rotate3d) {
 
         float offset_x = 0;
         float offset_y = 0;
@@ -137,7 +137,7 @@ public class VFIFE_Modeling_view extends JPanel {
         TransformGroup objScale = new TransformGroup(t3d);
         objRoot.addChild(objScale);
 
-        Transform3D rotate3d = new Transform3D();
+        //Transform3D rotate3d = new Transform3D();
         //rotate3d.rotX(-0.5*Math.PI); 		// NO NEED TO Rotate the object to XY orientation
         
         // set object to the center of window by offsets
@@ -387,9 +387,9 @@ public class VFIFE_Modeling_view extends JPanel {
         }
     }
 
-    public void updateScene() {
+    public void updateScene(Transform3D rotate3d) {
         scene.detach();
-        scene = createSceneGraph(canvas);
+        scene = createSceneGraph(canvas, rotate3d);
         universe.addBranchGraph(scene);
     }
    

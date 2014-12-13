@@ -3,6 +3,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.media.j3d.Transform3D;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -13,6 +14,7 @@ import javax.swing.SwingConstants;
 
 import dataStructure.entity.VFIFE_BoundaryConditionLogical;
 import dataStructure.entity.VFIFE_Node;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -169,7 +171,7 @@ public class JDialogNode extends JDialog {
                 
                 // if there is no boundary condition, create one
                 if (m_vnode.getRestraint() == null) {
-                    m_vnode.setRestraint(new VFIFE_BoundaryConditionLogical());
+                    m_vnode.setRestraint(new VFIFE_BoundaryConditionLogical(true,true,true,true,true,true));
                 }
 
                 // set restraint values and save
@@ -179,7 +181,7 @@ public class JDialogNode extends JDialog {
                 JDialogNode.this.m_vnode.getRestraint().setBc_x_rotation_free(!JDialogNode.this.xrotationRestraint.isSelected());
                 JDialogNode.this.m_vnode.getRestraint().setBc_y_rotation_free(!JDialogNode.this.yrotationRestraint.isSelected());
                 JDialogNode.this.m_vnode.getRestraint().setBc_z_rotation_free(!JDialogNode.this.zrotationRestraint.isSelected());
-                JDialogNode.this.view.updateScene();
+                JDialogNode.this.view.updateScene(new Transform3D());
                 JDialogNode.this.dispose();
             }
         });

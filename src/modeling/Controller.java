@@ -1,11 +1,12 @@
 package modeling;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import jsdai.lang.SdaiException;
 import jsdai.lang.SdaiModel;
@@ -31,8 +32,8 @@ public class Controller {
     public Controller() throws SdaiException {
 
     	// FIXME, the second line is for test, to delete
-        //VFIFE_Model m_v5model = new VFIFE_Model();
-        VFIFE_Model m_v5model = loadCIS("resources/5-1.stp");
+        VFIFE_Model m_v5model = new VFIFE_Model();
+        //VFIFE_Model m_v5model = loadCIS("resources/5-1.stp");
 
         // main window of the model
         m_frameMain = new JFrameMain(m_v5model);
@@ -87,27 +88,36 @@ public class Controller {
         return v5model;
     }
 
-    public static VFIFE_Model loadV5M(String v5mFilePath) throws SdaiException 
+    public static VFIFE_Model loadV5M(File v5mFile) throws IOException 
     {
         // set model as return value
         VFIFE_Model v5model = new VFIFE_Model();
-
-/*        VFIFE_repository repo_v5 = new VFIFE_repository("repositories", "D:\\Repositories");
-        SdaiModel model_v5 = repo_v5.loadFile("MyCisRepo", stpFilePath);
-
-        // parse
-        Parser_ImportV5M parser = new Parser_ImportV5M();
-
-        v5model.setNodes(parser.parseNodes(model_v5, v5model));
-        parser.parseBars(model_v5, v5model); //v5model.setBars();
-        v5model.setMateriaux(parser.parseMaterials(v5model, model_v5));
-        v5model.setForces(parser.parseLoads_r(v5model, model_v5));
-
-        //     v5model.getForces().addAll(parser.parseLoadMemberCon(model_v5, v5model));
-        //     v5model.getForces().addAll(parser.parseLoadNode(model_v5, v5model));
-        // end
-        repo_v5.close();
-*/
+        
+        System.out.println("Loading v5m file: "+v5mFile.getAbsolutePath());
+        System.out.println("Waiting...");
+        long loadstarttime = System.currentTimeMillis();
+        
+        if(v5mFile.isFile() && v5mFile.exists()){ //判断文件是否存在
+            InputStreamReader read = new InputStreamReader(new FileInputStream(v5mFile));//考虑到编码格式
+            BufferedReader br = new BufferedReader(read);
+             
+            // parse
+            Parser_ImportV5M parser = new Parser_ImportV5M(v5model, br);
+            // order is important
+     	   	parser.parseHeader();
+            parser.parseMaterial();
+            parser.parseNode();
+            parser.parseBar();
+            parser.parseLoad();
+            parser.parseModel();
+            read.close();
+		}else{
+		    System.out.println("找不到指定的文件");
+		}
+       
+        long loadendtime = System.currentTimeMillis();
+        System.out.println("After "+(loadendtime-loadstarttime)/1000+" seconds");
+        
         return v5model;
       }
 

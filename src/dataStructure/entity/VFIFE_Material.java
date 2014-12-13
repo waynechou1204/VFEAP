@@ -6,21 +6,31 @@ public class VFIFE_Material {
 	private double young_modulus;
 	private double density;
 	private double extreme_force;
+	private static int max_id=0;
 	
 	public VFIFE_Material(){
+		this.id = max_id++;
 		this.material_name="";
 		this.young_modulus = 0;
 		this.density = 0;
-		this.extreme_force = 0;
+		this.extreme_force = Double.MAX_VALUE;
+	}
+	
+	public VFIFE_Material(int id){
+		this.id = id;
+		this.material_name="";
+		this.young_modulus = 0;
+		this.density = 0;
+		this.extreme_force = Double.MAX_VALUE;
 	}
 	
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
+//	public void setId(int id) {
+//		this.id = id;
+//	}
 
 	public String getName() {
 		return material_name;

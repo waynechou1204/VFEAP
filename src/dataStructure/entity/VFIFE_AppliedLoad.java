@@ -5,6 +5,13 @@ public class VFIFE_AppliedLoad {
 	private double applied_force_fy;
 	private double applied_force_fz;
 	
+	public VFIFE_AppliedLoad(double applied_force_fx, double applied_force_fy,
+			double applied_force_fz) {
+		super();
+		this.applied_force_fx = applied_force_fx;
+		this.applied_force_fy = applied_force_fy;
+		this.applied_force_fz = applied_force_fz;
+	}
 	public double getApplied_force_fx() {
 		return applied_force_fx;
 	}

@@ -7,10 +7,15 @@ public class VFIFE_Load {
 	private double load_end_time;				// end time of the force
 	private VFIFE_LoadCase parent_load_case;	// force type
 	private VFIFE_AppliedLoad load_value;		// load value
+	private static int max_id=0;
 	
 	public VFIFE_Load(){
+		this.id = max_id++;
 		this.load_start_time = 0;
 		this.load_end_time = 0;
+	}
+	public VFIFE_Load(int id){
+		this.id = id;
 	}
 	
 	public VFIFE_Load(VFIFE_Load load)
@@ -25,9 +30,9 @@ public class VFIFE_Load {
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
-		this.id = id;
-	}
+//	public void setId(int id) {
+//		this.id = id;
+//	}
 	public VFIFE_AppliedLoad getLoad_value() {
 		return load_value;
 	}

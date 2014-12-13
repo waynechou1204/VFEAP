@@ -36,14 +36,22 @@ public class VFIFE_Model {
         }
     }
 
-    public void addMaterial(String name, double density, double young_modulus) {
-        VFIFE_Material mat = new VFIFE_Material();
-        mat.setName(name);
-        mat.setDensity(density);
-        mat.setYoung_modulus(young_modulus);
-        materiaux.add(mat);
+    public void addMaterial(VFIFE_Material mat) {
+    	VFIFE_Material mattemp = getMaterial(mat.getId());
+        if (mattemp == null) {
+            materiaux.add(mat);
+        }
     }
 
+    public VFIFE_Material getMaterial(int id){
+    	for (VFIFE_Material mat : materiaux) {
+            if (mat.getId()==id) {
+                return mat;
+            }
+        }
+        return null;
+    }
+    
     public VFIFE_Material getMaterial(String s) {
         for (VFIFE_Material mat : materiaux) {
             if (mat.getName().equals(s)) {
@@ -86,6 +94,27 @@ public class VFIFE_Model {
         }
     }
 
+    public void addNode(VFIFE_Node nd){
+    	VFIFE_Node ndtemp = getNode(nd.getNode_id());
+    	if(ndtemp==null){
+    		nodes.add(nd);
+    	}
+    }
+    
+    public void addForce(VFIFE_Load fc) {
+        VFIFE_Load ldtemp = getForce(fc.getId());
+        if (ldtemp == null) {
+            forces.add(fc);
+        }
+    }
+    public VFIFE_Load getForce(int forceid) {
+        for (VFIFE_Load temp : forces) {
+            if (temp.getId() == forceid) {
+                return temp;
+            }
+        }
+        return null;
+    }
     public VFIFE_Node getNode(int nodeid) {
         for (VFIFE_Node nodetemp : nodes) {
             if (nodetemp.getNode_id() == nodeid) {

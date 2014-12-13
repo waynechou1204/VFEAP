@@ -6,18 +6,20 @@ public class VFIFE_Node {
 	private double mess;
 	private VFIFE_CartesianPoint coordinate;
 	private VFIFE_BoundaryConditionLogical restraints;
-	
+	private static int max_id=0;
 	
 	public VFIFE_Node() {
-	
+		id = max_id++;
 	}
-	
+	public  VFIFE_Node(int id) {
+		this.id = id;
+	}
 	public int getNode_id() {
 		return id;
 	}
-	public void setNode_id(int node_id) {
-		this.id = node_id;
-	}
+//	public void setNode_id(int node_id) {
+//		this.id = node_id;
+//	}
 	
 	
 	public double getMess() {

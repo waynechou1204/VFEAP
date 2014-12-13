@@ -61,11 +61,11 @@ public class Parser_ImportSTP {
 
             ENode enode = nodes.getCurrentMember(nodeIt);
 
-            VFIFE_Node v5node = new VFIFE_Node();
+            VFIFE_Node v5node = null;
 
             try {
 				/////////////// v5node's id, name////////////////////////////
-                v5node.setNode_id(Integer.parseInt(enode.getNode_name(null).trim()));
+                v5node = new VFIFE_Node(Integer.parseInt(enode.getNode_name(null).trim()));
 
 				//////////////// coordinates//////////////////////////
                 jsdai.SStructural_frame_schema.ECartesian_point epoint = (jsdai.SStructural_frame_schema.ECartesian_point) enode
@@ -73,7 +73,7 @@ public class Parser_ImportSTP {
                 A_double coords = epoint.getCoordinates(null);
                 SdaiIterator coordsIt = coords.createIterator();
 
-                VFIFE_CartesianPoint v5point = new VFIFE_CartesianPoint();
+                VFIFE_CartesianPoint v5point = new VFIFE_CartesianPoint(0,0,0);
 
                 if (coordsIt.next()) {
                     v5point.setCoordinate_x(coords.getCurrentMember(coordsIt));
@@ -88,7 +88,7 @@ public class Parser_ImportSTP {
                 v5node.setCoord(v5point);
 
 				////////////////////// constraints///////////////////////
-                VFIFE_BoundaryConditionLogical v5boundary = new VFIFE_BoundaryConditionLogical();
+                VFIFE_BoundaryConditionLogical v5boundary = new VFIFE_BoundaryConditionLogical(true,true,true,true,true,true);
 
                 EBoundary_condition_logical eboundary = (EBoundary_condition_logical) enode.getRestraints(enode);
 
@@ -134,10 +134,8 @@ public class Parser_ImportSTP {
                 // the bar does not exist in model
                 if (v5bar == null) {
 
-                    v5bar = new VFIFE_Bar();
-
                     // set bar id
-                    v5bar.setBar_id(Integer.parseInt(element.getElement_name(null).trim()));
+                    v5bar = new VFIFE_Bar(Integer.parseInt(element.getElement_name(null).trim()));
 
                     // deal with bar area
                     ASection_profile sections = element.getCross_sections(null);
@@ -221,10 +219,9 @@ public class Parser_ImportSTP {
         while (matIter.next()) {
             EMaterial_isotropic mat = mats.getCurrentMember(matIter);
 
-            VFIFE_Material v5material = new VFIFE_Material();
-            
             //set id
-            v5material.setId(mat.getItem_number(null));
+            VFIFE_Material v5material = new VFIFE_Material(mat.getItem_number(null));
+            
             // set name
             v5material.setName(mat.getMaterial_name(null));
 
@@ -259,9 +256,8 @@ public class Parser_ImportSTP {
             ELoad_member_concentrated concen = concens.getCurrentMember(concenIter);
 
             //////////////// set force name - identity
-            VFIFE_LoadBar v5forcemember = new VFIFE_LoadBar();
-            v5forcemember.setId(Integer.parseInt(concen.getLoad_name(null).trim()));
-
+            VFIFE_LoadBar v5forcemember = new VFIFE_LoadBar(Integer.parseInt(concen.getLoad_name(null).trim()));
+            
 			//////////////// start time and end time are empty
             /////////////// set supporting member - bar // deal with assembly_design_structural_member_linear
             EAssembly_design_structural_member_linear supmember = (EAssembly_design_structural_member_linear) concen.getSupporting_member(null);
@@ -271,7 +267,7 @@ public class Parser_ImportSTP {
             jsdai.SStructural_frame_schema.ECartesian_point loadpos = (jsdai.SStructural_frame_schema.ECartesian_point) concen.getLoad_position(null);
             A_double coords = loadpos.getCoordinates(null);
             SdaiIterator coordsIt = coords.createIterator();
-            VFIFE_CartesianPoint v5point = new VFIFE_CartesianPoint();
+            VFIFE_CartesianPoint v5point = new VFIFE_CartesianPoint(0,0,0);
             if (coordsIt.next()) {
                 v5point.setCoordinate_x(coords.getCurrentMember(coordsIt));
             }
@@ -286,7 +282,7 @@ public class Parser_ImportSTP {
             ///////////////// set load value
             EApplied_load_static_force appforce = (EApplied_load_static_force) concen.getLoad_value(null);
             // v5 applied force name
-            VFIFE_AppliedLoad v5appliedforce = new VFIFE_AppliedLoad();
+            VFIFE_AppliedLoad v5appliedforce = new VFIFE_AppliedLoad(0,0,0);
             try {
                 // directions and force values
                 EForce_measure_with_unit forcemes = appforce.getApplied_force_fx(null);
@@ -331,9 +327,8 @@ public class Parser_ImportSTP {
             ELoad_node nodeforce = nodeforces.getCurrentMember(nodeforceIt);
 
             // force id
-            VFIFE_LoadNode v5force = new VFIFE_LoadNode();
+            VFIFE_LoadNode v5force = new VFIFE_LoadNode(Integer.parseInt(nodeforce.getLoad_name(null).trim()));
             //v5force.setForce_name((nodeforce.getLoad_name(null).trim()));
-            v5force.setId(Integer.parseInt(nodeforce.getLoad_name(null).trim()));
             
             ///////////////// deal with load case - load type
             ELoad_case eloadcase = nodeforce.getParent_load_case(null);
@@ -348,7 +343,7 @@ public class Parser_ImportSTP {
             EApplied_load_static_force appforce = (EApplied_load_static_force) nodeforce.getLoad_values(null);
 
             // v5 applied force name
-            VFIFE_AppliedLoad v5appliedforce = new VFIFE_AppliedLoad();
+            VFIFE_AppliedLoad v5appliedforce = new VFIFE_AppliedLoad(0,0,0);
             
             try {
                 // directions and force values
@@ -392,7 +387,7 @@ public class Parser_ImportSTP {
         } else if (derivedClass.contains("PHYSICAL_ACTION_VARIABLE")) {
         	v5loadcase = new VFIFE_LoadCaseVariable();
         } else {
-        	v5loadcase = new VFIFE_LoadCaseRamp();
+        	v5loadcase = new VFIFE_LoadCaseRamp(0);
         }
 
         return v5loadcase;

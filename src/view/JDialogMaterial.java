@@ -170,14 +170,24 @@ public class JDialogMaterial extends javax.swing.JDialog {
                 return;
             } else {
                 m_model.addElement(newmat);
-                m_v5model.addMaterial(newmat, Double.parseDouble(sDen), Double.parseDouble(sYm));
+                VFIFE_Material mat = new VFIFE_Material();
+                mat.setName(newmat);
+                mat.setDensity(Double.parseDouble(sDen));
+                mat.setYoung_modulus(Double.parseDouble(sYm));
+                // TODO lack of extreme force
+                m_v5model.addMaterial(mat);
             }
         } // edit material
         else {
             m_model.removeElement(oldmat);
             m_v5model.removeMaterial(oldmat);
             m_model.addElement(newmat);
-            m_v5model.addMaterial(newmat, Double.parseDouble(sDen), Double.parseDouble(sYm));
+            VFIFE_Material mat = new VFIFE_Material();
+            mat.setName(newmat);
+            mat.setDensity(Double.parseDouble(sDen));
+            mat.setYoung_modulus(Double.parseDouble(sYm));
+            // TODO lack of extreme force
+            m_v5model.addMaterial(mat);
         }
 
         this.dispose();
@@ -188,7 +198,7 @@ public class JDialogMaterial extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton_CancelActionPerformed
 
     private void jTextField_NameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_NameActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jTextField_NameActionPerformed
 
 

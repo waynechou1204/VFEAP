@@ -35,7 +35,7 @@ public class Parser_ExportV5M {
 	}
 	
 	/**
-	 * name youngsModulus density extremeForce
+	 * id name youngsModulus density extremeForce
 	 * @throws IOException
 	 */
 	public void writeMaterial() throws IOException{

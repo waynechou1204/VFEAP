@@ -4,9 +4,9 @@ public class VFIFE_LoadBar extends VFIFE_Load {
 	private VFIFE_Bar supporting_bar;
 	private VFIFE_CartesianPoint load_position;
 	
-	public VFIFE_LoadBar()
+	public VFIFE_LoadBar(int id)
 	{
-		
+		super(id);
 	}
 	
 	public VFIFE_LoadBar(VFIFE_Load load)
