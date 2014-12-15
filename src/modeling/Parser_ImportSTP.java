@@ -21,6 +21,7 @@ import jsdai.SStructural_frame_schema.ELoad_node;
 import jsdai.SStructural_frame_schema.EMaterial_elasticity;
 import jsdai.SStructural_frame_schema.EMaterial_isotropic;
 import jsdai.SStructural_frame_schema.EMaterial_representation;
+import jsdai.SStructural_frame_schema.EMaterial_strength;
 import jsdai.SStructural_frame_schema.ENode;
 import jsdai.SStructural_frame_schema.EPhysical_action;
 import jsdai.SStructural_frame_schema.EPositive_length_measure_with_unit;
@@ -232,13 +233,18 @@ public class Parser_ImportSTP {
                 ERepresentation_item item = repitems.getCurrentMember(itemIter);
                 if (item.getInstanceType().getName(null).equals("material_elasticity")) {
                     EMaterial_elasticity matela = (EMaterial_elasticity) item;
-
-                    // set yound modulus
+                    // set young modulus
                     v5material.setYoung_modulus(matela.getYoung_modulus(null));
-
-                    v5materiaux.add(v5material);
+                }
+                else if (item.getInstanceType().getName(null).equals("material_strength") 
+                		&& item.getName(null).equals("yield strength")) {
+                    EMaterial_strength matstr = (EMaterial_strength) item;
+                    
+                    // set yield strength = extreme force
+                    v5material.setExtreme_force(matstr.getMaterial_strength_value(null));                                        
                 }
             }
+            v5materiaux.add(v5material);
         }
         return v5materiaux;
     }
