@@ -85,7 +85,7 @@ public class VFIFEMouseOverBehavior extends Behavior {
                                         oldPickedNode = pickedShape;
                                         pickedShapeOldApp = pickedShape.getAppearance();
                                         canvas.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-                                        System.out.println("Mouse Over - object is selected before");
+                                        //System.out.println("Mouse Over - object is selected before");
 
                                     } else {
                                         ((Shape3D) oldPickedNode).setAppearance(pickedShapeOldApp);
@@ -94,7 +94,7 @@ public class VFIFEMouseOverBehavior extends Behavior {
                                         ((Shape3D) pickedNode).setAppearance(cyanApp);
                                         canvas.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                                         overAnObject = true;
-                                        System.out.println("Mouse Over - object is not selected before");
+                                        //System.out.println("Mouse Over - object is not selected before");
 
                                     }
                                 }
@@ -102,7 +102,7 @@ public class VFIFEMouseOverBehavior extends Behavior {
                             } else if (overAnObject) {
                                 canvas.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                                 oldPickedNode.setAppearance(pickedShapeOldApp);
-                                System.out.println("pickResult is null");
+                                //System.out.println("pickResult is null");
                                 overAnObject = false;
                             }
                         } catch (CapabilityNotSetException e) {

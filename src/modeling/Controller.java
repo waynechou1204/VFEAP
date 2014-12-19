@@ -32,8 +32,8 @@ public class Controller {
     public Controller() throws SdaiException {
 
     	// FIXME, the second line is for test, to delete
-        VFIFE_Model m_v5model = new VFIFE_Model();
-        //VFIFE_Model m_v5model = loadCIS("resources/5-1.stp");
+        //VFIFE_Model m_v5model = new VFIFE_Model();
+        VFIFE_Model m_v5model = loadCIS("resources/5-1.stp");
 
         // main window of the model
         m_frameMain = new JFrameMain(m_v5model);
@@ -64,7 +64,7 @@ public class Controller {
             SdaiModel model_cis = repo_cis.loadFile("MyCisRepo", stpFilePath);
            
             long loadendtime = System.currentTimeMillis();
-            System.out.println("After "+(loadendtime-loadstarttime)/1000+" seconds");
+            System.out.println("After "+(loadendtime-loadstarttime)+" milliseconds");
             
             // parse
             System.out.println("Parsing file");
@@ -78,7 +78,7 @@ public class Controller {
             v5model.getForces().addAll(parser.parseLoadNode(model_cis, v5model));
 
             long parseendtime = System.currentTimeMillis();
-            System.out.println("After "+(parseendtime-loadendtime)/1000+" seconds");
+            System.out.println("After "+(parseendtime-loadendtime)+" milliseconds");
             
         } catch (SdaiException e) {
             e.printStackTrace();
@@ -116,13 +116,13 @@ public class Controller {
 		}
        
         long loadendtime = System.currentTimeMillis();
-        System.out.println("After "+(loadendtime-loadstarttime)/1000+" seconds");
+        System.out.println("After "+(loadendtime-loadstarttime)+" milliseconds");
         
         return v5model;
       }
 
     
-    public static void exportV5M(VFIFE_Model v5model, File file) throws IOException
+    public static boolean exportV5M(VFIFE_Model v5model, File file) throws IOException
     {
     	if (!file.exists()) {
     	    file.createNewFile();
@@ -130,6 +130,8 @@ public class Controller {
 
 	   FileWriter fw = new FileWriter(file.getAbsoluteFile());
 	   BufferedWriter bw = new BufferedWriter(fw);
+	   
+	   transformMass(v5model);
 	   
 	   Parser_ExportV5M parser = new Parser_ExportV5M(v5model, bw);
 	   // order is important
@@ -141,7 +143,25 @@ public class Controller {
 	   parser.writeModel();
 	   bw.close();
   
-	   System.out.println("out over");  
+	   System.out.println("out over"); 
+	   return true;
+    }
+    
+    public static void transformMass(VFIFE_Model v5model){
+    	for(VFIFE_Bar bar : v5model.getBars()){
+    		if(bar.getMaterial()!=null){
+	    		VFIFE_Node nd1 = bar.getStart_node();
+	    		VFIFE_Node nd2 = bar.getEnd_node();
+	    		double l = Util.getLength(nd1.getCoord().getCoordinate_x(), nd1.getCoord().getCoordinate_y(),
+	    				nd1.getCoord().getCoordinate_z(), nd2.getCoord().getCoordinate_x(), 
+	    				nd2.getCoord().getCoordinate_y(), nd2.getCoord().getCoordinate_z());
+	    		double v = l*bar.getSection_area();
+	    		double ro = bar.getMaterial().getDensity();
+	    		double mass = v*ro;
+	    		nd1.setMass(nd1.getMass()+mass/2);
+	    		nd2.setMass(nd2.getMass()+mass/2);
+    		}
+    	}
     }
 
     public static void exportFileAsInput(VFIFE_Model v5model, File file) throws IOException 

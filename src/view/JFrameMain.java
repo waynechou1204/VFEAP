@@ -13,6 +13,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -28,13 +31,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import jsdai.lang.SdaiException;
 import dataStructure.ProgramCalculation;
 import dataStructure.VFIFE_Model;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import java.awt.event.ActionListener;
 
 /**
  *
@@ -292,7 +288,9 @@ public class JFrameMain extends javax.swing.JFrame {
             if (i == JFileChooser.APPROVE_OPTION) {
                 File getfile = fileChooser.getSelectedFile();
                 if (getfile != null) {
-                    exportV5M(m_v5model, getfile);
+                    if(exportV5M(m_v5model, getfile)){
+                    	JOptionPane.showMessageDialog(null, "File is saved!", "OK", JOptionPane.OK_OPTION);
+                    }
                 }
             }
         } else {

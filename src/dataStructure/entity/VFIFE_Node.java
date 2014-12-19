@@ -3,7 +3,7 @@ package dataStructure.entity;
 
 public class VFIFE_Node {
 	private int id;
-	private double mess;
+	private double mass;
 	private VFIFE_CartesianPoint coordinate;
 	private VFIFE_BoundaryConditionLogical restraints;
 	private static int max_id=0;
@@ -22,12 +22,12 @@ public class VFIFE_Node {
 //	}
 	
 	
-	public double getMess() {
-		return mess;
+	public double getMass() {
+		return mass;
 	}
 
-	public void setMess(double mess) {
-		this.mess = mess;
+	public void setMass(double mess) {
+		this.mass = mess;
 	}
 
 	public VFIFE_CartesianPoint getCoord() {

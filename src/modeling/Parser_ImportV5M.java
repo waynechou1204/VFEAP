@@ -68,7 +68,7 @@ public class Parser_ImportV5M {
             String[] attr = lineTxt.split(" ");
             int index = 0;
             VFIFE_Node nd = new VFIFE_Node(Integer.parseInt(attr[index++]));
-            nd.setMess(Double.parseDouble(attr[index++]));
+            nd.setMass(Double.parseDouble(attr[index++]));
             nd.setCoord(new VFIFE_CartesianPoint(Double.parseDouble(attr[index++]), 
             		Double.parseDouble(attr[index++]), Double.parseDouble(attr[index++])));
             if(attr.length==11){ // has restraints

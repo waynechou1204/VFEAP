@@ -226,6 +226,9 @@ public class Parser_ImportSTP {
             // set name
             v5material.setName(mat.getMaterial_name(null));
 
+            // set default density, data lost from sap2000 
+            v5material.setDensity(7849);
+            
             EMaterial_representation matrep = mat.getDefinition(null);
             ARepresentation_item repitems = matrep.getItems(null);
             SdaiIterator itemIter = repitems.createIterator();
@@ -239,9 +242,9 @@ public class Parser_ImportSTP {
                 else if (item.getInstanceType().getName(null).equals("material_strength") 
                 		&& item.getName(null).equals("yield strength")) {
                     EMaterial_strength matstr = (EMaterial_strength) item;
-                    
+                    double yield_strength = matstr.getMaterial_strength_value(null);
                     // set yield strength = extreme force
-                    v5material.setExtreme_force(matstr.getMaterial_strength_value(null));                                        
+                    v5material.setExtreme_force(yield_strength==0 ? Double.MAX_VALUE : yield_strength);                                        
                 }
             }
             v5materiaux.add(v5material);
@@ -264,12 +267,15 @@ public class Parser_ImportSTP {
             //////////////// set force name - identity
             VFIFE_LoadBar v5forcemember = new VFIFE_LoadBar(Integer.parseInt(concen.getLoad_name(null).trim()));
             
-			//////////////// start time and end time are empty
+			//////////////// start time and end time are empty, set default value
+            v5forcemember.setStart_time(0);
+            v5forcemember.setEnd_time(50);
+            
             /////////////// set supporting member - bar // deal with assembly_design_structural_member_linear
             EAssembly_design_structural_member_linear supmember = (EAssembly_design_structural_member_linear) concen.getSupporting_member(null);
             v5forcemember.setSupporting_bar(v5model.getBar(Integer.parseInt(supmember.getItem_name(null).trim())));
 
-            //////////////// deal with load position coords
+            //////////////// deal with load position coordinates
             jsdai.SStructural_frame_schema.ECartesian_point loadpos = (jsdai.SStructural_frame_schema.ECartesian_point) concen.getLoad_position(null);
             A_double coords = loadpos.getCoordinates(null);
             SdaiIterator coordsIt = coords.createIterator();
@@ -340,6 +346,10 @@ public class Parser_ImportSTP {
             ELoad_case eloadcase = nodeforce.getParent_load_case(null);
             v5force.setParent_load_case(this.parseLoadCase(eloadcase));
 
+            // set default start end time
+            v5force.setStart_time(0);
+            v5force.setEnd_time(50);
+            
             ////////////////// deal with supporting node 
             jsdai.SStructural_frame_schema.ENode supnode = (ENode) nodeforce.getSupporting_node(null);
             // set supporting node

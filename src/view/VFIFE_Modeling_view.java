@@ -4,8 +4,6 @@ import java.awt.Font;
 import java.awt.GraphicsConfiguration;
 import java.awt.geom.QuadCurve2D;
 import java.util.ArrayList;
-import java.util.Collections;
-
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
@@ -31,6 +29,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Point3f;
 import javax.vecmath.Vector3f;
 
+import modeling.Util;
 import modeling.VFIFEMouseOverBehavior;
 import modeling.VFIFEMousePickBehavior;
 
@@ -113,15 +112,15 @@ public class VFIFE_Modeling_view extends JPanel {
                 arr_z.add((float) (node.getCoord().getCoordinate_z()));
             }
 
-            float span_x = getSpanValueF(arr_x);
-            float span_y = getSpanValueF(arr_y);
-            float span_z = getSpanValueF(arr_z);
+            float span_x = Util.getSpanValueF(arr_x);
+            float span_y = Util.getSpanValueF(arr_y);
+            float span_z = Util.getSpanValueF(arr_z);
 
-            offset_x = getMidValueF(arr_x);
-            offset_y = getMidValueF(arr_y);
-            offset_z = getMidValueF(arr_z);
+            offset_x = Util.getMidValueF(arr_x);
+            offset_y = Util.getMidValueF(arr_y);
+            offset_z = Util.getMidValueF(arr_z);
 
-            m_scale = (1 / getMaxOfThreeF(span_x, span_y, span_z));
+            m_scale = (1 / Util.getMaxOfThreeF(span_x, span_y, span_z));
         }
 
         BranchGroup objRoot = new BranchGroup();
@@ -358,7 +357,7 @@ public class VFIFE_Modeling_view extends JPanel {
                 VFIFE_CartesianPoint endPos = supportBar.getEnd_node()
                         .getCoord();
 
-                double barLength = this.getLength(startPos.getCoordinate_x(),
+                double barLength = Util.getLength(startPos.getCoordinate_x(),
                         startPos.getCoordinate_y(), startPos.getCoordinate_z(),
                         endPos.getCoordinate_x(), endPos.getCoordinate_y(),
                         endPos.getCoordinate_z());
@@ -534,7 +533,7 @@ public class VFIFE_Modeling_view extends JPanel {
                 | LineArray.COLOR_3);
 
         // get force volume
-        double f = getLength(fx, fy, fz, 0, 0, 0);
+        double f = Util.getLength(fx, fy, fz, 0, 0, 0);
         mainLine.setCoordinate(0, new Point3f((float) px, (float) py, (float) pz));
         mainLine.setCoordinate(1, new Point3f((float) (px - fx * 2 * scale / f),
                 (float) (py - fy * 2 * scale / f), (float) (pz - fz * 2 * scale / f)));
@@ -818,32 +817,6 @@ public class VFIFE_Modeling_view extends JPanel {
         objTrans.addChild(lineconeGroup);
     }*/
 
-    public double getLength(double p1x, double p1y, double p1z, double p2x,
-            double p2y, double p2z) {
-        double len = 0;
-        len += Math.pow(p1x - p2x, 2);
-        len += Math.pow(p1y - p2y, 2);
-        len += Math.pow(p1z - p2z, 2);
-        len = Math.sqrt(len);
-        return len;
-    }
-
-    private float getMidValueF(ArrayList<Float> arr_scale) {
-        float min = Collections.min(arr_scale);
-        float max = Collections.max(arr_scale);
-        return (min + max) / 2;
-    }
-
-    private float getSpanValueF(ArrayList<Float> arr_scale) {
-        float min = Collections.min(arr_scale);
-        float max = Collections.max(arr_scale);
-        return (max - min);
-    }
-
-    private float getMaxOfThreeF(float a, float b, float c) {
-        float max = Math.max(a, b);
-        max = Math.max(max, c);
-        return max;
-    }
-
+    
+    
 }

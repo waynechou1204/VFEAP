@@ -54,7 +54,7 @@ public class Parser_ExportV5M {
 	public void writeNode() throws IOException{
 		m_bw.append("Node\n");
 		for(VFIFE_Node nd : m_model.getNodes()){
-			m_bw.append(nd.getNode_id()+" "+nd.getMess()+" ");
+			m_bw.append(nd.getNode_id()+" "+nd.getMass()+" ");
 			
 			VFIFE_CartesianPoint cp = nd.getCoord();
 			m_bw.append(cp.getCoordinate_x()+" "+cp.getCoordinate_y()+" "+cp.getCoordinate_z()+" ");
@@ -131,6 +131,7 @@ public class Parser_ExportV5M {
 	public void writeModel() throws IOException{
 		m_bw.append("Model\n");
 		m_bw.append(m_model.isHasGravity() ? "T " : "F ");
-		m_bw.append(m_model.getCalculate_duration()+" "+m_model.getCalculate_time_interval()+"\n");
+		m_bw.append(m_model.getCalculate_duration()==0 ? "50 " : (m_model.getCalculate_duration()+" "));
+		m_bw.append(m_model.getCalculate_time_interval()==0 ? "1 " : (m_model.getCalculate_time_interval() +"\n"));
 	}
 }
