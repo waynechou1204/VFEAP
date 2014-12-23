@@ -66,7 +66,8 @@ public class VFIFEMousePickBehavior extends PickMouseBehavior {
                     JDialogBar barinfodlg = new JDialogBar((VFIFE_Bar) shape.getUserData(), this.v5model);
                     barinfodlg.setVisible(true);
                 } else if (shape.getUserData().getClass().toString().contains("VFIFE_Load")) {
-                    JDialogForce dlg_force = new JDialogForce((VFIFE_Load) shape.getUserData());
+                	VFIFE_Load vl = (VFIFE_Load) shape.getUserData();
+                    JDialogForce dlg_force = new JDialogForce(vl);
                     dlg_force.setVisible(true);
                 }
             }

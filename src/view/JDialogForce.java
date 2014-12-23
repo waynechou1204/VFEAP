@@ -5,13 +5,27 @@
  */
 package view;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import dataStructure.entity.VFIFE_AppliedLoad;
 import dataStructure.entity.VFIFE_Bar;
 import dataStructure.entity.VFIFE_CartesianPoint;
 import dataStructure.entity.VFIFE_Load;
 import dataStructure.entity.VFIFE_LoadBar;
+import dataStructure.entity.VFIFE_LoadCaseAccidental;
+import dataStructure.entity.VFIFE_LoadCasePermanent;
+import dataStructure.entity.VFIFE_LoadCaseRamp;
+import dataStructure.entity.VFIFE_LoadCaseVariable;
 import dataStructure.entity.VFIFE_LoadNode;
 import dataStructure.entity.VFIFE_Node;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.JComboBox;
+import java.awt.Dimension;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -24,25 +38,30 @@ public class JDialogForce extends javax.swing.JDialog {
      */
     private VFIFE_Load m_force;
 
+    /**
+     * @wbp.parser.constructor
+     */
     public JDialogForce(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        setResizable(false);
         initComponents();
     }
 
     public JDialogForce(VFIFE_Load force) {
-        initComponents();
         m_force = force;
-
+        initComponents();
         // set position and size
-        setBounds(500, 300, 320, 320);
+        setBounds(500, 300, 400, 400);
 
         jLabel_id.setText(String.valueOf(force.getId()));
         jTextField_start.setText(String.valueOf(force.getStart_time()));
         jTextField_end.setText(String.valueOf(force.getEnd_time()));
 
-        jLabel_type.setText(force.getParent_load_case().toString());
-        
-        if (force.getClass().toString().contains("LoadMemberConcentrated")) {
+        String[] names = force.getParent_load_case().getClass().toString().split("[.]");
+        //System.out.println(names[names.length-1]);
+        comboBox.setSelectedItem(names[names.length-1]);
+        //comboBox.setse
+        if (force.getClass().toString().contains("VFIFE_LoadBar")) {
             VFIFE_LoadBar v5force = (VFIFE_LoadBar) force;
             // load postion - distance from start end
             VFIFE_CartesianPoint point = v5force.getLoad_position();
@@ -140,16 +159,14 @@ public class JDialogForce extends javax.swing.JDialog {
         jLabel_element = new javax.swing.JLabel();
         jLabel_pos = new javax.swing.JLabel();
         jLabel_force = new javax.swing.JLabel();
-        jLabel_type = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Load Info");
-        setPreferredSize(new java.awt.Dimension(330, 320));
-        setResizable(false);
+        setPreferredSize(new Dimension(400, 400));
 
-        jLabel1.setText("Load ID");
+        jLabel1.setText("Force id");
 
         jLabel2.setText("Supporting Element");
 
@@ -157,7 +174,7 @@ public class JDialogForce extends javax.swing.JDialog {
 
         jLabel4.setText("Force ");
 
-        jLabel5.setText("Type");
+        jLabel5.setText("Type ");
 
         jLabel6.setText("Start Time");
 
@@ -169,15 +186,25 @@ public class JDialogForce extends javax.swing.JDialog {
         jTextField_end.setText("jTextField_endtime");
         jTextField_end.setMinimumSize(new java.awt.Dimension(126, 21));
 
-        jLabel_id.setText("jLabel_id");
+        jLabel_id.setText("force id");
 
-        jLabel_element.setText("jLabel_element");
+//        if(m_force.getClass().toString().contains("VFIFE_LoadNode"))
+//        {
+//        	VFIFE_LoadNode v5nodeforce = (VFIFE_LoadNode) m_force;
+//        	jLabel_element.setText("Node " + v5nodeforce.getSupporting_node().getNode_id());
+//        	jLabel_pos.setText("jLabel_pos");
+//        }
+//        else if(m_force.getClass().toString().contains("VFIFE_LoadBar"))
+//        {
+//        	VFIFE_LoadBar v5nodeforce = (VFIFE_LoadBar) m_force;
+//        	jLabel_element.setText("Bar " + v5nodeforce.getSupporting_bar().getBar_id());
+//        	jLabel_pos.setText("jLabel_pos");
+//        }
+        jLabel_element.setText("support element");
 
-        jLabel_pos.setText("jLabel_pos");
+        jLabel_pos.setText("force pos");
 
-        jLabel_force.setText("jLabel_force");
-
-        jLabel_type.setText("jLabel_type");
+        jLabel_force.setText("force value");
 
         jButton1.setText("Save");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -192,76 +219,122 @@ public class JDialogForce extends javax.swing.JDialog {
                 jButton2ActionPerformed(evt);
             }
         });
+        
+        
+        comboBox.addItem("VFIFE_LoadCaseAccidental");
+        comboBox.addItem("VFIFE_LoadCasePermanent");
+        comboBox.addItem("VFIFE_LoadCaseRamp");
+        comboBox.addItem("VFIFE_LoadCaseVariable");
+        comboBox.addItemListener(new ItemListener(){
+
+			@Override
+			public void itemStateChanged(ItemEvent paramItemEvent) {
+				// TODO Auto-generated method stub
+				String type = (String)paramItemEvent.getItem();
+				if(type.equals("VFIFE_LoadCaseRamp"))
+				{
+					//getContentPane().add(paramComponent);
+					JDialogForce.this.txtJtextfieldramploadtime.setVisible(true);
+					JDialogForce.this.lblRamploadStartTime.setVisible(true);
+				}
+				else
+				{
+					JDialogForce.this.txtJtextfieldramploadtime.setVisible(false);
+					JDialogForce.this.lblRamploadStartTime.setVisible(false);
+				}
+			}
+        	
+        });
+        
+        
+        
+        txtJtextfieldramploadtime = new JTextField();
+        txtJtextfieldramploadtime.setText("");
+        txtJtextfieldramploadtime.setColumns(10);
+        if(!this.m_force.getParent_load_case().getClass().equals(VFIFE_LoadCaseRamp.class))
+        {
+        	this.txtJtextfieldramploadtime.setVisible(false);
+        	this.lblRamploadStartTime.setVisible(false);
+        }
+        else
+        {
+        	this.txtJtextfieldramploadtime.setText(((VFIFE_LoadCaseRamp)this.m_force.getParent_load_case()).getRamp_duration()+"");
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addGap(33, 33, 33)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel_type)
-                    .addComponent(jLabel_force)
-                    .addComponent(jLabel_pos)
-                    .addComponent(jLabel_element)
-                    .addComponent(jLabel_id)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField_start, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField_end, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(49, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addGap(50, 50, 50))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap(119, Short.MAX_VALUE)
+        			.addComponent(jButton1)
+        			.addGap(41)
+        			.addComponent(jButton2)
+        			.addGap(108))
+        		.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(jLabel6)
+        				.addComponent(jLabel1)
+        				.addComponent(jLabel2)
+        				.addComponent(jLabel3)
+        				.addComponent(jLabel4)
+        				.addComponent(jLabel5)
+        				.addComponent(jLabel7)
+        				.addComponent(lblRamploadStartTime))
+        			.addGap(33)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        				.addComponent(txtJtextfieldramploadtime)
+        				.addComponent(jLabel_force)
+        				.addComponent(jLabel_pos)
+        				.addComponent(jLabel_element)
+        				.addComponent(jLabel_id)
+        				.addComponent(jTextField_start, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addComponent(jTextField_end, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addComponent(comboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        			.addContainerGap(73, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel_id))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel_element))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel_pos))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel_force))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel_type))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField_start, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jTextField_end, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(41, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(jLabel1)
+        				.addComponent(jLabel_id))
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(jLabel2)
+        				.addComponent(jLabel_element))
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(jLabel3)
+        				.addComponent(jLabel_pos))
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(jLabel4)
+        				.addComponent(jLabel_force))
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(jLabel5)
+        				.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(jLabel6)
+        				.addComponent(jTextField_start, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(jTextField_end, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(jLabel7))
+        			.addGap(30)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(lblRamploadStartTime)
+        				.addComponent(txtJtextfieldramploadtime, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(jButton1)
+        				.addComponent(jButton2))
+        			.addContainerGap())
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -274,7 +347,22 @@ public class JDialogForce extends javax.swing.JDialog {
         // save start and end time
         m_force.setStart_time(Double.parseDouble(this.jTextField_start.getText()));
         m_force.setEnd_time(Double.parseDouble(this.jTextField_end.getText()));
-
+        if(((String)this.comboBox.getSelectedItem()).equals("VFIFE_LoadCaseRamp"))
+        {
+        	this.m_force.setParent_load_case(new VFIFE_LoadCaseRamp(Double.parseDouble(this.txtJtextfieldramploadtime.getText())));
+        }
+        else if(((String)this.comboBox.getSelectedItem()).equals("VFIFE_LoadCaseAccidental"))
+        {
+        	this.m_force.setParent_load_case(new VFIFE_LoadCaseAccidental());
+        }
+        else if(((String)this.comboBox.getSelectedItem()).equals("VFIFE_LoadCasePermanent"))
+        {
+        	this.m_force.setParent_load_case(new VFIFE_LoadCasePermanent());
+        }
+        else if(((String)this.comboBox.getSelectedItem()).equals("VFIFE_LoadCaseVariable"))
+        {
+        	this.m_force.setParent_load_case(new VFIFE_LoadCaseVariable());
+        }
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -294,8 +382,9 @@ public class JDialogForce extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel_force;
     private javax.swing.JLabel jLabel_id;
     private javax.swing.JLabel jLabel_pos;
-    private javax.swing.JLabel jLabel_type;
     private javax.swing.JTextField jTextField_end;
     private javax.swing.JTextField jTextField_start;
-    // End of variables declaration//GEN-END:variables
+    private JComboBox comboBox = new JComboBox();
+    private JTextField txtJtextfieldramploadtime;
+    private JLabel lblRamploadStartTime = new JLabel("RampLoad Duration");
 }
