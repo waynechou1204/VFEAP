@@ -22,10 +22,11 @@ public class ProgramCalculation {
 	public void LoadData(){
 		
 	}
-	public void caculate(){
+	public void caculate(String input){
 		try {
 			   System.out.println("start");
-			   Process pr = Runtime.getRuntime().exec("python C:\\Users\\Administrator\\Desktop\\v1\\main.py");
+			   String cmd="python main.py "+input;
+			   Process pr = Runtime.getRuntime().exec(cmd);
 			   BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			   String line;
 			   while ((line = in.readLine()) != null) {
